@@ -1,0 +1,199 @@
+.container_clock,.box-clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-left: 20px; */
+  }
+
+
+  .container_clock,.box-clock {
+    border-radius: 15%;
+  }
+
+  .clock_card{
+    background-color: transparent !important;
+    border: none !important;
+}
+.clock_card .card-body{
+    padding-top: 0px !important;
+    margin: auto;
+    padding: 0px !important;
+}
+.container_clock {
+    width: 238px;
+    height: 70px;
+    background: #ffbb33;
+  }
+  .box-clock {
+    position: relative;
+    width: 249px;
+    height: 60px;
+    margin: auto;
+    background-color: #efefff;
+    box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  #hora {
+    position: absolute;
+    width: 6px;
+    height: 70%;
+
+    border-radius: 50%;
+    background: linear-gradient(to bottom, #333 60%, transparent 60%);
+
+    transform: rotate(0deg);
+  }
+
+  #min {
+    position: absolute;
+    width: 5px;
+    height: 80%;
+
+    border-radius: 50%;
+    background: linear-gradient(to bottom, #333 60%, transparent 60%);
+
+    transform: rotate(300deg);
+  }
+
+  #seg {
+    position: absolute;
+
+    width: 3px;
+    height: 92%;
+
+    border-radius: 50%;
+    background: linear-gradient(to bottom, #ff5522 50%, transparent 50%);
+
+    transform: rotate(200deg);
+  }
+
+  #pointer {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+    background-color: #333;
+  }
+
+  #pointer::before {
+    content: "";
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+    background-color: #ffbb33;
+    box-shadow: inset -1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .num {
+    position: absolute;
+
+    font: 600 14px sans-serif;
+    color: #444;
+  }
+
+  .num.doze {
+    top: 15px;
+  }
+
+  .num.tres {
+    right: 15px;
+  }
+
+  .num.seis {
+    bottom: 15px;
+  }
+
+  .num.nove {
+    left: 15px;
+  }
+
+  .marcador {
+    position: absolute;
+    width: 2px;
+    height: 85%;
+
+    background: linear-gradient(
+      to bottom,
+      #555 5%,
+      transparent 5%,
+      transparent 95%,
+      #555 95%
+    );
+  }
+
+  .zero-seis {
+    width: 3px;
+  }
+
+  .um-set {
+    transform: rotate(30deg);
+  }
+
+  .dois-oito {
+    transform: rotate(60deg);
+  }
+
+  .tres-nove {
+    transform: rotate(90deg);
+    width: 3px;
+  }
+
+  .quatro-dez {
+    transform: rotate(120deg);
+  }
+
+  .cinco-onze {
+    transform: rotate(150deg);
+  }
+
+  .box-digital {
+    position: absolute;
+    bottom: 25%;
+
+    padding: 5px;
+
+    border: 2px solid #555;
+    border-radius: 5px;
+  }
+  .dashboard_card{
+      padding-top: 80px !important;
+      padding-bottom: 80px !important;
+  }
+  .box-data {
+    width: 100px;
+    position: absolute;
+    top: 25%;
+    text-align: center;
+  }
+
+  .box-digital,
+  .box-data {
+    font: 600 10px sans-serif;
+    color: #555;
+  }
+  .card_margin{
+      margin-top: 20px !important;
+  }
+  @media screen and (max-width:1024px){
+    .container_clock {
+      width: 215px;
+      height: 70px;
+      background: #ffbb33;
+    }
+    .box-clock {
+      position: relative;
+      width: 249px;
+      height: 60px;
+      margin: auto;
+      background-color: #efefff;
+      box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.5);
+    } 
+  }
