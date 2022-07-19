@@ -24,20 +24,20 @@ class StudentProvider extends ServiceProvider
      */
     public function boot()
     {
-        $all_students_rec = AddStudent::get();
+        // $all_students_rec = AddStudent::get();
 
-        $arr= [];
-        foreach($all_students_rec as $student){
-            if($student->contact){
-                $arr[]=$student->contact['email'];
-            }
+        // $arr= [];
+        // foreach($all_students_rec as $student){
+        //     if($student->contact){
+        //         $arr[]=$student->contact['email'];
+        //     }
 
 
-        }
-        $all_students_arr = array_filter($arr);
-        $all_students = implode(',',$all_students_arr);
-        // dd($all_students);
-        View::share('all_students',$all_students);
+        // }
+        // $all_students_arr = array_filter($arr);
+        // $all_students = implode(',',$all_students_arr);
+        // // dd($all_students);
+        // View::share('all_students',$all_students);
 
     }
 }
