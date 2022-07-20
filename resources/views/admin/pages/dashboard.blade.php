@@ -3,9 +3,14 @@
     <link href="{{ asset('admin/css/clock.css') }}" rel="stylesheet" />
     <!-- <link href="{{ asset('admin/css/calendar.css') }}" rel="stylesheet" /> -->
     <link rel="stylesheet" href="https://zulns.github.io/w3css/w3.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .custom-cards.mm-caleder-outer {
-            background-color: #624f8e;
+
+            background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0,0,0,.125);
+    border-left: 5px solid #624f8e;
             text-align: center;
             height: min-content !important;
             position: relative;
@@ -16,11 +21,11 @@
             top: 50%;
             transform: translate(0, -50%);
             width: 100%;
-            color: #fff;
+            color: #624f8e;
         }
 
         div#calendar {
-            font-size: 35px;
+            font-size: 25px;
             font-family: "Segoe UI", Arial, sans-serif;
             font-weight: 400;
         }
@@ -29,10 +34,6 @@
             font-size: 25px;
             font-weight: 400;
             font-family: "Segoe UI", Arial, sans-serif;
-        }
-
-        .w3-display-topleft {
-            display: none !important;
         }
 
         .w3-bar-item input[type=radio],
@@ -64,10 +65,6 @@
             font-size: 18px !important;
         }
 
-        /* .w3-display-topright {
-                            display: none;
-                        } */
-
         .w3-ripple>svg {}
 
         .mm-caleder .w3-btn,
@@ -75,37 +72,8 @@
             padding: 0px 16px;
         }
 
-        .mm-caleder .w3-display-right,
-        .mm-caleder .w3-display-left,
-        .w3-display-bottomleft,
-        .w3-display-bottomright,
-        .w3-display-middle,
-        .w3-display-bottommiddle {
-            /* transform: translate(0%, -125%); */
-            display: none !important;
-        }
 
 
-
-        /* .mm-caleder .w3-display-left {
-                            transform: translate(75%, -125%);
-                        } */
-
-        /* .w3-display-middle {
-                            transform: translate(-32%, -105%);
-                        } */
-
-        /* .w3-display-bottomleft {
-                            transform: translate(82%, -20%);
-                        }
-
-                        .w3-display-bottomright {
-                            transform: translate(-8%, -20%);
-                        } */
-
-        /* .w3-display-bottommiddle {
-                            transform: translate(-28%, 20%);
-                        } */
 
         .w3-display-container {
             background: #614f8e !important;
@@ -120,25 +88,11 @@
             margin-top: unset !important;
         }
 
-        .w3-dark-grey,
-        .w3-hover-dark-grey:hover,
-        .w3-dark-gray,
-        .w3-hover-dark-gray:hover {
-            background-color: #ffbb33 !important;
-        }
-
-        .w3-orange,
-        .w3-hover-orange:hover {
-            color: #fff !important;
-        }
 
         .w3 {
             color: #fff !important;
         }
 
-        .mm-caleder .w3-white {
-            display: none;
-        }
 
         .clock {
             position: absolute;
@@ -444,6 +398,21 @@
                 color: white;
             }
         }
+        .eng-cal{
+            display: flex;
+    align-items: center;
+    justify-content: center;
+
+        }
+        .eng-cal:not(:last-child){
+            padding-bottom: 10px;
+        }
+       .eng-cal i{
+        padding-right: 15px;
+        font-size: 30px;
+        text-align: center;
+       }
+
     </style>
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 @endpush
@@ -451,16 +420,15 @@
     <section class="container-fluid">
 
         <div class="row">
-            <div class="col-md-6 mx-auto">
+            <div class="col-md-6 mx-auto mt-3">
                 <div class="custom-cards mm-caleder-outer">
                     <div class="custom-card-body">
-                        <div id="calendar" class="w3-container w3-margin-top mm-caleder"></div>
-                        <div id="calendarr" class="w3-container w3-margin-top mm-caleder"></div>
+                        <div class="eng-cal"><i class="fa-solid fa-calendar-days"></i>
+                            <div id="calendar" class="w3-container w3-margin-top mm-caleder"></div></div>
+                       <div class="eng-cal"> <i class="fa-solid fa-kaaba"></i>
+                        <div id="calendarr" class="w3-container w3-margin-top mm-caleder"></div></div>
                     </div>
                 </div>
-                {{-- <div class="custom-cards mm-caleder-outer">
-
-            </div> --}}
             </div>
 
             <div id="clock" class=" row flex-wrap flex-row">
@@ -843,8 +811,7 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
     <script type="text/javascript">
-        // var calendar = new Calendar(true);
-        // var calendarr = new Calendar(false);
+
         $(document).on('ready', function() {
 
 
@@ -863,8 +830,6 @@
             var calendar = document.getElementById('calendar');
             $(calendar).html(englishDate);
             $(calendarr).html(arabicDate);
-            console.log(englishDate);
-            console.log(arabicDate);
         });
     </script>
 
