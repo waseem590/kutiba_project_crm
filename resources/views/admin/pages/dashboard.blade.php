@@ -5,9 +5,32 @@
     <link rel="stylesheet" href="https://zulns.github.io/w3css/w3.css" />
     <style>
         .custom-cards.mm-caleder-outer {
-    background-color: #624f8e;
-    text-align: center;
-}
+            background-color: #624f8e;
+            text-align: center;
+            height: min-content !important;
+            position: relative;
+        }
+
+        .custom-cards.mm-caleder-outer .custom-card-body {
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            width: 100%;
+            color: #fff;
+        }
+
+        div#calendar {
+            font-size: 35px;
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-weight: 400;
+        }
+
+        div#calendarr {
+            font-size: 25px;
+            font-weight: 400;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
         .w3-display-topleft {
             display: none !important;
         }
@@ -42,8 +65,8 @@
         }
 
         /* .w3-display-topright {
-                display: none;
-            } */
+                            display: none;
+                        } */
 
         .w3-ripple>svg {}
 
@@ -62,46 +85,30 @@
             display: none !important;
         }
 
-        .mm-caleder-outer {
-            height: min-content !important;
-        }
+
 
         /* .mm-caleder .w3-display-left {
-                transform: translate(75%, -125%);
-            } */
+                            transform: translate(75%, -125%);
+                        } */
 
         /* .w3-display-middle {
-                transform: translate(-32%, -105%);
-            } */
+                            transform: translate(-32%, -105%);
+                        } */
 
         /* .w3-display-bottomleft {
-                transform: translate(82%, -20%);
-            }
+                            transform: translate(82%, -20%);
+                        }
 
-            .w3-display-bottomright {
-                transform: translate(-8%, -20%);
-            } */
+                        .w3-display-bottomright {
+                            transform: translate(-8%, -20%);
+                        } */
 
         /* .w3-display-bottommiddle {
-                transform: translate(-28%, 20%);
-            } */
+                            transform: translate(-28%, 20%);
+                        } */
 
         .w3-display-container {
             background: #614f8e !important;
-        }
-
-        #calendar .w3-display-container::before {
-            content: "Hijri Date";
-            position: absolute;
-            top: 25%;
-            left: 16px;
-        }
-
-        #calendarr .w3-display-container::before {
-            content: "Geogorian Date";
-            position: absolute;
-            top: 25%;
-            left: 16px;
         }
 
         .w3-button:hover {
@@ -198,7 +205,7 @@
             backface-visibility: hidden;
             background-color: #9612eb;
             /* background-image: url($cover-image);
-         */
+                     */
             background-size: contain;
             transform-style: preserve-3d;
             transform-origin: 0% 50%;
@@ -313,10 +320,10 @@
         @media (max-width:1300px) and (min-width:991px) {
 
             /* .birthday_modal .modal-body {
-            background-color: rebeccapurple;
-            max-width: 1200px;
-            margin: auto;
-        } */
+                        background-color: rebeccapurple;
+                        max-width: 1200px;
+                        margin: auto;
+                    } */
 
             .birthday_modal .modal-content {
                 position: relative;
@@ -446,8 +453,10 @@
         <div class="row">
             <div class="col-md-6 mx-auto">
                 <div class="custom-cards mm-caleder-outer">
-                    <div id="calendar" class="w3-container w3-margin-top mm-caleder"></div>
-                    <div id="calendarr" class="w3-container w3-margin-top mm-caleder"></div>
+                    <div class="custom-card-body">
+                        <div id="calendar" class="w3-container w3-margin-top mm-caleder"></div>
+                        <div id="calendarr" class="w3-container w3-margin-top mm-caleder"></div>
+                    </div>
                 </div>
                 {{-- <div class="custom-cards mm-caleder-outer">
 
@@ -498,16 +507,16 @@
                     </div>
                 @endforeach
                 <!-- <div class="col-md-6 col-lg-4 col-xl-4">
-                        <div class="card custom-cards custom-card-3 text-white clock_card text-center">
-                            <div class="card-body text-center">
-                                <div class="container_clock">
-                                    <div class="box-clock">
-                                        <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
+                                    <div class="card custom-cards custom-card-3 text-white clock_card text-center">
+                                        <div class="card-body text-center">
+                                            <div class="container_clock">
+                                                <div class="box-clock">
+                                                    <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
+                                </div> -->
             </div>
         </div>
         <div class="row">
@@ -646,29 +655,29 @@
                         </div>
 
                         <!-- <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                <div class=" tab-heading">Full Name</div>
-                                <div class=" tab-heading">Email</div>
-                                <div class="col-sm-4 tab-heading">Nationality</div>
-                            </div>
-                            <div style="height: 160px;overflow-y: scroll;overflow-x: hidden;">
-                                @foreach ($latest_students as $student)
+                                            <div class=" tab-heading">Full Name</div>
+                                            <div class=" tab-heading">Email</div>
+                                            <div class="col-sm-4 tab-heading">Nationality</div>
+                                        </div>
+                                        <div style="height: 160px;overflow-y: scroll;overflow-x: hidden;">
+                                            @foreach ($latest_students as $student)
     @if ($student->contact)
     <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                    <div class="">
-                                        <a href="{{ route('student.show', $student->id) }}">{{ $student->info['name'] ?? '' }}</a>
-                                    </div>
-                                    <div class="">
-                                        {{ $student->contact['email'] ?? '' }}
-                                    </div>
-                                    <div class="" style="padding-left: 17px;">
-                                        <?php $country = \App\Models\Country::find($student->info['nationality'] ?? ''); ?>
-                                        {{ $country['name'] ?? '' }}
-                                    </div>
-                                </div>
+                                                <div class="">
+                                                    <a href="{{ route('student.show', $student->id) }}">{{ $student->info['name'] ?? '' }}</a>
+                                                </div>
+                                                <div class="">
+                                                    {{ $student->contact['email'] ?? '' }}
+                                                </div>
+                                                <div class="" style="padding-left: 17px;">
+                                                    <?php $country = \App\Models\Country::find($student->info['nationality'] ?? ''); ?>
+                                                    {{ $country['name'] ?? '' }}
+                                                </div>
+                                            </div>
     @endif
     @endforeach
 
-                            </div> -->
+                                        </div> -->
                         <div class="row" style="padding-top: 8px;">
                             <div class="col-sm-12 text-right">
                                 <a class="btn edit_save float-right px-3 py-1" style="padding-top: 7px !important;"
@@ -706,26 +715,26 @@
                         <!-- end table  -->
 
                         <!-- <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                <div class="col-sm-4 tab-heading">Full Name</div>
-                                <div class="col-sm-4 tab-heading">Email</div>
-                            </div>
-                            <div style="height: 200px;overflow-y: scroll;overflow-x: hidden;">
-                                @foreach ($users as $user)
+                                            <div class="col-sm-4 tab-heading">Full Name</div>
+                                            <div class="col-sm-4 tab-heading">Email</div>
+                                        </div>
+                                        <div style="height: 200px;overflow-y: scroll;overflow-x: hidden;">
+                                            @foreach ($users as $user)
     <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                    <div class="col-sm-4">
-                                        {{ $user->name }}
-                                    </div>
-                                    <div class="col-sm-8">
-                                        {{ $user->email }}
-                                    </div>
-                                </div>
+                                                <div class="col-sm-4">
+                                                    {{ $user->name }}
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {{ $user->email }}
+                                                </div>
+                                            </div>
     @endforeach
-                            </div> -->
+                                        </div> -->
                         <!-- <div class="row" style="padding-top: 8px;">
-                                <div class="col-sm-12 text-right">
-                                    <a class="btn edit_save float-right px-3 py-1" href="{{ route('studentlists') }}">View All Students</a>
-                                </div>
-                            </div> -->
+                                            <div class="col-sm-12 text-right">
+                                                <a class="btn edit_save float-right px-3 py-1" href="{{ route('studentlists') }}">View All Students</a>
+                                            </div>
+                                        </div> -->
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -740,10 +749,10 @@
                         </div>
                     </div>
                     <!-- <div class="student-performance pb-0">
-                            {!! $visa_chart->container() !!}
-                                <script src="{{ $visa_chart->cdn() }}"></script>
-                            {{ $visa_chart->script() }}
-                        </div> -->
+                                        {!! $visa_chart->container() !!}
+                                            <script src="{{ $visa_chart->cdn() }}"></script>
+                                        {{ $visa_chart->script() }}
+                                    </div> -->
                     <div class="row-no-gutters top-results">
                         <div class="col-md-12 col-lg-12 p-0 col-xl-10">
                             <div>
@@ -755,10 +764,10 @@
                         </div>
                     </div>
                     <!-- <div class="top-results">
-                            {!! $chart->container() !!}
-                                <script src="{{ $chart->cdn() }}"></script>
-                            {{ $chart->script() }}
-                        </div> -->
+                                        {!! $chart->container() !!}
+                                            <script src="{{ $chart->cdn() }}"></script>
+                                        {{ $chart->script() }}
+                                    </div> -->
                 </div>
             </div>
         </div>
@@ -836,27 +845,27 @@
     <script type="text/javascript">
         // var calendar = new Calendar(true);
         // var calendarr = new Calendar(false);
-        $(document).on('ready', function(){
+        $(document).on('ready', function() {
 
 
-        var englishDate = new Intl.DateTimeFormat('en-GB', {
-            day: 'numeric',
-            month: 'long',
-            weekday: 'long'
-        }).format(Date.now('dd-mm-yy'));
-        var arabicDate = new Intl.DateTimeFormat('en-TN-u-ca-islamic', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        }).format(Date.now());
+            var englishDate = new Intl.DateTimeFormat('en-GB', {
+                day: 'numeric',
+                month: 'long',
+                weekday: 'long'
+            }).format(Date.now('dd-mm-yy'));
+            var arabicDate = new Intl.DateTimeFormat('en-GB-u-ca-islamic', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            }).format(Date.now());
 
-        var calendarr = document.getElementById('calendarr');
-        var calendar = document.getElementById('calendar');
-        $(calendar).html(arabicDate);
-        $(calendarr).html(englishDate);
-        console.log(englishDate);
-        console.log(arabicDate);
-    });
+            var calendarr = document.getElementById('calendarr');
+            var calendar = document.getElementById('calendar');
+            $(calendar).html(englishDate);
+            $(calendarr).html(arabicDate);
+            console.log(englishDate);
+            console.log(arabicDate);
+        });
     </script>
 
     <!-- <script>
