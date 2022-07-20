@@ -3,14 +3,16 @@
     <link href="{{ asset('admin/css/clock.css') }}" rel="stylesheet" />
     <!-- <link href="{{ asset('admin/css/calendar.css') }}" rel="stylesheet" /> -->
     <link rel="stylesheet" href="https://zulns.github.io/w3css/w3.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         .custom-cards.mm-caleder-outer {
 
             background-color: #fff;
-    background-clip: border-box;
-    border: 1px solid rgba(0,0,0,.125);
-    border-left: 5px solid #624f8e;
+            background-clip: border-box;
+            border: 1px solid rgba(0, 0, 0, .125);
+            border-left: 5px solid #624f8e;
             text-align: center;
             height: min-content !important;
             position: relative;
@@ -159,7 +161,7 @@
             backface-visibility: hidden;
             background-color: #9612eb;
             /* background-image: url($cover-image);
-                     */
+                         */
             background-size: contain;
             transform-style: preserve-3d;
             transform-origin: 0% 50%;
@@ -258,6 +260,28 @@
             color: white;
         }
 
+        .main-cal {
+            max-width: 50%;
+            margin: auto;
+        }
+
+        .eng-cal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .eng-cal:not(:last-child) {
+            padding-bottom: 10px;
+        }
+
+        .eng-cal i {
+            padding-right: 15px;
+            font-size: 30px;
+            text-align: center;
+        }
+
         @media(max-width:2560px) and (min-width:1920px) {
 
             .w3-xlarge {
@@ -274,10 +298,10 @@
         @media (max-width:1300px) and (min-width:991px) {
 
             /* .birthday_modal .modal-body {
-                        background-color: rebeccapurple;
-                        max-width: 1200px;
-                        margin: auto;
-                    } */
+                            background-color: rebeccapurple;
+                            max-width: 1200px;
+                            margin: auto;
+                        } */
 
             .birthday_modal .modal-content {
                 position: relative;
@@ -331,7 +355,17 @@
                 box-shadow: 0px 0px 0px 0px rgb(0 0 0 / 10%);
             }
 
+            .main-cal {
+                max-width: 70% !important;
+            }
 
+        }
+
+        @media (max-width:767px) {
+            .main-cal {
+                max-width: 70% !important;
+                margin-top: 110px;
+            }
         }
 
         @media screen and (max-width:575px) {
@@ -397,36 +431,60 @@
                 background: rebeccapurple;
                 color: white;
             }
-        }
-        .eng-cal{
-            display: flex;
-    align-items: center;
-    justify-content: center;
+
+            .main-cal {
+                max-width: 100% !important;
+                margin-top: 0px;
+            }
+
+            div#calendar {
+                font-size: 20px;
+            }
+
+            div#calendarr {
+                font-size: 20px;
+            }
+
+            .eng-cal i {
+                padding-right: 3px;
+                font-size: 20px;
+                text-align: center;
+            }
 
         }
-        .eng-cal:not(:last-child){
-            padding-bottom: 10px;
-        }
-       .eng-cal i{
-        padding-right: 15px;
-        font-size: 30px;
-        text-align: center;
-       }
 
+        @media (max-width:360px) {
+            div#calendar {
+                font-size: 16px;
+            }
+
+            div#calendarr {
+                font-size: 16px;
+            }
+
+            .eng-cal i {
+                padding-right: 3px;
+                font-size: 18px;
+                text-align: center;
+            }
+        }
     </style>
-    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css"
+        rel="stylesheet">
 @endpush
 @section('content')
     <section class="container-fluid">
 
         <div class="row">
-            <div class="col-md-6 mx-auto mt-3">
+            <div class=" main-cal">
                 <div class="custom-cards mm-caleder-outer">
                     <div class="custom-card-body">
                         <div class="eng-cal"><i class="fa-solid fa-calendar-days"></i>
-                            <div id="calendar" class="w3-container w3-margin-top mm-caleder"></div></div>
-                       <div class="eng-cal"> <i class="fa-solid fa-kaaba"></i>
-                        <div id="calendarr" class="w3-container w3-margin-top mm-caleder"></div></div>
+                            <div id="calendar" class="w3-container w3-margin-top mm-caleder"></div>
+                        </div>
+                        <div class="eng-cal"> <i class="fa-solid fa-kaaba"></i>
+                            <div id="calendarr" class="w3-container w3-margin-top mm-caleder"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -475,16 +533,16 @@
                     </div>
                 @endforeach
                 <!-- <div class="col-md-6 col-lg-4 col-xl-4">
-                                    <div class="card custom-cards custom-card-3 text-white clock_card text-center">
-                                        <div class="card-body text-center">
-                                            <div class="container_clock">
-                                                <div class="box-clock">
-                                                    <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
+                                        <div class="card custom-cards custom-card-3 text-white clock_card text-center">
+                                            <div class="card-body text-center">
+                                                <div class="container_clock">
+                                                    <div class="box-clock">
+                                                        <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div> -->
+                                    </div> -->
             </div>
         </div>
         <div class="row">
@@ -623,29 +681,29 @@
                         </div>
 
                         <!-- <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                            <div class=" tab-heading">Full Name</div>
-                                            <div class=" tab-heading">Email</div>
-                                            <div class="col-sm-4 tab-heading">Nationality</div>
-                                        </div>
-                                        <div style="height: 160px;overflow-y: scroll;overflow-x: hidden;">
-                                            @foreach ($latest_students as $student)
+                                                <div class=" tab-heading">Full Name</div>
+                                                <div class=" tab-heading">Email</div>
+                                                <div class="col-sm-4 tab-heading">Nationality</div>
+                                            </div>
+                                            <div style="height: 160px;overflow-y: scroll;overflow-x: hidden;">
+                                                @foreach ($latest_students as $student)
     @if ($student->contact)
     <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                                <div class="">
-                                                    <a href="{{ route('student.show', $student->id) }}">{{ $student->info['name'] ?? '' }}</a>
+                                                    <div class="">
+                                                        <a href="{{ route('student.show', $student->id) }}">{{ $student->info['name'] ?? '' }}</a>
+                                                    </div>
+                                                    <div class="">
+                                                        {{ $student->contact['email'] ?? '' }}
+                                                    </div>
+                                                    <div class="" style="padding-left: 17px;">
+                                                        <?php $country = \App\Models\Country::find($student->info['nationality'] ?? ''); ?>
+                                                        {{ $country['name'] ?? '' }}
+                                                    </div>
                                                 </div>
-                                                <div class="">
-                                                    {{ $student->contact['email'] ?? '' }}
-                                                </div>
-                                                <div class="" style="padding-left: 17px;">
-                                                    <?php $country = \App\Models\Country::find($student->info['nationality'] ?? ''); ?>
-                                                    {{ $country['name'] ?? '' }}
-                                                </div>
-                                            </div>
     @endif
     @endforeach
 
-                                        </div> -->
+                                            </div> -->
                         <div class="row" style="padding-top: 8px;">
                             <div class="col-sm-12 text-right">
                                 <a class="btn edit_save float-right px-3 py-1" style="padding-top: 7px !important;"
@@ -683,26 +741,26 @@
                         <!-- end table  -->
 
                         <!-- <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                            <div class="col-sm-4 tab-heading">Full Name</div>
-                                            <div class="col-sm-4 tab-heading">Email</div>
-                                        </div>
-                                        <div style="height: 200px;overflow-y: scroll;overflow-x: hidden;">
-                                            @foreach ($users as $user)
+                                                <div class="col-sm-4 tab-heading">Full Name</div>
+                                                <div class="col-sm-4 tab-heading">Email</div>
+                                            </div>
+                                            <div style="height: 200px;overflow-y: scroll;overflow-x: hidden;">
+                                                @foreach ($users as $user)
     <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                                <div class="col-sm-4">
-                                                    {{ $user->name }}
+                                                    <div class="col-sm-4">
+                                                        {{ $user->name }}
+                                                    </div>
+                                                    <div class="col-sm-8">
+                                                        {{ $user->email }}
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-8">
-                                                    {{ $user->email }}
-                                                </div>
-                                            </div>
     @endforeach
-                                        </div> -->
+                                            </div> -->
                         <!-- <div class="row" style="padding-top: 8px;">
-                                            <div class="col-sm-12 text-right">
-                                                <a class="btn edit_save float-right px-3 py-1" href="{{ route('studentlists') }}">View All Students</a>
-                                            </div>
-                                        </div> -->
+                                                <div class="col-sm-12 text-right">
+                                                    <a class="btn edit_save float-right px-3 py-1" href="{{ route('studentlists') }}">View All Students</a>
+                                                </div>
+                                            </div> -->
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -717,10 +775,10 @@
                         </div>
                     </div>
                     <!-- <div class="student-performance pb-0">
-                                        {!! $visa_chart->container() !!}
-                                            <script src="{{ $visa_chart->cdn() }}"></script>
-                                        {{ $visa_chart->script() }}
-                                    </div> -->
+                                            {!! $visa_chart->container() !!}
+                                                <script src="{{ $visa_chart->cdn() }}"></script>
+                                            {{ $visa_chart->script() }}
+                                        </div> -->
                     <div class="row-no-gutters top-results">
                         <div class="col-md-12 col-lg-12 p-0 col-xl-10">
                             <div>
@@ -732,10 +790,10 @@
                         </div>
                     </div>
                     <!-- <div class="top-results">
-                                        {!! $chart->container() !!}
-                                            <script src="{{ $chart->cdn() }}"></script>
-                                        {{ $chart->script() }}
-                                    </div> -->
+                                            {!! $chart->container() !!}
+                                                <script src="{{ $chart->cdn() }}"></script>
+                                            {{ $chart->script() }}
+                                        </div> -->
                 </div>
             </div>
         </div>
@@ -811,7 +869,6 @@
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
     <script type="text/javascript">
-
         $(document).on('ready', function() {
 
 
