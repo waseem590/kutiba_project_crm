@@ -631,10 +631,10 @@
     });
 </script>
 <!-- js for coutry code input -->
-<script src="{{ asset('admin/countryCodeInput/intlTelInput.min.js') }}"></script>
+{{-- <script src="{{ asset('admin/countryCodeInput/intlTelInput.min.js') }}"></script> --}}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/>
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.15/js/intlTelInput.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.15/js/intlTelInput.js"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/css/intlTelInput.min.css" rel="stylesheet"/> -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/intlTelInput.min.js"></script> -->
@@ -750,6 +750,17 @@ console.log(phone_number2);
             box.find("p").text("");
         }
     });
+    // radio add_detail change event
+    var contact_detail_form = $('#contact_detail_form').find('.tab-inner-label span');
+    $('input[type=radio][name=address_details]').on('change', function(){
+        var address_details = $(this).val();
+        if(address_details == 'onshore'){
+            $(contact_detail_form).removeClass('d-none');
+        } else {
+            $(contact_detail_form).addClass('d-none');
+        }
+    });
+
     // Add student tab js
     $(document).on("click", "#add_student_btn", function (e) {
         e.preventDefault();

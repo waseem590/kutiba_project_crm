@@ -51,14 +51,16 @@
             </div>
             <div class="col-md-4 existing_student mt-3">
                 <label for="exampleFormControlSelect1" class="tab-inner-label">Student Name</label>
-                <select class="form-control select-inner-text" id="exampleFormControlSelect1" name="student_name">
-                    <option disabled="" selected="">Select Student</option>
+                <input list="student_name_list" name="student_name" class="form-control select-inner-text">
+                <datalist id="student_name_list">
+                    <option disabled selected value="Select Student">Select Student</option>
                     @foreach($students as $student)
                     @if($student->info)
                     <option value="{{$student->id}}">{{$student->info['name']}}-{{$student->id ?? ''}}</option>
                     @endif
                     @endforeach
-                </select>
+                </datalist>
+
             </div>
             <div class="col-md-4 col-lg-4 new_student_input">
                 <label class="tab-inner-label" for="">Full name</label>
@@ -232,7 +234,7 @@
             $('.no_of_app').addClass('mt-3');
             $('.margin_top').removeClass('mt-3');
             $('.status_margin').removeClass('mt-3');
-            
+
 
         } else {
             $('.new_student_input').css('display', 'none');

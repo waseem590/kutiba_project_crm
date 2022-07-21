@@ -39,7 +39,7 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    { 
+    {
         $authUser = User::find(auth()->user()->id);
         $authUserRole = $authUser->getRoleNames()[0];
         if($authUserRole == 'Visa'){
@@ -47,7 +47,7 @@ class HomeController extends Controller
             $student_id = [];
             foreach($students as $visa){
                 $expire_date= $visa->visa_expire_date;
-                $current = Carbon::now(); 
+                $current = Carbon::now();
                 $date= Carbon::parse($expire_date);
                 $diff_date = $date->diffInDays($current, true);
                 // if($diff_date<=60 && $visa->select_status !== 'Approved' || $diff_date <=61){
@@ -75,9 +75,9 @@ class HomeController extends Controller
             foreach($except_approved as $val){
                 $student_id[] = $val->student_id;
             }
-            
-           
-            // $ownStudents= AddStudent::where('users_id',auth()->user()->id)->latest()->get(); 
+
+
+            // $ownStudents= AddStudent::where('users_id',auth()->user()->id)->latest()->get();
             // foreach($ownStudents as $val){
             //     $student_id[] = $val->id;
             // }
@@ -91,13 +91,13 @@ class HomeController extends Controller
             foreach($showStudentsToAdmissions as $val){
                 $student_id[] = $val->add_students_id;
             }
-            $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->get(); 
+            $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->get();
             foreach($ownStudents as $val){
                 $student_id[] = $val->id;
             }
-            
+
             $final = array_unique($student_id);
-            
+
             $latest_students = AddStudent::whereIn('id',$final)->orWhere('users_id',auth()->user()->id)->latest()->take(10)->get();
         }
         if($authUserRole == 'Counsellor'){
@@ -123,18 +123,18 @@ class HomeController extends Controller
 
             $studentWhoSubmitAppli = Application::whereIn('status', ['Submitted', 'Acceptance sent', 'Acceptance Information provided', 'Information Provided'])->latest()->get();
             $student_id = [];
-            
+
             // foreach($showStudentsToCounsellor as $val){
             //     $student_id[] = $val->add_student_id;
             // }
             foreach($studentWhoSubmitAppli as $val){
                 $student_id[] = $val->add_student_id;
             }
-            $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->get(); 
+            $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->get();
             foreach($ownStudents as $val){
                 $student_id[] = $val->id;
             }
-            
+
             $final = array_unique($student_id);
 
             $latest_students = AddStudent::studentRelations()->whereIn('id',$final)->orWhere('users_id',auth()->user()->id)->latest()->take(10)->get();
@@ -158,7 +158,7 @@ class HomeController extends Controller
                     if($role == 'Counsellor'){
                         $student_id[] = $val->id;
                     }
-                }   
+                }
             }
             foreach($showStudentsToCounsellor as $val){
                 $student_id[] = $val->add_student_id;
@@ -166,7 +166,7 @@ class HomeController extends Controller
             foreach($showStudentsToFinanceManager as $val){
                 $student_id[] = $val->add_student_id;
             }
-            
+
             $final = array_unique($student_id);
             $latest_students = AddStudent::whereIn('id',$final)->orWhere('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->take(10)->get();
         }
@@ -185,11 +185,11 @@ class HomeController extends Controller
             foreach($taskStudents as $val){
                 $student_id[] = $val->student_id;
             }
-            $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->get(); 
+            $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->get();
             foreach($ownStudents as $val){
                 $student_id[] = $val->id;
             }
-            
+
             $final = array_unique($student_id);
             $latest_students = AddStudent::whereIn('id',$final)->orWhere('users_id',auth()->user()->id)->latest()->take(10)->get();
         }
@@ -222,7 +222,8 @@ class HomeController extends Controller
         ->addData($count_visa)
         ->setLabels($visa_months);
         $course = Dropdown::find(15);
-        $courses = $course->dropdownType;
+        // $courses = $course->dropdownType;
+        $courses = $course;
         $from = Carbon::today()->format('m-d');
         $to = Carbon::today()->addDays(7)->format('m-d');
         $users = DB::table('users')->whereBetween(DB::raw("(DATE_FORMAT(dob,'%m-%d'))"),array($from, $to))->get();
