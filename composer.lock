@@ -1197,6 +1197,7 @@
         },
         {
             "name": "laravel/framework",
+<<<<<<< HEAD
             "version": "v8.83.20",
             "source": {
                 "type": "git",
@@ -1207,6 +1208,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/framework/zipball/aa5908e83fccb18b135ca31aa0342cf4bd6909a8",
                 "reference": "aa5908e83fccb18b135ca31aa0342cf4bd6909a8",
+=======
+            "version": "v8.83.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "4264f2ee12330bdb1be050998f58ba7271236395"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/4264f2ee12330bdb1be050998f58ba7271236395",
+                "reference": "4264f2ee12330bdb1be050998f58ba7271236395",
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
                 "shasum": ""
             },
             "require": {
@@ -1366,7 +1379,11 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
+<<<<<<< HEAD
             "time": "2022-07-19T14:11:02+00:00"
+=======
+            "time": "2022-07-13T13:23:09+00:00"
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
         },
         {
             "name": "laravel/sanctum",
@@ -3819,6 +3836,7 @@
         },
         {
             "name": "symfony/deprecation-contracts",
+<<<<<<< HEAD
             "version": "v3.1.1",
             "source": {
                 "type": "git",
@@ -3829,6 +3847,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/07f1b9cc2ffee6aaafcf4b710fbc38ff736bd918",
                 "reference": "07f1b9cc2ffee6aaafcf4b710fbc38ff736bd918",
+=======
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/deprecation-contracts.git",
+                "reference": "26954b3d62a6c5fd0ea8a2a00c0353a14978d05c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/26954b3d62a6c5fd0ea8a2a00c0353a14978d05c",
+                "reference": "26954b3d62a6c5fd0ea8a2a00c0353a14978d05c",
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
                 "shasum": ""
             },
             "require": {
@@ -3866,7 +3896,11 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/deprecation-contracts/tree/v3.1.1"
+=======
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.0.2"
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
             },
             "funding": [
                 {
@@ -3882,7 +3916,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-02-25T11:15:52+00:00"
+=======
+            "time": "2022-01-02T09:55:41+00:00"
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
         },
         {
             "name": "symfony/error-handler",
@@ -3957,6 +3995,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
+<<<<<<< HEAD
             "version": "v6.1.0",
             "source": {
                 "type": "git",
@@ -3967,6 +4006,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/a0449a7ad7daa0f7c0acd508259f80544ab5a347",
                 "reference": "a0449a7ad7daa0f7c0acd508259f80544ab5a347",
+=======
+            "version": "v6.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher.git",
+                "reference": "5c85b58422865d42c6eb46f7693339056db098a8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/5c85b58422865d42c6eb46f7693339056db098a8",
+                "reference": "5c85b58422865d42c6eb46f7693339056db098a8",
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
                 "shasum": ""
             },
             "require": {
@@ -4020,7 +4071,11 @@
             "description": "Provides tools that allow your application components to communicate with each other by dispatching events and listening to them",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/event-dispatcher/tree/v6.1.0"
+=======
+                "source": "https://github.com/symfony/event-dispatcher/tree/v6.0.9"
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
             },
             "funding": [
                 {
@@ -4036,6 +4091,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-05-05T16:51:07+00:00"
         },
         {
@@ -4050,6 +4106,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/02ff5eea2f453731cfbc6bc215e456b781480448",
                 "reference": "02ff5eea2f453731cfbc6bc215e456b781480448",
+=======
+            "time": "2022-05-05T16:45:52+00:00"
+        },
+        {
+            "name": "symfony/event-dispatcher-contracts",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/event-dispatcher-contracts.git",
+                "reference": "7bc61cc2db649b4637d331240c5346dcc7708051"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/7bc61cc2db649b4637d331240c5346dcc7708051",
+                "reference": "7bc61cc2db649b4637d331240c5346dcc7708051",
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
                 "shasum": ""
             },
             "require": {
@@ -4099,7 +4171,11 @@
                 "standards"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.1.1"
+=======
+                "source": "https://github.com/symfony/event-dispatcher-contracts/tree/v3.0.2"
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
             },
             "funding": [
                 {
@@ -4115,7 +4191,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-02-25T11:15:52+00:00"
+=======
+            "time": "2022-01-02T09:55:41+00:00"
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
         },
         {
             "name": "symfony/finder",
@@ -5502,6 +5582,7 @@
         },
         {
             "name": "symfony/string",
+<<<<<<< HEAD
             "version": "v6.1.2",
             "source": {
                 "type": "git",
@@ -5512,6 +5593,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/string/zipball/1903f2879875280c5af944625e8246d81c2f0604",
                 "reference": "1903f2879875280c5af944625e8246d81c2f0604",
+=======
+            "version": "v6.0.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/string.git",
+                "reference": "1b3adf02a0fc814bd9118d7fd68a097a599ebc27"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/string/zipball/1b3adf02a0fc814bd9118d7fd68a097a599ebc27",
+                "reference": "1b3adf02a0fc814bd9118d7fd68a097a599ebc27",
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
                 "shasum": ""
             },
             "require": {
@@ -5567,7 +5660,11 @@
                 "utf8"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/string/tree/v6.1.2"
+=======
+                "source": "https://github.com/symfony/string/tree/v6.0.10"
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
             },
             "funding": [
                 {
@@ -5583,6 +5680,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-06-26T16:35:04+00:00"
         },
         {
@@ -5597,6 +5695,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/translation/zipball/b254416631615bc6fe49b0a67f18658827288147",
                 "reference": "b254416631615bc6fe49b0a67f18658827288147",
+=======
+            "time": "2022-06-26T16:34:50+00:00"
+        },
+        {
+            "name": "symfony/translation",
+            "version": "v6.0.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation.git",
+                "reference": "9ba011309943955a3807b8236c17cff3b88f67b6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/9ba011309943955a3807b8236c17cff3b88f67b6",
+                "reference": "9ba011309943955a3807b8236c17cff3b88f67b6",
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
                 "shasum": ""
             },
             "require": {
@@ -5663,7 +5777,11 @@
             "description": "Provides tools to internationalize your application",
             "homepage": "https://symfony.com",
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/translation/tree/v6.1.0"
+=======
+                "source": "https://github.com/symfony/translation/tree/v6.0.9"
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
             },
             "funding": [
                 {
@@ -5679,6 +5797,7 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-05-11T12:12:29+00:00"
         },
         {
@@ -5693,6 +5812,22 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/606be0f48e05116baef052f7f3abdb345c8e02cc",
                 "reference": "606be0f48e05116baef052f7f3abdb345c8e02cc",
+=======
+            "time": "2022-05-06T14:27:17+00:00"
+        },
+        {
+            "name": "symfony/translation-contracts",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/translation-contracts.git",
+                "reference": "acbfbb274e730e5a0236f619b6168d9dedb3e282"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/acbfbb274e730e5a0236f619b6168d9dedb3e282",
+                "reference": "acbfbb274e730e5a0236f619b6168d9dedb3e282",
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
                 "shasum": ""
             },
             "require": {
@@ -5744,7 +5879,11 @@
                 "standards"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/symfony/translation-contracts/tree/v3.1.1"
+=======
+                "source": "https://github.com/symfony/translation-contracts/tree/v3.0.2"
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
             },
             "funding": [
                 {
@@ -5760,7 +5899,11 @@
                     "type": "tidelift"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-06-27T17:24:16+00:00"
+=======
+            "time": "2022-06-27T17:10:44+00:00"
+>>>>>>> bf6c039d2df52d9e070f169172ca08cc5a4d1f61
         },
         {
             "name": "symfony/var-dumper",
@@ -8800,5 +8943,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }

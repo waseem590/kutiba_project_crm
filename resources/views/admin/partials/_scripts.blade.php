@@ -1,5 +1,6 @@
     <script src="{{asset('admin/js/jquery.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    {{-- <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script> --}}
     <script src="{{asset('admin/js/bootstrap.min.js')}}"></script>
     <script src="{{asset('admin/js/script.js')}}"></script>
     <script src="https://unpkg.com/feather-icons"></script>
@@ -13,9 +14,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
+    {{-- <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script> --}}
+
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
@@ -268,4 +269,4 @@
     {!! JsValidator::formRequest('App\Http\Requests\VisaCommentRequest', '#commend_form') !!}
     {!! JsValidator::formRequest('App\Http\Requests\AppAcceptedRequest', '#application_accepted_modal') !!}
     {!! JsValidator::formRequest('App\Http\Requests\AttachmentRequest', '#add_attachment') !!}
-   
+

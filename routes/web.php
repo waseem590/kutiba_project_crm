@@ -198,7 +198,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('visa',[StudentButtonController::class, 'store_visa'])->name('store.visa');
     Route::get('visa_list',[StudentButtonController::class, 'visa_list'])->name('visa.list');
     Route::get('view_visa/{id}',[StudentButtonController::class, 'view_visa'])->name('view.visa');
-    Route::get('edit_visa/{id}',[StudentButtonController::class, 'edit_visa'])->name('edit_visa');
+    // Route::get('edit_visa/{id}',[StudentButtonController::class, 'edit_visa'])->name('edit_visa');
     Route::delete('delete_visa/{id}',[StudentButtonController::class, 'delete_visa'])->name('delete_visa');
     Route::get('edit_visa/{id}',[StudentButtonController::class, 'edit_visa'])->name('edit_visa');
     Route::post('update_visa/{id}',[StudentButtonController::class, 'update_visa'])->name('update.visa');

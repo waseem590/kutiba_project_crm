@@ -79,7 +79,7 @@
         color: #000;
         border-top: 3px solid #f5981f;
     }
-    
+
     @media (max-width:1032px){
     .tab{
      margin: 4px 2px;
@@ -174,13 +174,13 @@
 
                                     </button>
                                     <div class="dropdown-menu dropdown status" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="1">Submitted</a>
-                                        <a class="dropdown-item" href="2">Approved</a>
-                                        <a class="dropdown-item" href="3">More Information Required</a>
-                                        <a class="dropdown-item" href="4">Information Provided</a>
+                                        <a class="dropdown-item select_status_submitted" href="1">Submitted</a>
+                                        <a class="dropdown-item select_status_approved" href="2">Approved</a>
+                                        <a class="dropdown-item select_status_more_info_reqired" href="3">More Information Required</a>
+                                        <a class="dropdown-item select_status_information_provided" href="4">Information Provided</a>
                                     </div>
                                 </div>
-                                <input type="hidden" value="{{$item->id ?? ''}}" class="app_id">                                
+                                <input type="hidden" value="{{$item->id ?? ''}}" class="app_id">
                             </td>
 
                         </tr>
@@ -251,7 +251,7 @@
                                 </div>
 
                                 @endrole
-                                
+
                             </td>
                         </tr>
 
@@ -379,7 +379,7 @@
                                                 <a class="dropdown-item" href="4">Information Provided</a>
                                             </div>
                                         </div>
-                                        <input type="hidden" value="{{$item->id ?? ''}}" class="app_id">                                
+                                        <input type="hidden" value="{{$item->id ?? ''}}" class="app_id">
                                     </td>
 
                                 </tr>
@@ -455,7 +455,7 @@
                                                 <a class="dropdown-item" href="4">Information Provided</a>
                                             </div>
                                         </div>
-                                        <input type="hidden" value="{{$item->id ?? ''}}" class="app_id">                                
+                                        <input type="hidden" value="{{$item->id ?? ''}}" class="app_id">
                                     </td>
 
                                 </tr>
@@ -531,7 +531,7 @@
                                                 <a class="dropdown-item" href="4">Information Provided</a>
                                             </div>
                                         </div>
-                                        <input type="hidden" value="{{$item->id ?? ''}}" class="app_id">                                
+                                        <input type="hidden" value="{{$item->id ?? ''}}" class="app_id">
                                     </td>
 
                                 </tr>
@@ -656,14 +656,14 @@
 <script>
     $(document).on('click', '.status a', function (e) {
         e.preventDefault();
-        
+
         var val = $(this).text();
         var row = $(this).closest('tr');
         var visa_id = row.find('.app_id').val();
         if (val == 'Approved') {
             $('#add_task').modal('show');
             $('#add_visa_approved_form').attr('action','/approved_status/'+visa_id);
-        } 
+        }
         else {
             row.find('.status_td').text(val);
             $.ajaxSetup({
@@ -684,6 +684,9 @@
                     toastr.success("Status Updated Successfully");
                 }
             });
+            $(document).ajaxStop(function(){
+                window.location.reload();
+            })
         }
     })
 
@@ -721,5 +724,14 @@
             status_complete(flag,id);
         }
     });
+
+    // $('.select_status_information_provided').on('click', function(){
+    //     var select_status_information_provided = $(this).text();
+    //     var select_status_information_provided_html = $(this).html();
+
+    //     console.log(select_status_information_provided);
+    //     console.log(select_status_information_provided_html);
+
+    // });
 </script>
 @endsection
