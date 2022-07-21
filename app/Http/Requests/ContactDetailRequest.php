@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class ContactDetailRequest extends FormRequest
 {
@@ -21,17 +22,29 @@ class ContactDetailRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
-            'email'        => ['required','email'],
-            // 'phone_number[]'     => 'required',
-            // 'number2'     => 'numeric',
-            'street_address'        => 'required',
-            'suburb'        => 'required',
-            'state'        => 'required',
-            'country'        => 'required',
-        ];
+        if ($request->address_details == 'offshore') {
+            return [
+                'email'        => ['required', 'email'],
+                // 'phone_number[]'     => 'required',
+                // 'number2'     => 'numeric',
+                // 'street_address'        => 'required',
+                // 'suburb'        => 'required',
+                // 'state'        => 'required',
+                // 'country'        => 'required',
+            ];
+        } else {
+            return [
+                'email'        => ['required', 'email'],
+                // 'phone_number[]'     => 'required',
+                // 'number2'     => 'numeric',
+                'street_address'        => 'required',
+                'suburb'        => 'required',
+                'state'        => 'required',
+                'country'        => 'required',
+            ];
+        }
     }
 
     public function messages()

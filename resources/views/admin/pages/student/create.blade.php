@@ -750,6 +750,20 @@ console.log(phone_number2);
             box.find("p").text("");
         }
     });
+    // radio add_detail change event
+    var contact_detail_form = $('#contact_detail_form').find('.tab-inner-label span');
+    $('input[type=radio][name=address_details]').on('change', function(){
+        var address_details = $(this).val();
+        if(address_details == 'onshore'){
+            $(contact_detail_form).removeClass('d-none');
+            console.log("Onshore");
+        } else {
+            $(contact_detail_form).addClass('d-none');
+            console.log(contact_detail_form);
+            console.log("offshore");
+        }
+    });
+
     // Add student tab js
     $(document).on("click", "#add_student_btn", function (e) {
         e.preventDefault();
