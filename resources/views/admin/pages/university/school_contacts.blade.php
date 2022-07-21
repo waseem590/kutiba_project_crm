@@ -28,6 +28,13 @@
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-4 custom_padding">
                     <div class="form-group">
+                        <label class="tab-inner-label" for="">Institution Name</label>
+                        <input type="text" name="institution" class="form-control select-inner-text" placeholder="e.g. Oxford" />
+                    </div>
+
+                </div>
+                <div class="col-md-6 col-lg-6 col-xl-4 custom_padding">
+                    <div class="form-group">
                         <label class="tab-inner-label" for="">Email Address</label>
                         <input type="email" name="email" class="form-control select-inner-text" placeholder="" />
                     </div>

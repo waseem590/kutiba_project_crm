@@ -13,9 +13,9 @@
                 <tr>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">User Name</th>
                         <th scope="col">Portal Name</th>
                         <th scope="col">Portal Link</th>
+                        <th scope="col">User Name</th>
                         <th scope="col">Password</th>
                         @can('show_login_detail')
                             <th scope="col" class="custem-text-center">Action</th>
@@ -29,9 +29,9 @@
                     <th scope="row" class="w-60">
                         {{$loop->iteration}}
                     </th>
-                    <td>{{$login_detail->user_name ?? ''}}</td>
                     <td>{{$login_detail->portal_name}}</td>
                     <td><a href="{{$login_detail->portal_link}}" target="_blank">{{$login_detail->portal_link}}</a></td>
+                    <td>{{$login_detail->user_name ?? ''}}</td>
                     <td>{{$login_detail->show_password}}</td>
                     @can('show_login_detail')
                     <td class="custem-text-center std-list-icon">

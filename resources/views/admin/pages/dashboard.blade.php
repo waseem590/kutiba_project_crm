@@ -411,7 +411,7 @@ width: 100%;
                         <div class="container_clock">
                             <div class="box-clock">
                                 <?php $time = $clock->timezone->timezone;
-                                     $session = "AM";
+                                     $session = "PM";
                                      $current_time = \Carbon\Carbon::now();
                                      $covert_to_time = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s',$current_time);
 
@@ -427,7 +427,7 @@ width: 100%;
                             
                                     if ($h > 12) {
                                         $h = $h - 12;
-                                        $session = "PM";
+                                        $session = "AM";
                                         {{dd($h);}}
                                     }
                             
@@ -503,6 +503,7 @@ width: 100%;
                 </div>
             </div>
         </div>
+        @can('user_tab')
         <div class="col-md-6 col-lg-3">
             <div class="card card_margin custom-cards custom-card-3 text-white">
                 <div class="card-body d-flex justify-content-between">
@@ -517,6 +518,7 @@ width: 100%;
                 </div>
             </div>
         </div>
+        @endcan
     </div>
 </section>
 <section class="content-area mt-2">

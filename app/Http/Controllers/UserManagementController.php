@@ -562,7 +562,7 @@ class UserManagementController extends Controller
             ]);
             parent::successMessage("Record Add Successfully");
             \LogActivity::addToLog('add appliction of a student, name:' . $request->user_id);
-            return redirect()->route('view_application', $insertedId);
+            return redirect()->back();
         } catch (Exception $e) {
             parent::errorMessage("Record Not Add !Something else");
         }

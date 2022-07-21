@@ -258,6 +258,7 @@
     {!! JsValidator::formRequest('App\Http\Requests\DropdownTypeRequest', '#add_resource_type') !!}
     {!! JsValidator::formRequest('App\Http\Requests\SchoolContactRequest', '#school_contact_form') !!}
     {!! JsValidator::formRequest('App\Http\Requests\UnivesityRequest', '#add_university') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\UnivesityRequest', '#update_university') !!}
     {!! JsValidator::formRequest('App\Http\Requests\AddApplicationRequest', '#add_application_form') !!}
     {!! JsValidator::formRequest('App\Http\Requests\AccommodationRequest', '#accommodation_form') !!}
     {!! JsValidator::formRequest('App\Http\Requests\LoginDetailRequest', '#login_detail_form') !!}
