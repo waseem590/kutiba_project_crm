@@ -277,6 +277,8 @@
                                         @if(isset($user->info->visa) && $user->info->visa === 'yes') ? checked : 'yes'  @endif
                                     />
                                     <label for="test1">Yes</label>
+
+
                                 </span>
                                 <span>
                                     <input
@@ -288,7 +290,9 @@
                                     />
                                     <label for="test2">No</label>
                                 </span>
+                                <button type="button" class="btn-close" aria-label="Close"></button>
                             </div>
+                            
                         </div>
                     </div>
 
@@ -590,6 +594,34 @@
                         @endif
                         </select>
                     </div>
+
+                    <div class="form-group col-md-12 mt-3" style="margin-bottom:-21px">
+                        <label
+                            for="exampleFormControlSelect3"
+                            class="tab-inner-label"
+                            >Partner</label
+                        >
+
+                        <div class="form-group-custom">
+                            <input type="checkbox" class="partner_checkbox" id="partner" />
+                            <label for="partner">Yes</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4 mt-3 partner_input no_display">
+                        <select
+                            class="form-control select-inner-text"
+                            id="exampleFormControlSelect1"
+                            name="partner"
+                        >
+                            <option disabled selected value>Select Partner</option>
+                            @if(!empty($dropdown[17]->dropdownType))
+                            @foreach($dropdown[17]->dropdownType as $val)
+                                <option value="{{ $val->id }}">{{ $val->name }}</option>
+                            @endforeach
+                        @endif
+                        </select>
+                    </div>
                 </div>
 
                 <div class="d-flex justify-content-between student-form-action">
@@ -606,6 +638,31 @@
             </form>
         </div>
     </div>
+<!-- Add Matched Modal -->
+<div class="modal fade" id="match" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Student Already Exist</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                 
+            </div>
+            <div class="modal-body">
+            <table id="mm-std-List" class="table table-bordered  student_list_table">
+            <thead class="s-list-thead">
+                <tr>
+                    <th scope="col">Surname</th>
+                    <th scope="col">DOB</th>
+                </tr>
+            </thead>
+            <tbody id="matched_student"></tbody>
+        </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Add Attechment Model -->
 </div>
 <script>
     var val = "<?php echo $user->otherInfo->cohort_name ?? ''; ?>";
@@ -617,6 +674,13 @@
             $('body').find('.cohort_input').removeClass('no_display');
         }else{
             $('body').find('.cohort_input').addClass('no_display');
+        }
+    });
+    $('.partner_checkbox').change(function () {
+        if (this.checked) {
+            $('body').find('.partner_input').removeClass('no_display');
+        }else{
+            $('body').find('.partner_input').addClass('no_display');
         }
     });
     $('#test4').change(function () {
@@ -811,39 +875,40 @@ console.log(phone_number2);
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
         });
-        $.ajax({
+     var jqXHR= $.ajax({
+            url: "{{ route('studentinformation') }}",
+            type: "POST",
             data:
                 $("#student_information_form").serialize() +
                 "&forEdit=" +
                 $(".forEdit").val(),
-            url: "{{ route('studentinformation') }}",
-            type: "POST",
-            dataType: "json",
             beforeSend: function(){
                 $('.loader-wrapper').css("display","flex");
             },
-            success: function (data) {
-                $('body').find('.studentInfoTab').val('true');
-                // if(data === 'no'){
-                //     toastr.error("Kindly Start From Step One");
-                // }else{
-                    // toastr.success("Add Student Information Successfully");
+            success: function (response, status) {
+                if(jqXHR.getResponseHeader('content-type').indexOf('text/html') >= 0 ) {
+                    $('#matched_student').html(response);
+                    $('#match').modal('show');
+                }
+                else{
+                    $('body').find('.studentInfoTab').val('true');
                     $("body").find("[href='#tabs-2']").removeClass("active");
                     $("body").find("#tabs-2").removeClass("active");
                     $("body").find("[href='#tabs-3']").addClass("active");
                     $("body").find("#tabs-3").addClass("active");
-                // }
-
-            },
-            error: function (responce) {
-                $.each(responce.responseJSON.errors, function (index, el) {
-                    var field = $("body").find("[name='" + index + "']");
-                    field.addClass("error");
-                    var box = field.closest("div");
-                    box.find(".invalid-feedback").css("display", "block");
-                    box.find("p").text(el[0]);
-                });
-            },
+                }
+                },
+                
+            // },
+            // error: function (responce) {
+            //     $.each(responce.responseJSON.errors, function (index, el) {
+            //         var field = $("body").find("[name='" + index + "']");
+            //         field.addClass("error");
+            //         var box = field.closest("div");
+            //         box.find(".invalid-feedback").css("display", "block");
+            //         box.find("p").text(el[0]);
+            //     });
+            // },
             complete: function(){
                 $('.loader-wrapper').css("display","none");
             }
@@ -944,6 +1009,9 @@ console.log(phone_number2);
             }
         });
     });
+    $('.btn-close').on('click',function(){
+        $('input:radio').prop('checked',false);        
+    })
 </script>
 
 @endsection

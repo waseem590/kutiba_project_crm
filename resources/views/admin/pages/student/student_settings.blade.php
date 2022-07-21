@@ -271,12 +271,14 @@
             if ($(e.target).attr('class') != "thVal") {
                 e.stopPropagation();
                 var currentEle = $(this);
+                console.log("above",currentEle);
                 var value = $(this).html().trim();
                 console.log(value);
                 var id = currentEle.attr('id');
                 updateVal(currentEle, value, id);
             }
         });
+        
     });
 
     function updateVal(currentEle, value, id) {
@@ -443,8 +445,14 @@
                 updateValue(currentEle, value, id);
             }
         });
+        
     });
-
+    $(document).on('click','.edit_resource_type',function(){
+                var id = $(this).attr('id');
+                var currentEle = $('.resource_type_td'+id);
+                var value = $('.resource_type_td'+id).html();
+                updateValue(currentEle, value, id);
+    })
     function updateValue(currentEle, value, id) {
         $(document).off('click');
         $(currentEle).html('<input class="typeVal form-control" type="text" value="' + value + '" />');

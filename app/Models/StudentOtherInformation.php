@@ -15,5 +15,6 @@ class StudentOtherInformation extends Model
         'sponsor_name',
         'student_source',
         'cohort_name',
+        'partner',
     ];
 }

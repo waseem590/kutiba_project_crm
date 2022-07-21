@@ -17,5 +17,6 @@ class SchoolContact extends Model
         'contact_no2',
         'notes',
         'dob',
+        'institution',
     ];
 }

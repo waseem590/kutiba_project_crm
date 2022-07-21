@@ -21,6 +21,7 @@ class CreateStudentOtherInformationTable extends Migration
             $table->string('sponsor_name')->nullable();
             $table->string('student_source')->nullable();
             $table->string('cohort_name')->nullable();
+            $table->string('partner')->nullable();
             $table->timestamps();
         });
     }

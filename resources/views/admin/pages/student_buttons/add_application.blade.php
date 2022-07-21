@@ -5,7 +5,7 @@
 @section('content')
 <div class="add-students-section">
     <div class="d-flex justify-content-between mr-4">
-       <h1 class="page-heading">Add Application</h1>
+        <h1 class="page-heading">Add Application</h1>
         <div class="list-std-btns">
             <a class="edit-bg" href="{{route('application',$student_id)}}">Back</a>
         </div>

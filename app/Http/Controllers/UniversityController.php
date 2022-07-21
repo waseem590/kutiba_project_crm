@@ -11,6 +11,7 @@ use App\Models\University;
 use App\Models\LoginDetail;
 use App\Models\User;
 use Auth;
+use Facade\FlareClient\Stacktrace\File;
 use Session;
 
 class UniversityController extends Controller
@@ -62,6 +63,7 @@ class UniversityController extends Controller
             'contact_no2' => $request->phone_number2['full'],
             'dob' => $request->dob,
             'notes' => $request->notes,
+            'institution' => $request->institution,
         ]);
         parent::successMessage("Record Add Successfully");
         \LogActivity::addToLog('add school contact which is name:'.$request->job_title);
@@ -212,5 +214,100 @@ class UniversityController extends Controller
         $school_contact = SchoolContact::find($id);
         return view('admin.pages.university.show_school_contact',compact('school_contact'));
 
+    }
+    public function delete_university($id){
+        $university = University::find($id);
+        $university->delete();
+        return redirect()->back();
+    }
+    public function edit_find_university(Request $request){
+        $university = University::find($request->id);
+        return response()->json($university);
+    }
+    public function update_university(Request $request,$id){
+        $input = $request->all();
+        $university = University::find($id);
+        $university->en_title = $input['en_title'];
+        $university->ar_title = $input['ar_title'];
+        $university->web_link = $input['web_link'];
+        if(File::exists($university->uni_file)) {
+            File::delete($university->uni_file);
+        }
+        if(File::exists($university->doc_file)) {
+            File::delete($university->doc_file);
+        }
+        if(File::exists($university->ppt_file)) {
+            File::delete($university->ppt_file);
+        }
+        if(File::exists($university->exl_file)) {
+            File::delete($university->exl_file);
+        }
+        $image_uni = $request->file('uni_file');
+        // return $image_uni;
+        if($image_uni){
+            $file_fullname = $image_uni->getClientOriginalName();
+            $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
+            $file_extension = $image_uni->getClientOriginalExtension();
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
+            $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
+            $image_uni->storeAs('/university/images/',$file_namefor_db,'public');
+            $pic = url('/storage/university/images/'.$file_namefor_db);
+            $university->uni_file = $pic;
+        }
+        $doc_file = $request->file('doc_file');
+        // return $image;
+        if($doc_file){
+            $file_fullname = $doc_file->getClientOriginalName();
+            $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
+            $file_extension = $doc_file->getClientOriginalExtension();
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
+            $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
+            $doc_file->storeAs('university/word' ,$file_namefor_db,'public');
+            $pic = url('storage/university/word/' . $file_namefor_db);
+            $university->doc_file = $pic;
+        }
+        $exl_file = $request->file('exl_file');
+        // return $image;
+        if($exl_file){
+            $file_fullname = $exl_file->getClientOriginalName();
+            $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
+            $file_extension = $exl_file->getClientOriginalExtension();
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
+            $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
+            $exl_file->storeAs('university/excel' ,$file_namefor_db,'public');
+            $pic = url('storage/university/excel/' . $file_namefor_db);
+            $university->exl_file = $pic;
+        }
+        $ppt_file = $request->file('ppt_file');
+        // return $image;
+        if($ppt_file){
+            $file_fullname = $ppt_file->getClientOriginalName();
+            $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
+            $file_extension = $ppt_file->getClientOriginalExtension();
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
+            $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
+            $ppt_file->storeAs('university/powerpoint' ,$file_namefor_db,'public');
+            $pic = url('storage/university/powerpoint/' . $file_namefor_db);
+            $university->exl_file = $pic;
+        }
+        $university->english_summernote =$input['english_summernote'];
+        $university->arabic_summernote =$input['arabic_summernote'];
+        $university->user_id =Auth::user()->id;
+        $university->save();
+        parent::successMessage("Add University Successfully");
+        \LogActivity::addToLog('Add University which is name:'.$input['en_title']);
+        return redirect()->back();
     }
 }

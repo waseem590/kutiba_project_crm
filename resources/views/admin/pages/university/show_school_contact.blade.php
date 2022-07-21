@@ -47,6 +47,12 @@
                 <p>{{$school_contact->email}}</p>
             </div>
             <div class="col-xl-3 col-4">
+                <h3>Institution Name:</h3>
+            </div>
+            <div class="col-xl-3 col-8">
+                <p>{{$school_contact->institution}}</p>
+            </div>
+            <div class="col-xl-3 col-4">
                 <h3>Contact No. 1:</h3>
             </div>
             <div class="col-xl-3 col-8">

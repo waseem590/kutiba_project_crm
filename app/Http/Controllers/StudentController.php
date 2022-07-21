@@ -145,9 +145,12 @@ class StudentController extends Controller
         $comments = $student->comments;
         // dd($student->info->name);
         $admission_officer = User::role('Admissions')->get();
+
+        $dropdown = Dropdown::with('dropdownType')->get();
+        $applications = Application::applicationRelations()->where('add_students_id', $id)->get();
         if(!empty($student->info->name)){
         }
-        return view('admin.pages.student.showstudent', compact('comments', 'user','dropdown','countries','counsellor','admission_officer'));
+        return view('admin.pages.student.showstudent', compact('comments', 'user','dropdown','countries','counsellor','admission_officer','applications','dropdown','id'));
     }
 
     /**
@@ -251,52 +254,73 @@ class StudentController extends Controller
         $name = $request->surname." ".$request->l_name;
         // for edit student data
         if($request->forEdit == 'true'){
+            dd("edit");
             $query = StudentInformation::find($request->StudentInfo_id);
-            $query->update([
-                // 'surname' => $request->surname,
-                'name' => $name,
-                'dob' => $request->dob,
-                'gender' => $request->gender,
-                'nationality' => $request->nationality,
-                'visa' => $request->visa,
-                'note' => $request->note,
-            ]);
-            \LogActivity::addToLog('update student information, name:'.$name);
-            return response()->json($query);
+                $query->update([
+                    // 'surname' => $request->surname,
+                    'surname' => $request->surname,
+                    'name' => $name,
+                    'dob' => $request->dob,
+                    'gender' => $request->gender,
+                    'nationality' => $request->nationality,
+                    'visa' => $request->visa,
+                    'note' => $request->note,
+                ]);
+                \LogActivity::addToLog('update student information, name:'.$name);
+                return response()->json($query);
+
         }
+        
         // for add student data
         // if(empty(Session::get('lastInsertedId'))){
         //     return response()->json('no');
         // }
         $id = Session::get('lastInsertedId');
         if(StudentInformation::where('add_students_id',$id)->first()){
+            // dd("id");
             $query = StudentInformation::where('add_students_id',$id)->first();
-            $query->update([
-                // 'surname' => $request->surname,
-                'name' => $name,
-                'dob' => $request->dob,
-                'gender' => $request->gender,
-                'nationality' => $request->nationality,
-                'visa' => $request->visa,
-                'note' => $request->note,
-            ]);
-            \LogActivity::addToLog('update student information, name:'.$name);
-            return response()->json($query);
-        }else{
-            $query = StudentInformation::create([
-                'add_students_id' => $id,
-                // 'surname' => $request->surname,
-                'name' => $name,
-                'dob' => $request->dob,
-                'gender' => $request->gender,
-                'nationality' => $request->nationality,
-                'visa' => $request->visa,
-                'note' => $request->note,
+                $query->update([
+                    'surname' => $request->surname,
+                    'name' => $name,
+                    'dob' => $request->dob,
+                    'gender' => $request->gender,
+                    'nationality' => $request->nationality,
+                    'visa' => $request->visa,
+                    'note' => $request->note,
+                ]);
+                
+                \LogActivity::addToLog('update student information, name:'.$name);
+                return response()->json($query);
 
-            ]);
-            Session::put('stuInfoTab', "true");
-            \LogActivity::addToLog('update student information tab, name:'.$name);
-            return response()->json('true');
+            
+        }else{
+            $all_students = StudentInformation::all();
+            $student = [];
+            foreach($all_students as $stu){
+                if($stu->surname == $request->surname && $stu->dob == $request->dob){
+                    // $id = Session::forget('lastInsertedId');
+                    $student[] = $stu;
+                }
+            }
+            
+            if(!empty($student)){
+                return view('admin.pages.student.append_match',compact('student'))->render();
+            }
+            else{
+                $query = StudentInformation::create([
+                    'add_students_id' => $id,
+                    'surname' => $request->surname,
+                    'name' => $name,
+                    'dob' => $request->dob,
+                    'gender' => $request->gender,
+                    'nationality' => $request->nationality,
+                    'visa' => $request->visa,
+                    'note' => $request->note,
+                ]);
+                Session::put('stuInfoTab', "true");
+                \LogActivity::addToLog('update student information tab, name:'.$name);
+                return response()->json('true');
+            }
         }
     }
 
@@ -389,6 +413,7 @@ class StudentController extends Controller
                 'sponsor_name' => $request->sponsor_name,
                 'student_source' => $request->student_source,
                 'cohort_name' => $request->cohort_name,
+                'partner' => $request->partner,
             ]);
             $student = AddStudent::find($query->add_students_id);
 
@@ -407,6 +432,7 @@ class StudentController extends Controller
                 'sponsor_name' => $request->sponsor_name,
                 'student_source' => $request->student_source,
                 'cohort_name' => $request->cohort_name,
+                'partner' => $request->partner,
             ]);
             $student = AddStudent::find($query->add_students_id);
             \LogActivity::addToLog('update student other information, name:'.$student->info->name ?? '');
@@ -419,6 +445,7 @@ class StudentController extends Controller
                 'sponsor_name' => $request->sponsor_name,
                 'student_source' => $request->student_source,
                 'cohort_name' => $request->cohort_name,
+                'partner' => $request->partner,
             ]);
             Session::forget('lastInsertedId');
             Session::forget('stuInfoTab');

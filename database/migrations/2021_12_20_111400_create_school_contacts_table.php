@@ -22,6 +22,7 @@ class CreateSchoolContactsTable extends Migration
             $table->string('contact_no2')->nullable();
             $table->string('dob')->nullable();
             $table->string('notes');
+            $table->string('institution');
             $table->timestamps();
         });
     }
