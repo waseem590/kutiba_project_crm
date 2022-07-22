@@ -1,5 +1,5 @@
 <!-- sms model -->
-<div class="modal social-custom-modals fade" id="application-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+<div class="modal social-custom-modals fade" id="edit-application-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -11,43 +11,42 @@
             </div>
             <div class="modal-body">
                 <div class="">
-                    <form class="add-application-form" action="{{ route('save_application') }}" method="post"
+                    <form class="add-application-form" action="{{ route('update_application') }}" method="post"
                         id="add_application_form">
                         @csrf
                         <div class="row">
                             <div class="form-group col-sm-6">
                                 <div class="custom-padd-right">
-                                    <label for="exampleFormControlSelect1" class="tab-inner-label">Study
+                                    <label for="study-destination-update" class="tab-inner-label">Study
                                         Destination</label>
-                                    <select name="destination" class="form-control1 form-control select-inner-text"
-                                        id="exampleFormControlSelect1">
-                                        <option disabled selected value>
+                                    <select name="destination" class="form-control select-inner-text"
+                                        id="study-destination-update">
+                                        <option disabled value>
                                             Select Study Destination
                                         </option>
-                                        @if (!empty($dropdown[5]->dropdownType))
+                                        {{-- @if (!empty($dropdown[5]->dropdownType))
                                             @foreach ($dropdown[5]->dropdownType as $val)
-                                                <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                                <option value="{{ $val->id }}"
+                                                    @if (isset($applications->study_dest) && $applications->study_dest == $val->id) ? selected @endif>
+                                                    {{ $val->name }}</option>
                                             @endforeach
-                                        @endif
+                                        @endif --}}
 
                                     </select>
-                                    <input type="hidden" name="user_id" value="{{ $id ?? '' }}">
+                                    <input type="hidden" id="applications_id" name="applications_id">
+                                    <input type="hidden" id="special_education_id" name="special_education_id">
+                                    <input type="hidden" id="education_id" name="education_id">
                                 </div>
                             </div>
                             <div class="form-group col-sm-6 custom-padd">
                                 <div class="custom-padd-left">
-                                    <label for="exampleFormControlSelect1" class="tab-inner-label">Institution
+                                    <label for="institute-name-update" class="tab-inner-label">Institution
                                         Name</label>
                                     <select name="institute_name" class="form-control1 form-control select-inner-text"
-                                        id="exampleFormControlSelect1">
-                                        <option disabled selected value>
+                                        id="institute-name-update">
+                                        <option disabled value>
                                             Select Institute Name
                                         </option>
-                                        @if (!empty($dropdown[6]->dropdownType))
-                                            @foreach ($dropdown[6]->dropdownType as $val)
-                                                <option value="{{ $val->id }}">{{ $val->name }}</option>
-                                            @endforeach
-                                        @endif
 
                                     </select>
                                 </div>
@@ -58,11 +57,6 @@
                                 <div class="custom-checkbox-1">
                                     <label class="application_type" for="app">Application Type</label>
                                 </div>
-
-                                <!-- <div class="form-group-custom custom-checkbox-1 ml-3">
-                                    <input class="checkbox2" name="eng" type="checkbox" id="eng" />
-                                    <label for="eng">English</label>
-                                </div> -->
 
                             </div>
                             <div class="form-group col-md-12 d-flex" style="position: relative; top: 20px;">
@@ -260,14 +254,14 @@
                         </div>
                         <div class="row">
                             <div class="form-group col-sm-6 ">
-                                <div class="custom-padd-right">
+                                <div class="custom-padd-right" id="bachelor-div">
                                     <input class="mm-custom-input checkbox2" type="checkbox" id="c10">
                                     <label class="form-group-custom2 custom-checkbox-1"
                                         for="c10">Bechelor</label>
                                     <div class="displayNone">
                                         <input type="text" name="bechelor_deg_name"
                                             class="form-control1 form-control select-inner-text"
-                                            placeholder="Course Name">
+                                            placeholder="Course Name" id="bechelor_deg_name">
                                     </div>
                                 </div>
                             </div>
@@ -350,12 +344,12 @@
 
                         <div class="row">
                             <div class="form-group col-sm-6 ">
-                                <div class="custom-padd-right">
+                                <div class="custom-padd-right" id="masters_degree-div">
                                     <input class="mm-custom-input checkbox2" type="checkbox" id="c13">
                                     <label class="form-group-custom2 custom-checkbox-1" for="c13">Master's
                                         Degree</label>
                                     <div class="displayNone">
-                                        <input type="text" name="master_deg_name"
+                                        <input type="text" name="master_deg_name" id="masters_degree_name"
                                             class="form-control1 form-control select-inner-text"
                                             placeholder="Course Name">
                                     </div>
@@ -409,10 +403,6 @@
 
                             </div>
                         </div>
-
-
-
-
 
                         <div class="row">
                             <div class="form-group col-sm-6 custom-padd  calender-relative">

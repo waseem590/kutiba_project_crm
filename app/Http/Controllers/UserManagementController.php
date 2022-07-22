@@ -41,7 +41,7 @@ class UserManagementController extends Controller
     public function users(Request $request)
     {
 
-       
+
         if ($request->ajax()) {
 
             if(Auth::user()->hasRole('Master User')){
@@ -67,12 +67,12 @@ class UserManagementController extends Controller
                 })
                 ->rawColumns(['action', 'type'])
                 ->make(true);
-        
-        
+
+
             }
             else{
                 $data = User::where('id',Auth::user()->id)->get();
-               
+
                 return Datatables::of($data)
                 ->addindexColumn()
                 ->addColumn('type', function (User $data) {
@@ -89,10 +89,10 @@ class UserManagementController extends Controller
                     // $btn1 = '<a href="javascript:void(0)" data-id="'.$data->id.'" data-bs-toggle="modal"
                     // data-bs-target="#clock_modal" class="clock"><img
                     // src="/images/clock-icon.png" alt="clock" class="img-fluid" height="20px" width="22px" /></a>';
-                    
+
                         $btn2 = '<a href="' . route('user.edit', $data->id) . '" data-id="' . $data->id . '"><img
                     src="/admin/images/edit-std.png" alt="edit-std" class="img-fluid" /></a>';
-                    
+
                     if(Auth::user()->hasRole('Master User')){
                     $btn3 = '<a href="javascript:void(0)" data-id="' . $data->id . '" onclick="deleteRecord(' . $data->id . ',/delete/)"><img
                     src="/admin/images/list-delet-std.png" alt="delete-std" class="img-fluid" /></a>';
@@ -104,7 +104,7 @@ class UserManagementController extends Controller
                 ->make(true);
             }
         }
-            
+
         return view('admin.users.users');
     }
 
@@ -382,11 +382,15 @@ class UserManagementController extends Controller
         return view('admin.pages.student_buttons.add_application', compact('id', 'dropdown','student_id'));
     }
 
-    public function edit_application($id)
+    public function edit_application(Request $request)
     {
         $dropdown = Dropdown::with('dropdownType')->get();
-        $applications = Application::applicationRelations()->where('id', $id)->first();
-        return view('admin.pages.student_buttons.edit_application', compact('applications', 'dropdown'));
+        $applications = Application::applicationRelations()->where('id', $request->id)->first();
+        return response()->json([
+            'dropdown' => $dropdown,
+            'applications' => $applications,
+        ]);
+        // return view('admin.pages.student_buttons.edit_application', compact('applications', 'dropdown'));
     }
     public function application($id)
     {
@@ -540,7 +544,7 @@ class UserManagementController extends Controller
                 'foundation' => $request->foundation_date,
                 'associate_degree' => $request->associate_deg_date,
             ]);
-            
+
             Education::create([
                 'applications_id' => $insertedId,
                 'diploma' => $request->diploma_name,
@@ -610,7 +614,8 @@ class UserManagementController extends Controller
             ]);
             parent::successMessage("Record Updated Successfully");
             \LogActivity::addToLog('update appliction of a student, name:' . $request->applications_id);
-            return redirect()->route('view_application', $request->applications_id);
+            return redirect()->back();
+            // return redirect()->route('view_application', $request->applications_id);
         } catch (Exception $e) {
             parent::errorMessage("Record Not Update !Something else");
         }
