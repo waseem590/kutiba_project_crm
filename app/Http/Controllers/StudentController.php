@@ -148,9 +148,11 @@ class StudentController extends Controller
 
         $dropdown = Dropdown::with('dropdownType')->get();
         $applications = Application::applicationRelations()->where('add_students_id', $id)->get();
+        $trashed = Application::applicationRelations()->onlyTrashed()->where('add_students_id', $id)->get();
+        $tasks = Task::where('add_students_id', $id)->get();
         if(!empty($student->info->name)){
         }
-        return view('admin.pages.student.showstudent', compact('comments', 'user','dropdown','countries','counsellor','admission_officer','applications','dropdown','id'));
+        return view('admin.pages.student.showstudent', compact('comments', 'user','dropdown','countries','counsellor','admission_officer','tasks','applications','dropdown','id', 'trashed'));
     }
 
     /**
@@ -270,7 +272,7 @@ class StudentController extends Controller
                 return response()->json($query);
 
         }
-        
+
         // for add student data
         // if(empty(Session::get('lastInsertedId'))){
         //     return response()->json('no');
@@ -288,11 +290,11 @@ class StudentController extends Controller
                     'visa' => $request->visa,
                     'note' => $request->note,
                 ]);
-                
+
                 \LogActivity::addToLog('update student information, name:'.$name);
                 return response()->json($query);
 
-            
+
         }else{
             $all_students = StudentInformation::all();
             $student = [];
@@ -302,7 +304,7 @@ class StudentController extends Controller
                     $student[] = $stu;
                 }
             }
-            
+
             if(!empty($student)){
                 return view('admin.pages.student.append_match',compact('student'))->render();
             }
@@ -492,7 +494,7 @@ class StudentController extends Controller
     //         foreach($students as $val){
     //             $student_id[] = $val->student_id;
     //         }
-    //         $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->get(); 
+    //         $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->get();
     //         foreach($ownStudents as $val){
     //             $student_id[] = $val->id;
     //         }
@@ -506,7 +508,7 @@ class StudentController extends Controller
     //         foreach($showStudentsToAdmissions as $val){
     //             $student_id[] = $val->add_students_id;
     //         }
-    //         $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa _stu',false)->latest()->get(); 
+    //         $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa _stu',false)->latest()->get();
     //         foreach($ownStudents as $val){
     //             $student_id[] = $val->id;
     //         }
@@ -526,12 +528,12 @@ class StudentController extends Controller
     //         foreach($studentWhoSubmitAppli as $val){
     //             $student_id[] = $val->add_students_id;
     //         }
-            
+
     //         $studentWhoSubmitAppli = Application::whereIn('status', ['Submitted', 'Acceptance sent', 'Acceptance Information provided', 'Information Provided'])->latest()->get();
     //         foreach($studentWhoSubmitAppli as $val){
     //             $student_id[] = $val->add_students_id;
     //         }
-    //         $ownStudents= AddStudent::where('users_id',auth()->user()->id)->get(); 
+    //         $ownStudents= AddStudent::where('users_id',auth()->user()->id)->get();
     //         foreach($ownStudents as $val){
     //             $student_id[] = $val->id;
     //         }
@@ -545,7 +547,7 @@ class StudentController extends Controller
         //     $currentDate = Carbon::now()->toDateTimeString();
 
         //     $showStudentsToCounsellor = AddStudentDropdownType::whereBetween('course_start_date',[$currentDate,$aboveTwoMonthDate])->where('course_complete', 'Complete')->latest()->get();
-            
+
         //     $showStudentsToFinanceManager = AddStudentDropdownType::where('course_accepted','Accepted')->where('course_complete', 'Complete')->latest()->get();
         //     $student_id = [];
         //     $finance_student_id = [];
@@ -628,7 +630,7 @@ class StudentController extends Controller
         //     foreach($taskStudents as $val){
         //         $student_id[] = $val->student_id;
         //     }
-        //     $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->get(); 
+        //     $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->get();
         //     foreach($ownStudents as $val){
         //         $student_id[] = $val->id;
         //     }
@@ -651,7 +653,7 @@ class StudentController extends Controller
             $currentDate = Carbon::now()->toDateTimeString();
 
             $showStudentsToCounsellor = AddStudentDropdownType::whereBetween('course_start_date',[$currentDate,$aboveTwoMonthDate])->where('course_complete', 'Complete')->latest()->get();
-            
+
             $showStudentsToFinanceManager = AddStudentDropdownType::where('course_accepted','Accepted')->where('course_complete', 'Complete')->latest()->get();
             $student_id = [];
             $finance_student_id = [];
