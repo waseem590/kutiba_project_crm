@@ -504,6 +504,7 @@ class UserManagementController extends Controller
     {
         $dropdown = Dropdown::with('dropdownType')->get();
         $applications = Application::applicationRelations()->where('id', $id)->first();
+        // $trashed = Application::applicationRelations()->onlyTrashed()->where('id', $id)->first();
 
         // \LogActivity::addToLog('View Application: '.$id);
         return view('admin.pages.student_buttons.view_application', compact('applications', 'dropdown'));
@@ -516,7 +517,8 @@ class UserManagementController extends Controller
         Application::where('id', $id)->delete();
         parent::successMessage("Record Deleted Successfully");
         \LogActivity::addToLog('Delete Application: '.$id);
-        return redirect()->route('application', $user_id);
+        return redirect()->back();
+        // return redirect()->route('application', $user_id);
     }
     public function user_logs()
     {

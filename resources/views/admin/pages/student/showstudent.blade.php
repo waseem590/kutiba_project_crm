@@ -115,11 +115,11 @@
             <div class="std-detail_list float-right">
 
                 <!-- <a class="std-detail_btns white-bg" href="https://api.whatsapp.com/send?phone={{ $user->contact->contact_number ?? '' }}" target="_blank" title="Whatsapp"> <i class="fab fa-whatsapp"></i>
-                                        &nbsp;<span>Whatsapp</span> </a> -->
-                <label class="switch" id="switch-div">
+                                                &nbsp;<span>Whatsapp</span> </a> -->
+                {{-- <label class="switch" id="switch-div">
                     <input type="checkbox" title="toggle to show/hide application form">
                     <span class="slider round"></span>
-                </label>
+                </label> --}}
                 <a class="std-detail_btns white-bg sms" href="{{ $user->info->name ?? '' }}" title="SMS"
                     data-bs-toggle="modal" data-bs-target="#sms-modal" data-id="{{ $user->id }}"><i
                         class="fas fa-comment"></i>
@@ -142,21 +142,22 @@
                     href="@if ($user->role_admission) mailto:{{ $user->role_admission['email'] }}?subject={{ $user->id }}-{{ $user->info->surname }} {{ $user->info->name }} @else # @endif"
                     tiltle="admission officer"><i class="fas fa-envelope"></i> &nbsp;<span>Admission</span></a>
 
-                @can('add application')
-                    <a class="std-detail_btns white-bg" href="{{ route('application', $user->id) }}" title="Add Application" id="add_application" data-id="{{ $user->id }}"> <i
-                            class="fas fa-plus-circle"></i> &nbsp;<span>Application</span> </a>
-                @endcan
+                {{-- @can('add application')
+                    <a class="std-detail_btns white-bg" href="{{ route('application', $user->id) }}" title="Add Application"
+                        id="add_application" data-id="{{ $user->id }}"> <i class="fas fa-plus-circle"></i>
+                        &nbsp;<span>Application</span> </a>
+                @endcan --}}
                 <!-- <a class="std-detail_btns gray-bg" href="#" title="Status Application"><i class="fas fa-list-alt"></i> &nbsp;<span>Status</span></a> -->
                 <!-- <a class="std-detail_btns blue-bg" href="{{ route('visa.list', $user->id) }}" title="Add Visa"><i class="fas fa-plus-circle"></i>  &nbsp;Visa</a> -->
                 <a class="std-detail_btns white-bg" href="{{ route('accomodation', $user->id) }}"
                     title="Accommodation">Accommodation</a>
-                <a class="std-detail_btns white-bg" href="{{ route('task', $user->id) }}"> &nbsp;New Task</a>
+                <a class="std-detail_btns white-bg" href="#" data-bs-toggle="modal" data-bs-target="#add_task"> &nbsp;New Task</a>
                 <!-- <a class="std-detail_btns yellow-bg" href="{{ route('student.edit', $user->id) }}">
-                                    <img src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std" class="img-fluid">
-                                    </a> -->
+                                            <img src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std" class="img-fluid">
+                                            </a> -->
                 <!-- <a class="std-detail_btns white-bg" href="{{ route('course', $user->id) }}" title="Add Courses"> <i class="fas fa-plus-circle"></i> &nbsp;<span>Courses</span> </a> -->
                 <!-- <a class="std-detail_btns darkblue-bg" href="#"> &nbsp;Attachment</a> -->
-                <a class="std-detail_btns white-bg" data-bs-toggle="modal" data-bs-target="#add_task"> &nbsp;Attachment</a>
+                <a class="std-detail_btns white-bg" data-bs-toggle="modal" data-bs-target="#add_attachment"> &nbsp;Attachment</a>
 
                 @can('delete student')
                     <!-- <a class="std-detail_btns pink-bg" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="deleteRecord({{ $user->id }},'/student/')">Delete</a> -->
@@ -164,14 +165,20 @@
 
             </div>
         </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">
+                    <h2 class="page-hed-pt page-heading">Student Detail</h2>
+                </li>
+                <li>
+                    <label class="switch" id="switch-div">
+                        <input type="checkbox" title="toggle to show/hide application form">
+                        <span class="slider round"></span>
+                    </label>
+                </li>
+            </ol>
+        </nav>
         <div class="div-display-data" id="div-display-data">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item active" aria-current="page">
-                        <h2 class="page-hed-pt page-heading">Student Detail</h2>
-                    </li>
-                </ol>
-            </nav>
 
             <div class="list-of-student-inner list-std1">
                 <div class="row">
@@ -214,9 +221,9 @@
 
                 <div class="row">
                     <!-- <div class="col-xl-4 col-lg-6">
-                                            <h3>Surname: </h3>
-                                            <p>{{ $user->info->surname ?? '' }}</p>
-                                        </div> -->
+                                                    <h3>Surname: </h3>
+                                                    <p>{{ $user->info->surname ?? '' }}</p>
+                                                </div> -->
                     <div class="col-xl-4 col-lg-6">
                         <h3 style="white-space:nowrap">Name: </h3>
                         <p>{{ $user->info->name ?? '' }}</p>
@@ -438,9 +445,186 @@
                     <a href="{{ route('studentlists') }}"><i class="fas fa-step-backward"></i> &nbsp; Back</a>
                 </div>
             </div>
+            {{-- Tasks --}}
+            <div class="mm-visible table-responsive">
+                <h4 class="text-capitalize">Task List</h4>
+                <table id="example" class="table table-bordered">
+                    <thead class="s-list-thead">
+                        <tr>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Task Name</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="custem-text-center">Action</th>
+                        </tr>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <input style="display: none;" value="{{ $id ?? '' }}" class="student_id">
+                        <input style="display: none;" class="rowIdForComment">
+                        @php
+                            $authUser = App\Models\User::find(auth()->user()->id);
+                            $authUserRole = $authUser->getRoleNames()[0];
+                        @endphp
+                        @if ($authUserRole == 'Counsellor')
+                            @foreach ($tasks as $item)
+                                @php
+                                    $user = App\Models\User::find($item->created_users_id);
+                                    $userRole = $user->getRoleNames()[0];
+                                @endphp
+                                @if ($item->created_users_id == auth()->user()->id || $userRole == 'Admissions')
+                                    <tr>
+
+                                        <th scope="row" class="w-60">
+                                            {{ $loop->iteration }}
+                                        </th>
+                                        <td>{{ $item->task_name ?? '' }}</td>
+                                        <td>{{ date('M d, Y', strtotime($item->date ?? '')) }}</td>
+                                        <td class="complete_status_val">{{ $item->status ?? '' }}</td>
+                                        <td class="custem-text-center std-list-icon">
+                                            <a href="{{ route('showTaskComments', $item->id . '/' . $id) }}"
+                                                class="edit-list-icons comment_icon"><i class="fas fa-comment"></i></a>
+                                            <a href="{{ route('edit_task', $item->id) }}" class="edit-list-icons"
+                                                id="edit_task_btn"><img src="{{ asset('admin/images/edit-std.png') }}"
+                                                    alt="edit-std" class="img-fluid" /></a>
+                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                class="edit-list-icons"
+                                                onclick="deleteRecord({{ $item->id }},'/delete_task/')"><img
+                                                    src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
+                                                    class="img-fluid" /></a>
+                                            @if (auth()->user()->getRoleNames()[0] != 'Master User')
+                                                @can('add comment on tasks')
+                                                    <div style="display: inline-block;">
+                                                        <input class="complete_status" type="checkbox"
+                                                            @if (isset($item->status) && $item->status == 'Complete') ? checked : '' @endif>
+                                                    </div>
+                                                @endcan
+                                            @endif
+                                            <input type="hidden" value="{{ $item->id ?? '' }}" class="edit_id">
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        @endif
+
+                        @if ($authUserRole == 'Management')
+                            @foreach ($tasks as $item)
+                                @php
+                                    $user = App\Models\User::find($item->created_users_id);
+                                    $userRole = $user->getRoleNames()[0];
+                                @endphp
+                                @if ($userRole == 'Finance')
+                                    <tr>
+
+                                        <th scope="row" class="w-60">
+                                            {{ $loop->iteration }}
+                                        </th>
+                                        <td>{{ $item->task_name ?? '' }}</td>
+                                        <td>{{ date('M d, Y', strtotime($item->date ?? '')) }}</td>
+                                        <td class="complete_status_val">{{ $item->status ?? '' }}</td>
+                                        <td class="custem-text-center std-list-icon">
+                                            <a href="{{ route('showTaskComments', $item->id . '/' . $id) }}"
+                                                class="edit-list-icons comment_icon"><i class="fas fa-comment"></i></a>
+                                            <a href="{{ route('edit_task', $item->id) }}" class="edit-list-icons"
+                                                id="edit_task_btn"><img src="{{ asset('admin/images/edit-std.png') }}"
+                                                    alt="edit-std" class="img-fluid" /></a>
+                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                class="edit-list-icons"
+                                                onclick="deleteRecord({{ $item->id }},'/delete_task/')"><img
+                                                    src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
+                                                    class="img-fluid" /></a>
+                                            <input type="hidden" value="{{ $item->id ?? '' }}" class="edit_id">
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        @endif
+
+
+                        @if ($authUserRole == 'Admissions' || $authUserRole == 'Finance')
+                            @foreach ($tasks as $item)
+                                @if ($item->created_users_id == auth()->user()->id)
+                                    <tr>
+
+                                        <th scope="row" class="w-60">
+                                            {{ $loop->iteration }}
+                                        </th>
+                                        <td>{{ $item->task_name ?? '' }}</td>
+                                        <td>{{ date('M d, Y', strtotime($item->date ?? '')) }}</td>
+                                        <td class="complete_status_val">{{ $item->status ?? '' }}</td>
+                                        <td class="custem-text-center std-list-icon">
+                                            <a href="{{ route('showTaskComments', $item->id . '/' . $id) }}"
+                                                class="edit-list-icons comment_icon"><i class="fas fa-comment"></i></a>
+                                            <a href="{{ route('edit_task', $item->id) }}" class="edit-list-icons"
+                                                id="edit_task_btn"><img src="{{ asset('admin/images/edit-std.png') }}"
+                                                    alt="edit-std" class="img-fluid" /></a>
+                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                class="edit-list-icons"
+                                                onclick="deleteRecord({{ $item->id }},'/delete_task/')"><img
+                                                    src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
+                                                    class="img-fluid" /></a>
+                                            @if (auth()->user()->getRoleNames()[0] != 'Master User')
+                                                @can('add comment on tasks')
+                                                    <div style="display: inline-block;">
+                                                        <input class="complete_status" type="checkbox"
+                                                            @if (isset($item->status) && $item->status == 'Complete') ? checked : '' @endif>
+                                                    </div>
+                                                @endcan
+                                            @endif
+                                            <input type="hidden" value="{{ $item->id ?? '' }}" class="edit_id">
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        @endif
+
+
+
+                        @if (auth()->user()->hasRole('Master User') == true)
+                            @foreach ($tasks as $item)
+                                <tr>
+
+                                    <th scope="row" class="w-60">
+                                        {{ $loop->iteration }}
+                                    </th>
+                                    <td>{{ $item->task_name ?? '' }}</td>
+                                    <td>{{ date('M d, Y', strtotime($item->date ?? '')) }}</td>
+                                    <td class="complete_status_val">{{ $item->status ?? '' }}</td>
+                                    <td class="custem-text-center std-list-icon">
+                                        <a href="{{ route('showTaskComments', $item->id . '/' . $id) }}"
+                                            class="edit-list-icons comment_icon"><i class="fas fa-comment"></i></a>
+                                        <a href="{{ route('edit_task', $item->id) }}" class="edit-list-icons"
+                                            id="edit_task_btn"><img src="{{ asset('admin/images/edit-std.png') }}"
+                                                alt="edit-std" class="img-fluid" /></a>
+                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                            class="edit-list-icons"
+                                            onclick="deleteRecord({{ $item->id }},'/delete_task/')"><img
+                                                src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
+                                                class="img-fluid" /></a>
+                                        @if (auth()->user()->getRoleNames()[0] != 'Master User')
+                                            @can('add comment on tasks')
+                                                <div style="display: inline-block;">
+                                                    <input class="complete_status" type="checkbox"
+                                                        @if (isset($item->status) && $item->status == 'Complete') ? checked : '' @endif>
+                                                </div>
+                                            @endcan
+                                        @endif
+                                        <input type="hidden" value="{{ $item->id ?? '' }}" class="edit_id">
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endif
+
+                    </tbody>
+                </table>
+
+            </div>
+            {{-- Tasks end --}}
+
             <!-- applications -->
             <div class="mm-visible table-responsive">
-                <h4 class="">Application List</h4>
+                <h4 class="text-capitalize">Application List</h4>
 
                 <table id="example" class="table table-bordered table-responsive-md table-responsive-lg">
 
@@ -528,18 +712,113 @@
                         @endforeach
                     </tbody>
                 </table>
+                <hr>
+                @role('Master User')
+                    @if (count($trashed) > 0)
+                        <h4 class="text-capitalize">Deleted Applications</h4>
 
+                        <table id="example" class="table table-bordered table-responsive-md table-responsive-lg">
+
+                            <thead class="s-list-thead">
+                                <tr>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Study Destination</th>
+                                    <th scope="col">Institution Name</th>
+                                    <th scope="col">Status</th>
+                                    {{-- <th scope="col" class="custem-text-center">Action</th> --}}
+                                </tr>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @foreach ($trashed as $item)
+                                    <tr>
+                                        <th scope="row" class="w-60">
+                                            {{ $loop->iteration }}
+                                        </th>
+                                        <td>
+                                            @if (!empty($dropdown[5]->dropdownType))
+                                                @foreach ($dropdown[5]->dropdownType as $val)
+                                                    @if ($val->id == $item->study_dest)
+                                                        {{ $val->name }}
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if (!empty($dropdown[6]->dropdownType))
+                                                @foreach ($dropdown[6]->dropdownType as $val)
+                                                    @if ($val->id == $item->inst_name)
+                                                        {{ $val->name }}
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                        </td>
+                                        <td class="status_td">{{ $item->status ?? '' }}</td>
+                                        <td class="custem-text-center std-list-icon">
+
+                                            {{-- <a href="{{ route('edit_application', $item->id) }}" class="edit-list-icons"><img
+                                                    src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std"
+                                                    class="img-fluid edit-application" data-id="{{ $item->id }}" /></a> --}}
+                                            {{-- <a href="{{ route('view_application', $item->id) }}" class="edit-list-icons"><img
+                                                    src="{{ asset('admin/images/list-icon-std.png') }}" alt="view-std"
+                                                    class="img-fluid" /></a> --}}
+                                            {{-- <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                class="edit-list-icons"
+                                                onclick="deleteRecord({{ $item->id }},'/users/delete_application/')"><img
+                                                    src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
+                                                    class="img-fluid" /></a> --}}
+
+                                            {{-- <?php //$tuition_fee = filter_var($item->tuition_fee, FILTER_SANITIZE_NUMBER_INT); ?> --}}
+
+                                            {{-- <div class="dropdown" style="display: inline-block;">
+                                                <button class="btn tbl-dropdown dropdown-toggle status_dropdown"
+                                                    title="Status" type="button" id="dropdownMenuButton"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                                                    value="{{ $item->id }}">
+
+                                                </button>
+                                                <div class="dropdown-menu dropdown status"
+                                                    aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item" href="#">Submitted</a>
+                                                    <a class="dropdown-item" href="#">Information Requested</a>
+                                                    <a class="dropdown-item" href="#">Information Provided</a>
+                                                    <a class="dropdown-item" href="#">Offered</a>
+                                                    <a class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#RejecteddModal" href="#">Rejected</a>
+                                                    <a class="dropdown-item" href="#">Acceptance sent</a>
+                                                    <a class="dropdown-item" href="#"
+                                                        data-id="{{ $item }}">Acceptance
+                                                        Information Requested
+                                                    </a>
+                                                    <a class="dropdown-item" href="">Acceptance Information
+                                                        provided</a>
+                                                    <a class="dropdown-item" href="{{ $tuition_fee }}"
+                                                        data-id="{{ $item->start_date }}">Accepted</a>
+                                                    <a class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#DeclineddModal" href="#">Declined</a>
+                                                </div>
+                                            </div> --}}
+                                            <input type="hidden" value="{{ $item->id ?? '' }}" class="app_id">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
+                @endrole
             </div>
             <!-- applications end -->
         </div>
         <div class="div-app-form pt-3" id="div-app">
-            <nav aria-label="breadcrumb">
+            {{-- <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">
                         <h2 class="page-hed-pt page-heading">Application Form</h2>
                     </li>
                 </ol>
-            </nav>
+            </nav> --}}
             <form class="add-application-form list-of-student-inner" action="{{ route('save_application') }}"
                 method="post" id="add_application_form">
                 @csrf
@@ -563,8 +842,8 @@
                             <input type="hidden" name="user_id" value="{{ $id ?? '' }}">
 
                             <input type="hidden" id="applications_id" name="applications_id">
-                                    <input type="hidden" id="special_education_id" name="special_education_id">
-                                    <input type="hidden" id="education_id" name="education_id">
+                            <input type="hidden" id="special_education_id" name="special_education_id">
+                            <input type="hidden" id="education_id" name="education_id">
                         </div>
                     </div>
                     <div class="form-group col-sm-6 custom-padd">
@@ -593,15 +872,15 @@
                         </div>
 
                         <!-- <div class="form-group-custom custom-checkbox-1 ml-3">
-                                                    <input class="checkbox2" name="eng" type="checkbox" id="eng" />
-                                                    <label for="eng">English</label>
-                                                </div> -->
+                                                            <input class="checkbox2" name="eng" type="checkbox" id="eng" />
+                                                            <label for="eng">English</label>
+                                                        </div> -->
 
                     </div>
                     <div class="form-group col-md-12 d-flex" style="position: relative; top: 20px;">
                         <!-- <div class="custom-checkbox-1">
-                                                    <label class="application_type" for="app">Application Type</label>
-                                                </div> -->
+                                                            <label class="application_type" for="app">Application Type</label>
+                                                        </div> -->
 
                         <div class="form-group-custom custom-checkbox-1">
                             <input class="checkbox2" name="eng" type="checkbox" id="eng" />
@@ -609,24 +888,24 @@
                         </div>
 
                     </div>
-                        <div class="form-group col-sm-6" id="eng-div">
-                            <div class="custom-padd-right displayNone">
-                                <label class="tab-inner-label" for="">Duration</label>
-                                <input name="duration" type="number" class="form-control1 form-control select-inner-text" />
-                            </div>
+                    <div class="form-group col-sm-6" id="eng-div">
+                        <div class="custom-padd-right displayNone">
+                            <label class="tab-inner-label" for="">Duration</label>
+                            <input name="duration" type="number" class="form-control1 form-control select-inner-text" />
                         </div>
-                        <div class="form-group col-sm-6 custom-padd" id="eng-date">
-                            <div class="custom-padd-left displayNone2">
-                                <label class="tab-inner-label" for="122">
-                                    Start Date</label>
-                                <div class="date-container">
-                                    <input name="duration_start_date" type="text" id="datetimepicker5"
-                                        class="form-control1 form-control select-inner-text " autocomplete="off" />
-                                </div>
-
+                    </div>
+                    <div class="form-group col-sm-6 custom-padd" id="eng-date">
+                        <div class="custom-padd-left displayNone2">
+                            <label class="tab-inner-label" for="122">
+                                Start Date</label>
+                            <div class="date-container">
+                                <input name="duration_start_date" type="text" id="datetimepicker5"
+                                    class="form-control1 form-control select-inner-text " autocomplete="off" />
                             </div>
 
                         </div>
+
+                    </div>
                 </div>
                 <div class="row">
                     <div class="form-group col-sm-6 custom-padd ">
@@ -697,7 +976,7 @@
 
                     </div>
                 </div>
-                <div class="row" >
+                <div class="row">
                     <div class="form-group col-sm-6 custom-padd  calender-relative">
                         <div class="custom-padd-right open-calender">
                             <div class="" id="foundation-div">
@@ -1035,7 +1314,7 @@
     </div>
     <!-- End Accepted Model -->
     <!-- Add Offered Modal -->
-    <div class="modal fade" id="add_task" data-bs-backdrop="static" data-bs-keyboard="false"
+    <div class="modal fade" id="add_offered" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1125,7 +1404,7 @@
     </div>
     <!-- end Declined modal -->
     <!-- Add Attachment Modal -->
-    <div class="modal fade" id="add_task" data-bs-backdrop="static" data-bs-keyboard="false"
+    <div class="modal fade" id="add_attachment" data-bs-backdrop="static" data-bs-keyboard="false"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -1163,6 +1442,8 @@
     {{-- @include('admin.modals.editappModal') --}}
     @include('admin.modals.whatsupModal')
     @include('admin.modals.deleteModal')
+    @include('admin.modals.addTaskModal')
+    @include('admin.modals.editTaskModal')
 
 @endsection
 @section('scripts')
@@ -1292,7 +1573,8 @@
                         console.log(data.applications.special_education.certificate1);
                         $('#certificate1-div input[type=checkbox]').prop('checked', true);
                         $('#certificate1-div div').removeClass('displayNone');
-                        $('input[name=certificate1]').val(data.applications.special_education.certificate1);
+                        $('input[name=certificate1]').val(data.applications.special_education
+                            .certificate1);
                         // $('input[name=master_deg_date]').val(data.applications.education.md_start_date);
                     } else {
                         $('#certificate1-div input[type=checkbox]').prop('checked', false);
@@ -1303,7 +1585,8 @@
                         console.log(data.applications.special_education.certificate2);
                         $('#certificate2-div input[type=checkbox]').prop('checked', true);
                         $('#certificate2-div div').removeClass('displayNone');
-                        $('input[name=certificate2]').val(data.applications.special_education.certificate2);
+                        $('input[name=certificate2]').val(data.applications.special_education
+                            .certificate2);
                     } else {
                         $('#certificate2-div input[type=checkbox]').prop('checked', false);
                         $('#certificate2-div div').addClass('displayNone');
@@ -1313,7 +1596,8 @@
                         console.log(data.applications.special_education.certificate3);
                         $('#certificate3-div input[type=checkbox]').prop('checked', true);
                         $('#certificate3-div div').removeClass('displayNone');
-                        $('input[name=certificate3]').val(data.applications.special_education.certificate3);
+                        $('input[name=certificate3]').val(data.applications.special_education
+                            .certificate3);
                     } else {
                         $('#certificate3-div input[type=checkbox]').prop('checked', false);
                         $('#certificate3-div div').addClass('displayNone');
@@ -1323,7 +1607,8 @@
                         console.log(data.applications.special_education.certificate4);
                         $('#certificate4-div input[type=checkbox]').prop('checked', true);
                         $('#certificate4-div div').removeClass('displayNone');
-                        $('input[name=certificate4]').val(data.applications.special_education.certificate4);
+                        $('input[name=certificate4]').val(data.applications.special_education
+                            .certificate4);
                     } else {
                         $('#certificate4-div input[type=checkbox]').prop('checked', false);
                         $('#certificate4-div div').addClass('displayNone');
@@ -1333,7 +1618,8 @@
                         console.log(data.applications.special_education.foundation);
                         $('#foundation-div input[type=checkbox]').prop('checked', true);
                         $('#foundation-div div').removeClass('displayNone');
-                        $('input[name=foundation_date]').val(data.applications.special_education.foundation);
+                        $('input[name=foundation_date]').val(data.applications.special_education
+                            .foundation);
                     } else {
                         $('#foundation-div input[type=checkbox]').prop('checked', false);
                         $('#foundation-div div').addClass('displayNone');
@@ -1344,7 +1630,8 @@
                         console.log(data.applications.special_education.associate_degree);
                         $('#associate_deg-div input[type=checkbox]').prop('checked', true);
                         $('#associate_deg-div div').removeClass('displayNone');
-                        $('input[name=associate_deg_date]').val(data.applications.special_education.associate_degree);
+                        $('input[name=associate_deg_date]').val(data.applications.special_education
+                            .associate_degree);
                     } else {
                         $('#associate_deg-div input[type=checkbox]').prop('checked', false);
                         $('#associate_deg-div div').addClass('displayNone');
@@ -1370,8 +1657,10 @@
                         $('#advance_diploma-div input[type=checkbox]').prop('checked', true);
                         $('#advance_diploma-div div').removeClass('displayNone');
                         $('#advance_diploma-row .open-calender div').removeClass('displayNone2');
-                        $('input[name=advance_diploma_name]').val(data.applications.education.advance_diploma);
-                        $('input[name=advance_diploma_date]').val(data.applications.education.ad_start_date);
+                        $('input[name=advance_diploma_name]').val(data.applications.education
+                            .advance_diploma);
+                        $('input[name=advance_diploma_date]').val(data.applications.education
+                            .ad_start_date);
                     } else {
                         $('#advance_diploma-div input[type=checkbox]').prop('checked', false);
                         $('#advance_diploma-div div').addClass('displayNone');
@@ -1384,7 +1673,8 @@
                         $('#bechelor_deg-div div').removeClass('displayNone');
                         $('#bechelor_deg-row .open-calender div').removeClass('displayNone2');
                         $('input[name=bechelor_deg_name]').val(data.applications.education.bachelor);
-                        $('input[name=bechelor_deg_date]').val(data.applications.education.b_start_date);
+                        $('input[name=bechelor_deg_date]').val(data.applications.education
+                            .b_start_date);
                     } else {
                         $('#bechelor_deg-div input[type=checkbox]').prop('checked', false);
                         $('#bechelor_deg-div div').addClass('displayNone');
@@ -1396,8 +1686,10 @@
                         $('#bechelor_honours-div input[type=checkbox]').prop('checked', true);
                         $('#bechelor_honours-div div').removeClass('displayNone');
                         $('#bechelor_honours-row .open-calender div').removeClass('displayNone2');
-                        $('input[name=bechelor_honours_name]').val(data.applications.education.bechelor_hons);
-                        $('input[name=bechelor_honours_date]').val(data.applications.education.bh_start_date);
+                        $('input[name=bechelor_honours_name]').val(data.applications.education
+                            .bechelor_hons);
+                        $('input[name=bechelor_honours_date]').val(data.applications.education
+                            .bh_start_date);
                     } else {
                         $('#bechelor_honours-div input[type=checkbox]').prop('checked', false);
                         $('#bechelor_honours-div div').addClass('displayNone');
@@ -1409,8 +1701,10 @@
                         $('#graduate_diploma-div input[type=checkbox]').prop('checked', true);
                         $('#graduate_diploma-div div').removeClass('displayNone');
                         $('#graduate_diploma-row .open-calender div').removeClass('displayNone2');
-                        $('input[name=graduate_diploma_name]').val(data.applications.education.graduate_diploma);
-                        $('input[name=graduate_diploma_date]').val(data.applications.education.gd_start_date);
+                        $('input[name=graduate_diploma_name]').val(data.applications.education
+                            .graduate_diploma);
+                        $('input[name=graduate_diploma_date]').val(data.applications.education
+                            .gd_start_date);
                     } else {
                         $('#graduate_diploma-div input[type=checkbox]').prop('checked', false);
                         $('#graduate_diploma-div div').addClass('displayNone');
@@ -1435,8 +1729,10 @@
                         $('#doctoral_deg-div input[type=checkbox]').prop('checked', true);
                         $('#doctoral_deg-div div').removeClass('displayNone');
                         $('#doctoral_deg-row .open-calender div').removeClass('displayNone2');
-                        $('input[name=doctoral_deg_name]').val(data.applications.education.doctoral_degree);
-                        $('input[name=doctoral_deg_date]').val(data.applications.education.dd_start_date);
+                        $('input[name=doctoral_deg_name]').val(data.applications.education
+                            .doctoral_degree);
+                        $('input[name=doctoral_deg_date]').val(data.applications.education
+                            .dd_start_date);
                     } else {
                         $('#doctoral_deg-div input[type=checkbox]').prop('checked', false);
                         $('#doctoral_deg-div div').addClass('displayNone');
@@ -1468,7 +1764,7 @@
             });
         });
 
-        $('#add_application').on('click', function(e){
+        $('#add_application').on('click', function(e) {
             e.preventDefault();
             $('#switch-div input[type=checkbox]').prop('checked', true);
             $('#div-display-data').hide();
@@ -1530,7 +1826,7 @@
             if (val == 'Offered') {
                 $('body').find('.updated_val').val(val);
                 $('body').find('.updated_row').val(app_id);
-                $('#add_task').modal('show');
+                $('#add_offered').modal('show');
             } else if (val == 'Accepted') {
                 $('body').find('.updated_val').val(val);
                 $('body').find('.updated_row').val(app_id);
@@ -1826,6 +2122,188 @@
 
         }
     </script>
+
+    {{-- Script for task module --}}
+    <script>
+        $('.comment_close_btn').on('click', function(e) {
+            e.preventDefault();
+            $('#comment_modal').modal('hide');
+            location.reload();
+        })
+        $('.complete_status').on('change', function(e) {
+            e.preventDefault();
+            // $('#comment_modal').modal('show');
+            var row = $(this).closest('tr');
+            var val = row.find('.complete_status_val').text();
+
+            var updated_row_id = row.find('.edit_id').val();
+            $('body').find('.rowIdForComment').val(updated_row_id);
+            // var updated_row_id = row.find('.edit_id').val();
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+            });
+            $.ajax({
+                data: {
+                    val: val,
+                    updated_row_id: updated_row_id
+                },
+                url: "{{ route('update_task_status') }}",
+                type: "POST",
+                dataType: "json",
+                success: function(data) {
+                    // alert(val);
+                    if (val == 'UnComplete') {
+                        $('#comment_modal').modal('show');
+                    } else {
+                        location.reload();
+                    }
+
+                }
+            });
+        })
+        $('.save_comment').on('click', function(e) {
+            e.preventDefault();
+            // alert($(this).val());
+            var student_id = $(this).val();
+            var val = $('.comment_textarea').val();
+            var course_rw_id = $('.rowIdForComment').val();
+            if (val == '') {
+                $('.comment_textarea').addClass('course_comment_error');
+                $('.comment_textarea_p').text('Enter The Comment');
+            } else {
+                // alert('no value');
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                    },
+                });
+                $.ajax({
+                    data: {
+                        val: val,
+                        student_id: student_id,
+                        course_rw_id: course_rw_id
+                    },
+                    url: "{{ route('save_task_comment') }}",
+                    type: "POST",
+                    dataType: "json",
+                    success: function(data) {
+                        // toastr.success("Record Added Successfully");
+                        location.reload();
+                        // $('#comment_modal').modal('hide');
+                    }
+                });
+            }
+
+        });
+
+
+
+
+
+
+        // Save Task Request
+        $(document).on("click", "#add_task_btn", function(e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+            });
+
+            $.ajax({
+                data: $("#add_task_form").serialize() +
+                    "&student_id=" +
+                    $(".student_id").val(),
+                url: "{{ route('save_task') }}",
+                type: "POST",
+                dataType: "json",
+                success: function(data) {
+                    toastr.success("Record Added Successfully");
+                    setInterval(function() {
+                        location.reload();
+                    }, 1000);
+
+                },
+                error: function(responce) {
+                    $.each(responce.responseJSON.errors, function(index, el) {
+                        var field = $("body").find("[name='" + index + "']");
+                        field.addClass("error");
+                        var box = field.closest("div");
+                        box.find(".invalid-feedback").css("display", "block");
+                        box.find("p").text(el[0]);
+                    });
+                }
+            });
+        });
+        // update Task Request
+        $(document).on("click", "#update_task_btn", function(e) {
+            e.preventDefault();
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+            });
+
+            $.ajax({
+                data: $("#update_task_form").serialize(),
+                url: "{{ route('update_task') }}",
+                type: "POST",
+                dataType: "json",
+                success: function(data) {
+                    toastr.success("Record Updated Successfully");
+                    setInterval(function() {
+                        location.reload();
+                    }, 1000);
+                },
+                error: function(responce) {
+                    $.each(responce.responseJSON.errors, function(index, el) {
+                        var field = $("body").find("[name='" + index + "']");
+                        field.addClass("error");
+                        var box = field.closest("div");
+                        box.find(".invalid-feedback").css("display", "block");
+                        box.find("p").text(el[0]);
+                    });
+                }
+            });
+        });
+        // Edit Task Request
+        $(document).on("click", "#edit_task_btn", function(e) {
+            e.preventDefault();
+            var row = $(this).closest('tr');
+            var edit_id = row.find('.edit_id').val();
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                },
+            });
+
+            $.ajax({
+                data: {
+                    edit_id: edit_id
+                },
+                url: "{{ route('edit_task') }}",
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    $(".edit_name").val(response.task_name);
+                    $(".edit_date").val(response.date);
+                    $(".updated_id").val(response.id);
+                    $("#edit_task").modal("show");
+                }
+            });
+        });
+        // when put value in input remove the errors
+        $("input").on("change", function() {
+            if ($(this).val()) {
+                $(this).removeClass("error");
+                var box = $(this).closest("div");
+                box.find(".invalid-feedback").css("display", "none");
+                box.find("p").text("");
+            }
+        });
+    </script>
 @endsection
 @push('js')
     <script src="{{ asset('js/jquery.datetimepicker.full.js') }}"></script>
@@ -1906,23 +2384,23 @@
             });
 
             // cancel edit form
-            $('#cancel-edit').on('click', function(e){
+            $('#cancel-edit').on('click', function(e) {
                 e.preventDefault();
                 window.location.reload();
             });
         });
     </script>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-                            <script type="text/javascript">
-                                var timestamp = '<?= time() ?>';
+                                    <script type="text/javascript">
+                                        var timestamp = '<?= time() ?>';
 
-                                function updateTime() {
-                                    $('#time').html(Date(timestamp));
-                                    timestamp++;
-                                }
-                                $(function() {
-                                    setInterval(updateTime, 1000);
-                                });
-                                -- >
-                            </script>
+                                        function updateTime() {
+                                            $('#time').html(Date(timestamp));
+                                            timestamp++;
+                                        }
+                                        $(function() {
+                                            setInterval(updateTime, 1000);
+                                        });
+                                        -- >
+                                    </script>
 @endpush

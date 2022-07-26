@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Application extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'study_dest',
         'inst_name',
@@ -17,6 +18,9 @@ class Application extends Model
         'add_students_id',
         'status'
     ];
+
+    protected $dates = ['deletes_at'];
+
     public function special_education()
     {
         return $this->hasOne(SpecialEducation::class, 'applications_id');

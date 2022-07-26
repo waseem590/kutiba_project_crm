@@ -57,7 +57,7 @@
                     </div>
                 </div>
             </div>
-          
+
             <div class="col-md-12 border-bottom">
                 <div class="row">
                     @if($applications->duration)
@@ -78,7 +78,7 @@
                 </div>
 
             </div>
-        
+
             <div class="col-12 border-bottom">
                 <div class="row">
                     <div class="col-md-12 col-lg-6">
@@ -109,7 +109,7 @@
                     </div>
                 </div>
             </div>
-          
+
             <div class="col-12 border-bottom">
                 <div class="row">
 
@@ -141,7 +141,7 @@
                     </div>
                 </div>
             </div>
-             
+
             <div class="col-12 border-bottom">
                 <div class="row">
                     <div class="col-md-12 col-lg-6">
@@ -171,7 +171,7 @@
                     </div>
                 </div>
             </div>
-             
+
             <div class="col-12 border-bottom">
                 <div class="row">
                     @if(!empty($applications->education->diploma))
@@ -199,7 +199,7 @@
                     @endif
                 </div>
             </div>
-             
+
             <div class="col-12 border-bottom">
                 <div class="row">
                     @if(!empty($applications->education->advance_diploma))
@@ -226,7 +226,7 @@
                     @endif
                 </div>
             </div>
-             
+
             <div class="col-12 border-bottom">
                 <div class="row">
                     @if(!empty($applications->education->bachelor))
@@ -253,7 +253,7 @@
                     @endif
                 </div>
             </div>
-             
+
             <div class="col-12 border-bottom">
                 <div class="row">
                     @if(!empty($applications->education->bachelor_hons))
@@ -280,7 +280,7 @@
                     @endif
                 </div>
             </div>
-             
+
             <div class="col-12 border-bottom">
                 <div class="row">
                     <div class="col-md-12 col-lg-6">
@@ -307,7 +307,7 @@
                     @endif
                 </div>
             </div>
-             
+
             <div class="col-12 border-bottom">
                 <div class="row">
                     <div class="col-md-12 col-lg-6">
@@ -334,7 +334,7 @@
                     @endif
                 </div>
             </div>
-             
+
             <div class="col-12 border-bottom">
                 <div class="row">
                     @if(!empty($applications->education->doctoral_degree))
@@ -361,7 +361,7 @@
                     @endif
                 </div>
             </div>
-             
+
             <div class="col-12">
                 <div class="row">
 
@@ -391,7 +391,7 @@
                     </div>
                 </div>
             </div>
-             
+
             <div class="col-12">
                 <div class="row">
 
@@ -426,7 +426,7 @@
                     </div>
                 </div>
             </div>
-             
+
             <div class="col-12">
                 <div class="row">
 
@@ -444,7 +444,7 @@
                     </div>
                 </div>
             </div>
-             
+
 
 
         </div>
