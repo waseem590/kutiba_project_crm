@@ -100,6 +100,12 @@
         .slider.round:before {
             border-radius: 50%;
         }
+
+        /* table for heading */
+        .heading-table .li-switch{
+            margin: 20px 0;
+            text-align: center;
+        }
     </style>
 @endpush
 @section('content')
@@ -115,7 +121,7 @@
             <div class="std-detail_list float-right">
 
                 <!-- <a class="std-detail_btns white-bg" href="https://api.whatsapp.com/send?phone={{ $user->contact->contact_number ?? '' }}" target="_blank" title="Whatsapp"> <i class="fab fa-whatsapp"></i>
-                                                &nbsp;<span>Whatsapp</span> </a> -->
+                                                    &nbsp;<span>Whatsapp</span> </a> -->
                 {{-- <label class="switch" id="switch-div">
                     <input type="checkbox" title="toggle to show/hide application form">
                     <span class="slider round"></span>
@@ -151,13 +157,15 @@
                 <!-- <a class="std-detail_btns blue-bg" href="{{ route('visa.list', $user->id) }}" title="Add Visa"><i class="fas fa-plus-circle"></i>  &nbsp;Visa</a> -->
                 <a class="std-detail_btns white-bg" href="{{ route('accomodation', $user->id) }}"
                     title="Accommodation">Accommodation</a>
-                <a class="std-detail_btns white-bg" href="#" data-bs-toggle="modal" data-bs-target="#add_task"> &nbsp;New Task</a>
+                <a class="std-detail_btns white-bg" href="#" data-bs-toggle="modal" data-bs-target="#add_task">
+                    &nbsp;New Task</a>
                 <!-- <a class="std-detail_btns yellow-bg" href="{{ route('student.edit', $user->id) }}">
-                                            <img src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std" class="img-fluid">
-                                            </a> -->
+                                                <img src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std" class="img-fluid">
+                                                </a> -->
                 <!-- <a class="std-detail_btns white-bg" href="{{ route('course', $user->id) }}" title="Add Courses"> <i class="fas fa-plus-circle"></i> &nbsp;<span>Courses</span> </a> -->
                 <!-- <a class="std-detail_btns darkblue-bg" href="#"> &nbsp;Attachment</a> -->
-                <a class="std-detail_btns white-bg" data-bs-toggle="modal" data-bs-target="#add_attachment"> &nbsp;Attachment</a>
+                <a class="std-detail_btns white-bg" data-bs-toggle="modal" data-bs-target="#add_attachment">
+                    &nbsp;Attachment</a>
 
                 @can('delete student')
                     <!-- <a class="std-detail_btns pink-bg" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="deleteRecord({{ $user->id }},'/student/')">Delete</a> -->
@@ -167,15 +175,25 @@
         </div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active " id="heading-div" aria-current="page">
-                    <h2 class="page-hed-pt page-heading">Student Detail</h2>
-                </li>
-                <li>
-                    <label class="switch" id="switch-div">
-                        <input type="checkbox" title="toggle to show/hide application form">
-                        <span class="slider round"></span>
-                    </label>
-                </li>
+                <table class="table heading-table">
+                    <tr>
+                        <td>
+                            <li class="breadcrumb-item active " id="heading-div" aria-current="page">
+                                <h2 class="page-hed-pt page-heading">Student Detail</h2>
+                            </li>
+                        </td>
+                        <td>
+                            <li class="li-switch">
+                                <label class="switch" id="switch-div">
+                                    <input type="checkbox" title="toggle to show/hide application form">
+                                    <span class="slider round"></span>
+                                </label>
+                            </li>
+                        </td>
+                    </tr>
+                </table>
+
+
             </ol>
         </nav>
         <div class="div-display-data" id="div-display-data">
@@ -221,9 +239,9 @@
 
                 <div class="row">
                     <!-- <div class="col-xl-4 col-lg-6">
-                                                    <h3>Surname: </h3>
-                                                    <p>{{ $user->info->surname ?? '' }}</p>
-                                                </div> -->
+                                                        <h3>Surname: </h3>
+                                                        <p>{{ $user->info->surname ?? '' }}</p>
+                                                    </div> -->
                     <div class="col-xl-4 col-lg-6">
                         <h3 style="white-space:nowrap">Name: </h3>
                         <p>{{ $user->info->name ?? '' }}</p>
@@ -488,8 +506,8 @@
                                             <a href="{{ route('edit_task', $item->id) }}" class="edit-list-icons"
                                                 id="edit_task_btn"><img src="{{ asset('admin/images/edit-std.png') }}"
                                                     alt="edit-std" class="img-fluid" /></a>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                class="edit-list-icons"
+                                            <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" class="edit-list-icons"
                                                 onclick="deleteRecord({{ $item->id }},'/delete_task/')"><img
                                                     src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
                                                     class="img-fluid" /></a>
@@ -529,8 +547,8 @@
                                             <a href="{{ route('edit_task', $item->id) }}" class="edit-list-icons"
                                                 id="edit_task_btn"><img src="{{ asset('admin/images/edit-std.png') }}"
                                                     alt="edit-std" class="img-fluid" /></a>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                class="edit-list-icons"
+                                            <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" class="edit-list-icons"
                                                 onclick="deleteRecord({{ $item->id }},'/delete_task/')"><img
                                                     src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
                                                     class="img-fluid" /></a>
@@ -559,8 +577,8 @@
                                             <a href="{{ route('edit_task', $item->id) }}" class="edit-list-icons"
                                                 id="edit_task_btn"><img src="{{ asset('admin/images/edit-std.png') }}"
                                                     alt="edit-std" class="img-fluid" /></a>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                                class="edit-list-icons"
+                                            <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal" class="edit-list-icons"
                                                 onclick="deleteRecord({{ $item->id }},'/delete_task/')"><img
                                                     src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
                                                     class="img-fluid" /></a>
@@ -771,7 +789,8 @@
                                                     src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
                                                     class="img-fluid" /></a> --}}
 
-                                            {{-- <?php //$tuition_fee = filter_var($item->tuition_fee, FILTER_SANITIZE_NUMBER_INT); ?> --}}
+                                            {{-- <?php //$tuition_fee = filter_var($item->tuition_fee, FILTER_SANITIZE_NUMBER_INT);
+                                            ?> --}}
 
                                             {{-- <div class="dropdown" style="display: inline-block;">
                                                 <button class="btn tbl-dropdown dropdown-toggle status_dropdown"
@@ -873,15 +892,15 @@
                         </div>
 
                         <!-- <div class="form-group-custom custom-checkbox-1 ml-3">
-                                                            <input class="checkbox2" name="eng" type="checkbox" id="eng" />
-                                                            <label for="eng">English</label>
-                                                        </div> -->
+                                                                <input class="checkbox2" name="eng" type="checkbox" id="eng" />
+                                                                <label for="eng">English</label>
+                                                            </div> -->
 
                     </div>
                     <div class="form-group col-md-12 d-flex" style="position: relative; top: 20px;">
                         <!-- <div class="custom-checkbox-1">
-                                                            <label class="application_type" for="app">Application Type</label>
-                                                        </div> -->
+                                                                <label class="application_type" for="app">Application Type</label>
+                                                            </div> -->
 
                         <div class="form-group-custom custom-checkbox-1">
                             <input class="checkbox2" name="eng" type="checkbox" id="eng" />
@@ -2394,16 +2413,16 @@
         });
     </script>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-                                    <script type="text/javascript">
-                                        var timestamp = '<?= time() ?>';
+                                        <script type="text/javascript">
+                                            var timestamp = '<?= time() ?>';
 
-                                        function updateTime() {
-                                            $('#time').html(Date(timestamp));
-                                            timestamp++;
-                                        }
-                                        $(function() {
-                                            setInterval(updateTime, 1000);
-                                        });
-                                        -- >
-                                    </script>
+                                            function updateTime() {
+                                                $('#time').html(Date(timestamp));
+                                                timestamp++;
+                                            }
+                                            $(function() {
+                                                setInterval(updateTime, 1000);
+                                            });
+                                            -- >
+                                        </script>
 @endpush
