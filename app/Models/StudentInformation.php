@@ -12,6 +12,7 @@ class StudentInformation extends Model
     protected $fillable = [
         'add_students_id',
         'surname',
+        'surnameCheckbox',
         'name',
         'dob',
         'gender',

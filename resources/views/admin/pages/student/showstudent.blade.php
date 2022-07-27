@@ -167,7 +167,7 @@
         </div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">
+                <li class="breadcrumb-item active " id="heading-div" aria-current="page">
                     <h2 class="page-hed-pt page-heading">Student Detail</h2>
                 </li>
                 <li>
@@ -692,6 +692,7 @@
                                             <a class="dropdown-item" href="#">Information Requested</a>
                                             <a class="dropdown-item" href="#">Information Provided</a>
                                             <a class="dropdown-item" href="#">Offered</a>
+                                            <a class="dropdown-item" href="#">Did Not Enrol</a>
                                             <a class="dropdown-item" data-bs-toggle="modal"
                                                 data-bs-target="#RejecteddModal" href="#">Rejected</a>
                                             <a class="dropdown-item" href="#">Acceptance sent</a>
@@ -1764,13 +1765,13 @@
             });
         });
 
-        $('#add_application').on('click', function(e) {
-            e.preventDefault();
-            $('#switch-div input[type=checkbox]').prop('checked', true);
-            $('#div-display-data').hide();
-            $('#div-app').show();
-            $('#add_application_form').attr('action', "{{ route('save_application') }}");
-        });
+        // $('#add_application').on('click', function(e) {
+        //     e.preventDefault();
+        //     $('#switch-div input[type=checkbox]').prop('checked', true);
+        //     $('#div-display-data').hide();
+        //     $('#div-app').show();
+        //     $('#add_application_form').attr('action', "{{ route('save_application') }}");
+        // });
     </script>
 
     <script>
@@ -2374,10 +2375,12 @@
             $('#switch-div input[type=checkbox]').on('change', function() {
                 if (this.checked) {
                     $('#div-display-data').hide();
+                    $('#heading-div h2').text('Application Form');
                     $('#div-app').show();
                     console.log("checked");
                 } else {
                     $('#div-app').hide();
+                    $('#heading-div h2').text('Student Detail');
                     $('#div-display-data').show();
                     console.log("unchecked");
                 }
