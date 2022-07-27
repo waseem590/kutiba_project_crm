@@ -25,6 +25,7 @@ use Exception;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Mail;
 use App\Models\LogActivity as LogActivityModel;
+use App\Models\ApplicationLog as ApplicationLogModel;
 
 class UserManagementController extends Controller
 {
@@ -487,6 +488,7 @@ class UserManagementController extends Controller
             }
             // dd($appliTable->start_date);
             \LogActivity::addToLog('Update the application status');
+            \ApplicationLogHelper::addToLog('Updated the application status', $appli->add_students_id);
             parent::successMessage("Record Updated Successfully");
             return redirect()->back();
         }
@@ -496,6 +498,7 @@ class UserManagementController extends Controller
                 'status' => $request->val,
             ]);
             \LogActivity::addToLog('Update the application status');
+            \ApplicationLogHelper::addToLog('Updated the application status', $query->add_students_id);
             return response()->json($query->status);
         }
 
@@ -517,8 +520,20 @@ class UserManagementController extends Controller
         Application::where('id', $id)->delete();
         parent::successMessage("Record Deleted Successfully");
         \LogActivity::addToLog('Delete Application: '.$id);
+        \ApplicationLogHelper::addToLog('Delete Application: '.$id, $user_id);
         return redirect()->back();
         // return redirect()->route('application', $user_id);
+    }
+    // View log of Application
+    public function application_logs($id)
+    {
+        $student_id = $id;
+        $logs = ApplicationLogModel::where('student_id', $student_id)->latest()->get();
+        // \LogActivity::addToLog('open log screen, name:' . Auth::user()->name);
+        return view('admin.pages.student_buttons.view_log', compact('logs'));
+        // return redirect()->json([
+        //     'logs' => $logs,
+        // ]);
     }
     public function user_logs()
     {
@@ -568,6 +583,7 @@ class UserManagementController extends Controller
             ]);
             parent::successMessage("Record Add Successfully");
             \LogActivity::addToLog('add appliction of a student, name:' . $request->user_id);
+            \ApplicationLogHelper::addToLog('add appliction of a student, name:' . $request->user_id, $request->user_id);
             return redirect()->back();
         } catch (Exception $e) {
             parent::errorMessage("Record Not Add !Something else");
@@ -616,6 +632,7 @@ class UserManagementController extends Controller
             ]);
             parent::successMessage("Record Updated Successfully");
             \LogActivity::addToLog('update appliction of a student, name:' . $request->applications_id);
+            \ApplicationLogHelper::addToLog('update appliction of a student, name:' . $request->applications_id, $request->add_students_id);
             return redirect()->back();
             // return redirect()->route('view_application', $request->applications_id);
         } catch (Exception $e) {

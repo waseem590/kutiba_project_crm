@@ -122,10 +122,7 @@
 
                 <!-- <a class="std-detail_btns white-bg" href="https://api.whatsapp.com/send?phone={{ $user->contact->contact_number ?? '' }}" target="_blank" title="Whatsapp"> <i class="fab fa-whatsapp"></i>
                                                     &nbsp;<span>Whatsapp</span> </a> -->
-                {{-- <label class="switch" id="switch-div">
-                    <input type="checkbox" title="toggle to show/hide application form">
-                    <span class="slider round"></span>
-                </label> --}}
+
                 <a class="std-detail_btns white-bg sms" href="{{ $user->info->name ?? '' }}" title="SMS"
                     data-bs-toggle="modal" data-bs-target="#sms-modal" data-id="{{ $user->id }}"><i
                         class="fas fa-comment"></i>
@@ -166,6 +163,10 @@
                 <!-- <a class="std-detail_btns darkblue-bg" href="#"> &nbsp;Attachment</a> -->
                 <a class="std-detail_btns white-bg" data-bs-toggle="modal" data-bs-target="#add_attachment">
                     &nbsp;Attachment</a>
+                <a href="{{ route('user.application_logs', $user->id) }}" class="std-detail_btns white-bg" >
+                    &nbsp;View Log</a>
+                {{-- <a class="std-detail_btns white-bg" data-bs-toggle="modal" data-bs-target="#view_log" id="view_log">
+                    &nbsp;View Log</a> --}}
 
                 @can('delete student')
                     <!-- <a class="std-detail_btns pink-bg" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="deleteRecord({{ $user->id }},'/student/')">Delete</a> -->
@@ -245,6 +246,7 @@
                     <div class="col-xl-4 col-lg-6">
                         <h3 style="white-space:nowrap">Name: </h3>
                         <p>{{ $user->info->name ?? '' }}</p>
+                        <input type="hidden" value="{{ $user->id }}">
                     </div>
 
                     <div class="col-xl-4 col-lg-6">
@@ -831,7 +833,7 @@
             </div>
             <!-- applications end -->
         </div>
-        <div class="div-app-form pt-3" id="div-app">
+        <div class="div-app-form pt-3 d-none" id="div-app">
             {{-- <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item active" aria-current="page">
@@ -1184,7 +1186,7 @@
                                 <label class="custom-checkbox-1  tab-inner-label" for="c8">Start
                                     Date</label>
                                 <div class="date-container">
-                                    <input type="text" name="master_deg_date" id="master_deg_date"
+                                    <input type="text" name="master_deg_date" id="datetimepicker13"
                                         class="form-control1 form-control select-inner-text" autocomplete="off">
                                 </div>
                             </div>
@@ -1505,8 +1507,8 @@
             e.preventDefault();
             var id = $(this).data('id');
             $('#switch-div input[type=checkbox]').prop('checked', true);
-            $('#div-display-data').hide();
-            $('#div-app').show();
+            $('#div-display-data').addClass('d-none');
+            $('#div-app').removeClass('d-none');
             $('#add_application_form').attr('action', "{{ route('update_application') }}");
             console.log(id);
 
@@ -2388,19 +2390,19 @@
                 }
             });
 
-            $('#div-app').hide();
-            $('#div-display-data').show();
+            // $('#div-app').hide();
+            // $('#div-display-data').show();
 
             $('#switch-div input[type=checkbox]').on('change', function() {
                 if (this.checked) {
-                    $('#div-display-data').hide();
+                    $('#div-display-data').addClass('d-none');
                     $('#heading-div h2').text('Application Form');
-                    $('#div-app').show();
+                    $('#div-app').removeClass('d-none');
                     console.log("checked");
                 } else {
-                    $('#div-app').hide();
+                    $('#div-app').addClass('d-none');
                     $('#heading-div h2').text('Student Detail');
-                    $('#div-display-data').show();
+                    $('#div-display-data').removeClass('d-none');
                     console.log("unchecked");
                 }
             });
