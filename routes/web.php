@@ -13,6 +13,8 @@ use App\Http\Controllers\CrudController;
 use App\Http\Controllers\ResourceController;
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\StudentButtonController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TicketCommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -240,6 +242,13 @@ Route::middleware(['auth'])->group(function () {
 
     // student attachment Routes
     Route::post('save_attachment',[StudentButtonController::class,'save_attachment'])->name('save_attachment');
+
+    // Ticket related Routes
+    Route::get('ticket_showList', [TicketController::class,'index'])->name('ticket.showList');
+    Route::get('ticket_generate', [TicketController::class,'create'])->name('ticket.create');
+    Route::get('ticket_show/{id}', [TicketController::class,'show'])->name('ticket.show');
+    Route::resource('ticket', TicketController::class);
+    Route::resource('ticket_comment', TicketCommentController::class);
 });
 
 

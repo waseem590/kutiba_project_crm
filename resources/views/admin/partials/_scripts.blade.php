@@ -269,4 +269,5 @@
     {!! JsValidator::formRequest('App\Http\Requests\VisaCommentRequest', '#commend_form') !!}
     {!! JsValidator::formRequest('App\Http\Requests\AppAcceptedRequest', '#application_accepted_modal') !!}
     {!! JsValidator::formRequest('App\Http\Requests\AttachmentRequest', '#add_attachment') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\TicketRequest', '#ticket_form') !!}
 

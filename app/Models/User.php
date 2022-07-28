@@ -76,4 +76,10 @@ class User extends Authenticatable
     public function user_task(){
         return $this->hasMany(Task::class,'created_users_id');
     }
+    public function tickets(){
+        return $this->hasMany(Ticket::class, 'users_id');
+    }
+    public function ticket_comments(){
+        return $this->hasMany(TicketComment::class, 'users_id');
+    }
 }
