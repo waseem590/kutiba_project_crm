@@ -86,6 +86,10 @@ class StudentButtonController extends Controller
         return view('admin.pages.student_buttons.edit_accomodation', compact('accomodation_types', 'accomodation_status', 'accommodation'));
     }
 
+
+
+
+
     public function update_accomodation(AccommodationRequest $request)
     {
         $accomodation = Accommodation::find($request->updated_id);

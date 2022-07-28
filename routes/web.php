@@ -1,4 +1,4 @@
-F<?php
+<?php
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -236,6 +236,11 @@ Route::middleware(['auth'])->group(function () {
     //send sms Routes
     Route::post('sms_student',[StudentButtonController::class, 'send_sms_student'])->name('send.sms.student');
     Route::post('search',[StudentButtonController::class, 'search'])->name('generic.search');
+
+
+
+  Route::post('/acceptance_reason/{id}', [StudentButtonController::class,'acceptance_reason'])->name('acceptance_reason');
+
 
 
 Route::get('search2', [StudentController::class,'search'])->name('search');

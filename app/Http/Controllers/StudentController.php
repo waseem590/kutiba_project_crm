@@ -680,14 +680,9 @@ class StudentController extends Controller
         $dropdown = Dropdown::with('dropdownType')->get();
         $countries = Country::all();
         $counsellor = User::role('Counsellor')->get();
-<<<<<<< HEAD
          $admission_officer = User::role('Admissions')->get();
         if($authUserRole == 'Management'){
             $aboveTwoMonthDate = date("Y-m-d H:i:s",strtotime("+2 month"));
-=======
-        if ($authUserRole == 'Management') {
-            $aboveTwoMonthDate = date("Y-m-d H:i:s", strtotime("+2 month"));
->>>>>>> 67553b9ba167b3584f888e5cad6a0e0ed6ac163e
             $currentDate = Carbon::now()->toDateTimeString();
 
             $showStudentsToCounsellor = AddStudentDropdownType::whereBetween('course_start_date', [$currentDate, $aboveTwoMonthDate])->where('course_complete', 'Complete')->latest()->get();
@@ -772,14 +767,9 @@ class StudentController extends Controller
                 $all_u[] = $user;
             }
         }
-<<<<<<< HEAD
         $allUsers= collect($all_u);
         return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown','admission_officer'))->with('counsellor',$counsellor,'admission_officer',$admission_officer);
 
-=======
-        $allUsers = collect($all_u);
-        return view('admin.pages.student.studentlist', compact('allUsers', 'countries', 'counsellor', 'dropdown'));
->>>>>>> 67553b9ba167b3584f888e5cad6a0e0ed6ac163e
     }
     public function complete(Request $request)
     {

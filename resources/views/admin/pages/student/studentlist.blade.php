@@ -65,7 +65,7 @@
             @endcannot
     </div>
 
-<button   class="std-detail_btns white-bg"  data-toggle="modal" data-target="#form"  style="float:right;"><i class="fa fa-search"></i>&nbsp;&nbsp; Advance Search</button>
+<!--<button   class="std-detail_btns white-bg"  data-toggle="modal" data-target="#form"  style="float:right;"><i class="fa fa-search"></i>&nbsp;&nbsp; Advance Search</button>-->
 
 
 
