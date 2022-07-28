@@ -15,7 +15,8 @@ class Application extends Model
         'duration',
         'start_date',
         'add_students_id',
-        'status'
+        'status',
+        'acceptance_reason'
     ];
     public function special_education()
     {

@@ -183,23 +183,43 @@ class StudentController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
+  public function search(Request $request){
+       
+        $search = $request->input('search');
+        $search2 = $request->input('search2');
+        $status=  $request->input('status');
+         $authUser = User::find(auth()->user()->id);
+        $authUserRole = $authUser->getRoleNames()[0];
+        $dropdown = Dropdown::with('dropdownType')->get();
+        $countries = Country::all();
+        $offices = Country::all();
+        $counsellor = User::role('Counsellor')->get();
+           $admission_officer = User::role('Admissions')->get();
+
+        $exampleTable = Application::with('application_student')->get();
+  
+        $add_students = AddStudent::query()->join('applications', 'add_students.id', '=',
+                     'applications.add_students_id')
+          ->where('counsellor', 'LIKE', "%{$search}%")
+            ->where('admission_officer', 'LIKE', "%{$search2}%")
+            ->where('applications.status', 'LIKE',"%{$status}%")
+                  
+                    ->get();
+        
+        return view('search', compact('add_students','counsellor','countries','offices','exampleTable','admission_officer'));
+    }
+
+
+
+
+  
     public function destroy($id)
     {
         if(Application::where('add_students_id', $id)->first()){
 
-            // $applications = Application::where('add_students_id', $id)->get();
-            // foreach($applications as $val){
-            //     $appli_id = $val->id;
-            //     SpecialEducation::where('applications_id', $appli_id)->delete();
-            //     Education::where('applications_id', $appli_id)->delete();
-            //     Application::find($appli_id)->delete();
-            // }
+          
             parent::errorMessage("First Delete The Applications Of That Student");
             return redirect()->back();
         }
@@ -646,6 +666,7 @@ class StudentController extends Controller
         $dropdown = Dropdown::with('dropdownType')->get();
         $countries = Country::all();
         $counsellor = User::role('Counsellor')->get();
+         $admission_officer = User::role('Admissions')->get();
         if($authUserRole == 'Management'){
             $aboveTwoMonthDate = date("Y-m-d H:i:s",strtotime("+2 month"));
             $currentDate = Carbon::now()->toDateTimeString();
@@ -733,7 +754,7 @@ class StudentController extends Controller
             }
         }
         $allUsers= collect($all_u);
-        return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown'));
+        return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown','admission_officer'))->with('counsellor',$counsellor,'admission_officer',$admission_officer);
 
     }
     public function complete(Request $request){

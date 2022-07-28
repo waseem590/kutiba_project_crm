@@ -411,9 +411,9 @@
                                 <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#RejecteddModal"
                                     href="#">Rejected</a>
                                 <a class="dropdown-item" href="#">Acceptance sent</a>
-                                <a class="dropdown-item" href="#" data-id="{{$item}}">Acceptance Information Requested
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#AcceptanceModal">Acceptance Information Requested
                                 </a>
-                                <a class="dropdown-item" href="">Acceptance Information provided</a>
+                                <a class="dropdown-item" href="" >Acceptance Information provided</a>
                                 <a class="dropdown-item" href="{{$tuition_fee}}"
                                     data-id="{{$item->start_date}}">Accepted</a>
                                 <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#DeclineddModal"
@@ -564,6 +564,40 @@
 </div>
 <!-- end Rejected modal -->
 <!-- Declined Status modal -->
+
+
+
+<div class="modal fade" id="AcceptanceModal" class="AcceptanceModal" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title " id="staticBackdropLabel">Application Acceptance Reasons</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <img class="pt-2" src="{{ asset('admin/images/modal-close.png') }}" alt="">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form action="" id="acceptance_form" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <textarea class="form-control" name="acceptance_reason" id="acceptance_reason" cols="30"
+                                rows="5" placeholder="Write Reason here..."></textarea>
+                        </div>
+                        <div class="social-custom-modals-btnn text-center ">
+                            <button class="btn btn-primary" type="submit">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
 <div class="modal fade" id="DeclineddModal" class="DeclineddModal" data-bs-backdrop="static" data-bs-keyboard="false"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -755,6 +789,11 @@
         console.log(id);
         var rejected_url = "/users/rejected_reason/" + id;
         $('#rejected_form').attr('action', rejected_url);
+
+           var acceptance_url = "/users/acceptance_reason/" + id;
+        $('#acceptance_form').attr('action', acceptance_url);
+        
+
         var declined_url = "/users/declined_reason/" + id;
         console.log(declined_url);
         $('#declined_form').attr('action', declined_url);

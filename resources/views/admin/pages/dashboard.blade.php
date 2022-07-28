@@ -499,12 +499,13 @@
                                         <?php $time = $clock->timezone->timezone;
                                         $session = 'AM';
                                         $current_time = \Carbon\Carbon::now();
-                                        $covert_to_time = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $current_time);
+
+                                        $covert_to_time = \Carbon\Carbon::createFromFormat('Y-m-d H:i:i', $current_time);
 
                                         $set_time = $covert_to_time->setTimezone($time);
                                         $h = $set_time->format('h');
                                         $m = $set_time->format('i');
-                                        $s = $set_time->format('s');
+                                      
                                         $date = $set_time->format('d m Y');
 
                                         if ($h == 0) {
@@ -519,9 +520,9 @@
 
                                         $h = $h < 10 ? $h : $h;
                                         $m = $m < 10 ? $m : $m;
-                                        $s = $s < 10 ? $s : $s;
+                                      
 
-                                        $time = $h . ':' . $m . ':' . $s . $session;
+                                        $time = $h . ':' . $m .  $session;
                                         ?>
                                         <div id="MyClockDisplay" class="clock" onload="showTime()">{{ $time }}
                                         </div>

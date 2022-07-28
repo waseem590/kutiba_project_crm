@@ -579,6 +579,7 @@ class StudentButtonController extends Controller
             ->add(StudentContactDetail::class, 'email')
             ->add(University::class, 'en_title')
             ->add(SchoolContact::class, 'job_title')
+         
             ->addWhen(Auth::user()->hasRole('Master User'), User::class, 'name')
             ->add(Task::class, 'task_name')
             ->add(Application::class, 'inst_name')
@@ -588,6 +589,10 @@ class StudentButtonController extends Controller
         // dd($results);
         return view('admin.pages.search', compact('results'));
     }
+
+
+
+
     public function save_attachment(AttachmentRequest $request)
     {
         $student = StudentInformation::where('add_students_id', $request->student_id)->first();
@@ -606,6 +611,29 @@ class StudentButtonController extends Controller
         parent::successMessage("Add Rejected Reason Successfully");
         return redirect()->back();
     }
+
+
+        public function rejected_reason2($id, Request $request)
+    {
+        $application = Application::find($id);
+        $application->declined_reason = $request->declined_reason;
+        $application->save();
+        \LogActivity::addToLog('Add Rejected Reason for Applicatioin id is: ' . $id);
+        parent::successMessage("Add Rejected Reason Successfully");
+        return redirect()->back();
+    }
+
+     public function acceptance_reason(Request $request, $id)
+    {
+        $application = Application::find($id);
+        $application->acceptance_reason = $request->acceptance_reason;
+        $application->save();
+        \LogActivity::addToLog('Add Acceptance Reasons for Applicatioin id is: ' . $id);
+        parent::successMessage("Add Acceptance Reason Successfully");
+        return redirect()->back();
+    }
+
+
     public function declined_reason(Request $request, $id)
     {
         $application = Application::find($id);

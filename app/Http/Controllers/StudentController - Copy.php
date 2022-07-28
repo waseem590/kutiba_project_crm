@@ -39,7 +39,6 @@ class StudentController extends Controller
     public function index()
     {
         $student = AddStudent::with('info')->with('contact')->with('otherInfo')->get();
-        \LogActivity::addToLog('visit dashboard screen');
 
         return view('admin.pages.dashboard',compact('student'));
     }
@@ -52,13 +51,12 @@ class StudentController extends Controller
     public function create()
     {
         $dropdown = Dropdown::with('dropdownType')->get();
-        $counsellor = User::role('Counselor')->get();
+        $counsellor = User::role('Counsellor')->get();
         $admission_officer = User::role('Admissions')->get();
         $countries = Country::all();
         $contactTab = Session::get('stuConTab');
         $infoTab = Session::get('stuInfoTab');
         $user = AddStudent::with('info')->with('contact')->with('otherInfo')->find(Session::get('lastInsertedId'));
-        \LogActivity::addToLog('visit add student screen');
         return view('admin.pages.student.create', compact('user','countries','counsellor','admission_officer','dropdown','contactTab','infoTab'));
     }
 
@@ -95,11 +93,26 @@ class StudentController extends Controller
                 \LogActivity::addToLog('update record of student name:'.$query->info->name);
             }
         }else{
-            $query = AddStudent::create([
-                'office' => $request->office,
-                'counsellor' => $request->counsellor,
-                'admission_officer' => $request->admission_officer,
-            ]);
+            $authUser = User::find(auth()->user()->id);
+            $authUserRole = $authUser->getRoleNames()[0];
+            if($authUserRole == 'Visa'){
+                $query = AddStudent::create([
+                    'office' => $request->office,
+                    'counsellor' => $request->counsellor,
+                    'admission_officer' => $request->admission_officer,
+                    'users_id' => auth()->user()->id,
+                    'visa_stu' => 1,
+                ]);
+            }
+            else{
+                $query = AddStudent::create([
+                    'office' => $request->office,
+                    'counsellor' => $request->counsellor,
+                    'admission_officer' => $request->admission_officer,
+                    'users_id' => auth()->user()->id,
+                    'visa_stu' => 0,
+                ]);
+            }
             if($query->info){
                 \LogActivity::addToLog('add record of student name:'.$query->info->name);
             }
@@ -121,18 +134,23 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        // dd($id);
+        // dd(auth()->user()->name);
+
         $user = AddStudent::studentRelations()->find($id);
         $dropdown = Dropdown::with('dropdownType')->get();
         $countries = Country::all();
-        $counsellor = User::role('Counselor')->get();
+        $counsellor = User::role('Counsellor')->get();
 
         $student = AddStudent::find($id);
         $comments = $student->comments;
-
+        // dd($student->info->name);
         $admission_officer = User::role('Admissions')->get();
-        // \LogActivity::addToLog('visit student details page, student:'.$user->info->name);
-        return view('admin.pages.student.showstudent', compact('comments', 'user','dropdown','countries','counsellor','admission_officer'));
+
+        $dropdown = Dropdown::with('dropdownType')->get();
+        $applications = Application::applicationRelations()->where('add_students_id', $id)->get();
+        if(!empty($student->info->name)){
+        }
+        return view('admin.pages.student.showstudent', compact('comments', 'user','dropdown','countries','counsellor','admission_officer','applications','dropdown','id'));
     }
 
     /**
@@ -146,7 +164,7 @@ class StudentController extends Controller
         $forEdit = 'true';
         $dropdown = Dropdown::with('dropdownType')->get();
         $countries = Country::all();
-        $counsellor = User::role('Counselor')->get();
+        $counsellor = User::role('Counsellor')->get();
         $admission_officer = User::role('Admissions')->get();
         $user = AddStudent::with('info')->with('contact')->with('otherInfo')->find($id);
         \LogActivity::addToLog('edit student screen, student:'.$user->info->name);
@@ -165,23 +183,36 @@ class StudentController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
+
+  public function search(Request $request){
+       
+        $search = $request->input('search');
+         $authUser = User::find(auth()->user()->id);
+        $authUserRole = $authUser->getRoleNames()[0];
+        $dropdown = Dropdown::with('dropdownType')->get();
+        $countries = Country::all();
+        $counsellor = User::role('Counsellor')->get();
+        $admission_officer = User::role('admission_officer')->get();
+        $add_students = AddStudent::query()->join('applications', 'add_students.id', '=',
+                     'applications.add_students_id')
+                    ->where('add_students.counsellor', 'LIKE', "%{$search}%")
+                     ->orwhere('add_students.office', 'LIKE', "%{$search}%")
+                    ->orwhere('applications.status', 'LIKE',"%{$search}%")
+                    ->get();
+        
+        return view('search', compact('add_students','counsellor','countries','admission_officer'));
+    }
+
+
+
+
+  
     public function destroy($id)
     {
         if(Application::where('add_students_id', $id)->first()){
 
-            // $applications = Application::where('add_students_id', $id)->get();
-            // foreach($applications as $val){
-            //     $appli_id = $val->id;
-            //     SpecialEducation::where('applications_id', $appli_id)->delete();
-            //     Education::where('applications_id', $appli_id)->delete();
-            //     Application::find($appli_id)->delete();
-            // }
+          
             parent::errorMessage("First Delete The Applications Of That Student");
             return redirect()->back();
         }
@@ -216,7 +247,6 @@ class StudentController extends Controller
         $student=StudentContactDetail::find($id)->first();
         $data=StudentInformation::whereId($id)->first();
         if(isset($student->email))
-        \LogActivity::addToLog('visit student detail page, student:'.$student->info->name);
         return view('admin.pages.student.studentDetail', compact('student','data'));
     }
 
@@ -234,55 +264,76 @@ class StudentController extends Controller
     // For edit , add and update Student Information tab
     public function studentinformation(StudentInformationRequest $request)
     {
-        $name = $request->f_name." ".$request->l_name;
+        $name = $request->surname." ".$request->l_name;
         // for edit student data
         if($request->forEdit == 'true'){
+            dd("edit");
             $query = StudentInformation::find($request->StudentInfo_id);
-            $query->update([
-                'surname' => $request->surname,
-                'name' => $name,
-                'dob' => $request->dob,
-                'gender' => $request->gender,
-                'nationality' => $request->nationality,
-                'visa' => $request->visa,
-                'note' => $request->note,
-            ]);
-            \LogActivity::addToLog('update student information, name:'.$name);
-            return response()->json($query);
+                $query->update([
+                    // 'surname' => $request->surname,
+                    'surname' => $request->surname,
+                    'name' => $name,
+                    'dob' => $request->dob,
+                    'gender' => $request->gender,
+                    'nationality' => $request->nationality,
+                    'visa' => $request->visa,
+                    'note' => $request->note,
+                ]);
+                \LogActivity::addToLog('update student information, name:'.$name);
+                return response()->json($query);
+
         }
+        
         // for add student data
         // if(empty(Session::get('lastInsertedId'))){
         //     return response()->json('no');
         // }
         $id = Session::get('lastInsertedId');
         if(StudentInformation::where('add_students_id',$id)->first()){
+            // dd("id");
             $query = StudentInformation::where('add_students_id',$id)->first();
-            $query->update([
-                'surname' => $request->surname,
-                'name' => $name,
-                'dob' => $request->dob,
-                'gender' => $request->gender,
-                'nationality' => $request->nationality,
-                'visa' => $request->visa,
-                'note' => $request->note,
-            ]);
-            \LogActivity::addToLog('update student information, name:'.$name);
-            return response()->json($query);
-        }else{
-            $query = StudentInformation::create([
-                'add_students_id' => $id,
-                'surname' => $request->surname,
-                'name' => $name,
-                'dob' => $request->dob,
-                'gender' => $request->gender,
-                'nationality' => $request->nationality,
-                'visa' => $request->visa,
-                'note' => $request->note,
+                $query->update([
+                    'surname' => $request->surname,
+                    'name' => $name,
+                    'dob' => $request->dob,
+                    'gender' => $request->gender,
+                    'nationality' => $request->nationality,
+                    'visa' => $request->visa,
+                    'note' => $request->note,
+                ]);
+                
+                \LogActivity::addToLog('update student information, name:'.$name);
+                return response()->json($query);
 
-            ]);
-            Session::put('stuInfoTab', "true");
-            \LogActivity::addToLog('update student information tab, name:'.$name);
-            return response()->json('true');
+            
+        }else{
+            $all_students = StudentInformation::all();
+            $student = [];
+            foreach($all_students as $stu){
+                if($stu->surname == $request->surname && $stu->dob == $request->dob){
+                    // $id = Session::forget('lastInsertedId');
+                    $student[] = $stu;
+                }
+            }
+            
+            if(!empty($student)){
+                return view('admin.pages.student.append_match',compact('student'))->render();
+            }
+            else{
+                $query = StudentInformation::create([
+                    'add_students_id' => $id,
+                    'surname' => $request->surname,
+                    'name' => $name,
+                    'dob' => $request->dob,
+                    'gender' => $request->gender,
+                    'nationality' => $request->nationality,
+                    'visa' => $request->visa,
+                    'note' => $request->note,
+                ]);
+                Session::put('stuInfoTab', "true");
+                \LogActivity::addToLog('update student information tab, name:'.$name);
+                return response()->json('true');
+            }
         }
     }
 
@@ -375,6 +426,7 @@ class StudentController extends Controller
                 'sponsor_name' => $request->sponsor_name,
                 'student_source' => $request->student_source,
                 'cohort_name' => $request->cohort_name,
+                'partner' => $request->partner,
             ]);
             $student = AddStudent::find($query->add_students_id);
 
@@ -393,6 +445,7 @@ class StudentController extends Controller
                 'sponsor_name' => $request->sponsor_name,
                 'student_source' => $request->student_source,
                 'cohort_name' => $request->cohort_name,
+                'partner' => $request->partner,
             ]);
             $student = AddStudent::find($query->add_students_id);
             \LogActivity::addToLog('update student other information, name:'.$student->info->name ?? '');
@@ -405,6 +458,7 @@ class StudentController extends Controller
                 'sponsor_name' => $request->sponsor_name,
                 'student_source' => $request->student_source,
                 'cohort_name' => $request->cohort_name,
+                'partner' => $request->partner,
             ]);
             Session::forget('lastInsertedId');
             Session::forget('stuInfoTab');
@@ -412,135 +466,294 @@ class StudentController extends Controller
             $student = AddStudent::find($query->add_students_id);
             \LogActivity::addToLog('add student other information, name:'.$student->info->name);
 
-            // code for notification
-            $user = User::role('Master User')->first();
-            $student = AddStudent::orderBy('id', 'DESC')->first();
-            $details = [
-                    'name' => $student->info->name,
-                    'email' => $student->contact->email,
-                    'student_id' => $student->id,
-            ];
-            $user->notify(new \App\Notifications\AdminNotification($details));
+            // // code for notification
+            // $user = User::role('Master User')->first();
+            // $student = AddStudent::orderBy('id', 'DESC')->first();
+            // $details = [
+            //         'name' => $student->info->name,
+            //         'email' => $student->contact->email,
+            //         'student_id' => $student->id,
+            // ];
+            // $user->notify(new \App\Notifications\AdminNotification($details));
             return response()->json($query);
         }
     }
-
     // this is for Students List
-    public function studentlists(Request $request)
-    {
-        // dd(auth()->user()->id);
+    // public function studentlists(Request $request)
+    // {
+    //     $filter = $request->filter_val;
+    //     $authUser = User::find(auth()->user()->id);
+    //     $authUserRole = $authUser->getRoleNames()[0];
+    //     $dropdown = Dropdown::with('dropdownType')->get();
+    //     $countries = Country::all();
+    //     $counsellor = User::role('Counsellor')->get();
+
+    //     // if($authUserRole == 'Master User'){
+    //     //     $allUsers = AddStudent::studentRelations()->where('visa_stu',false)->latest()->get();
+
+    //     //     if($filter == 1){
+    //     //             $allUsers = AddStudent::studentRelations()->where('visa_stu',false)->latest()->get();
+    //     //             return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+    //     //     }
+    //     //     return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown'));
+    //     // }
+
+
+    //     if($authUserRole == 'Visa'){
+    //         $students = Visa::all();
+    //         $student_id = [];
+    //         foreach($students as $val){
+    //             $student_id[] = $val->student_id;
+    //         }
+    //         $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->get(); 
+    //         foreach($ownStudents as $val){
+    //             $student_id[] = $val->id;
+    //         }
+    //         $final = array_unique($student_id);
+    //         $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->latest()->get();
+
+    //     }
+    //     if($authUserRole == 'Admissions'){
+    //         $showStudentsToAdmissions = Application::whereIn('status', ['Submitted', 'Acceptance sent', 'Acceptance Information provided', 'Information Provided'])->latest()->get();
+    //         $student_id = [];
+    //         foreach($showStudentsToAdmissions as $val){
+    //             $student_id[] = $val->add_students_id;
+    //         }
+    //         $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa _stu',false)->latest()->get(); 
+    //         foreach($ownStudents as $val){
+    //             $student_id[] = $val->id;
+    //         }
+    //         $final = array_unique($student_id);
+    //         $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->latest()->get();
+    //         // orWhere('users_id',auth()->user()->id)->latest()->get();
+    //     }
+    //     if($authUserRole == 'Counsellor'){
+    //         $aboveTwoMonthDate = date("Y-m-d H:i:s",strtotime("+2 month"));
+    //         $currentDate = Carbon::now()->toDateTimeString();
+
+    //         $showStudentsToCounsellor = AddStudentDropdownType::whereBetween('course_start_date',[$currentDate,$aboveTwoMonthDate])->where('course_complete', 'Complete')->latest()->get();
+    //         $studentWhoSubmitAppli = Application::whereIn('status', ['Submitted', 'Acceptance sent', 'Acceptance Information provided', 'Information Provided'])->latest()->get();
+    //         foreach($showStudentsToCounsellor as $val){
+    //             $student_id[] = $val->add_student_id;
+    //         }
+    //         foreach($studentWhoSubmitAppli as $val){
+    //             $student_id[] = $val->add_students_id;
+    //         }
+            
+    //         $studentWhoSubmitAppli = Application::whereIn('status', ['Submitted', 'Acceptance sent', 'Acceptance Information provided', 'Information Provided'])->latest()->get();
+    //         foreach($studentWhoSubmitAppli as $val){
+    //             $student_id[] = $val->add_students_id;
+    //         }
+    //         $ownStudents= AddStudent::where('users_id',auth()->user()->id)->get(); 
+    //         foreach($ownStudents as $val){
+    //             $student_id[] = $val->id;
+    //         }
+    //         $final = array_unique($student_id);
+    //         $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->latest()->get();
+    //     }
+    //     // $allUsers = AddStudent::studentRelations()->where('visa_stu',false)->latest()->get();
+    //     //             return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+        // if($authUserRole == 'Management'){
+        //     $aboveTwoMonthDate = date("Y-m-d H:i:s",strtotime("+2 month"));
+        //     $currentDate = Carbon::now()->toDateTimeString();
+
+        //     $showStudentsToCounsellor = AddStudentDropdownType::whereBetween('course_start_date',[$currentDate,$aboveTwoMonthDate])->where('course_complete', 'Complete')->latest()->get();
+            
+        //     $showStudentsToFinanceManager = AddStudentDropdownType::where('course_accepted','Accepted')->where('course_complete', 'Complete')->latest()->get();
+        //     $student_id = [];
+        //     $finance_student_id = [];
+        //     foreach($showStudentsToCounsellor as $val){
+        //         $student_id[] = $val->add_student_id;
+        //     }
+        //     foreach($showStudentsToFinanceManager as $val){
+        //         $finance_student_id[] = $val->add_student_id;
+        //     }
+        //     $final = array_unique($student_id);
+        //     $allUsers = AddStudent::where('users_id',auth()->user()->id)->latest()->get();
+        //     if($filter == 1){
+        //         $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->orWhere('users_id',auth()->user()->id)->where('visa_stu',false)->latest()->get();
+        //         return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+        //     }
+        //     if($filter == 2){
+        //         $final = array_unique($finance_student_id);
+        //         $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->latest()->get();
+        //         return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+        //     }
+        //     if($filter == 3){
+        //         $taskstudent = Task::where('status','Complete')->get('add_students_id');
+        //         $task_student_id = [];
+        //         foreach($taskstudent as $val){
+        //             $task_student_id[] = $val->add_students_id;
+        //         }
+        //         $final = array_unique($task_student_id);
+        //         $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->latest()->get();
+        //         return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+        //     }
+        //     if($filter == 4){
+        //         $SubmitAppli = Application::where('status', 'Submitted')->latest()->get();
+        //         $SubmitAppli_id = [];
+        //         foreach($SubmitAppli as $val){
+        //             $SubmitAppli_id[] = $val->add_students_id;
+        //         }
+        //         $final = array_unique($SubmitAppli_id);
+        //         $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->latest()->get();
+        //         return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+        //     }
+        //     if($filter == 5){
+        //         $SubmitAppli = Application::where('status', 'Information Provided')->latest()->get();
+        //         $SubmitAppli_id = [];
+        //         foreach($SubmitAppli as $val){
+        //             $SubmitAppli_id[] = $val->add_students_id;
+        //         }
+        //         $final = array_unique($SubmitAppli_id);
+        //         $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->latest()->get();
+        //         return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+        //     }
+        //     if($filter == 6){
+        //         $SubmitAppli = Application::where('status', 'Acceptance sent')->latest()->get();
+        //         $SubmitAppli_id = [];
+        //         foreach($SubmitAppli as $val){
+        //             $SubmitAppli_id[] = $val->add_students_id;
+        //         }
+        //         $final = array_unique($SubmitAppli_id);
+        //         $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->latest()->get();
+        //         return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+        //     }
+        //     if($filter == 7){
+        //         $SubmitAppli = Application::where('status', 'Acceptance Information provided')->latest()->get();
+        //         $SubmitAppli_id = [];
+        //         foreach($SubmitAppli as $val){
+        //             $SubmitAppli_id[] = $val->add_students_id;
+        //         }
+        //         $final = array_unique($SubmitAppli_id);
+        //         $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->latest()->get();
+        //         return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+        //     }
+        // }
+        // if($authUserRole == 'Finance'){
+        //     $showStudentsToFinanceManager = AddStudentDropdownType::where('course_accepted','Accepted')->where('course_complete', 'Complete')->latest()->get();
+        //     $taskStudents = Task::where('status', 'Complete')->latest()->get();
+        //     $student_id = [];
+        //     foreach($showStudentsToFinanceManager as $val){
+        //         $student_id[] = $val->add_student_id;
+        //     }
+
+        //     foreach($taskStudents as $val){
+        //         $student_id[] = $val->student_id;
+        //     }
+        //     $ownStudents= AddStudent::where('users_id',auth()->user()->id)->where('visa_stu',false)->get(); 
+        //     foreach($ownStudents as $val){
+        //         $student_id[] = $val->id;
+        //     }
+        //     $final = array_unique($student_id);
+        //     $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->where('visa_stu',false)->orWhere('users_id',auth()->user()->id)->latest()->get();
+        // }
+        // if($authUserRole == 'Master User'){
+        //     $allUsers = AddStudent::studentRelations()->where('visa_stu',false)->latest()->get();
+        // }
+        // return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown'));
+    // }
+    public function studentlists_new(Request $request){
         $authUser = User::find(auth()->user()->id);
         $authUserRole = $authUser->getRoleNames()[0];
-        // dd();
-        // if(!empty($authUser->permission('show students to counselor')->first()) && ($authUserRole != 'Master User')){
-        if($authUserRole == 'Visa'){
-            // dd('yes');
-            $students = Visa::all();
-            // dd($students);
-            $student_id = [];
-            foreach($students as $val){
-                $student_id[] = $val->student_id;
-            }
-            // dd($student_id);
-            $final = array_unique($student_id);
-            // dd($final);
-            $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->get();
-            // dd($allUsers);
-        }
-        if($authUserRole == 'Admissions'){
-            // dd('yes');
-            $showStudentsToAdmissions = Application::whereIn('status', ['Submitted', 'Acceptance sent', 'Acceptance Information provided', 'Information Provided'])->get();
-            // dd($showStudentsToAdmissions);
-            $student_id = [];
-            foreach($showStudentsToAdmissions as $val){
-                $student_id[] = $val->add_students_id;
-            }
-            // dd($student_id);
-            $final = array_unique($student_id);
-            // dd($final);
-            $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->get();
-            // dd($allUsers);
-        }
-        if($authUserRole == 'Counselor'){
-            // dd('yes');
-            $lastTwoMonthDate = date("Y-m-d H:i:s",strtotime("-2 month"));
+        $dropdown = Dropdown::with('dropdownType')->get();
+        $countries = Country::all();
+        $counsellor = User::role('Counsellor')->get();
+         $admission_officer = User::role('Admissions')->get();
+        if($authUserRole == 'Management'){
             $aboveTwoMonthDate = date("Y-m-d H:i:s",strtotime("+2 month"));
-            // dd($lastTwoMonthDate);
             $currentDate = Carbon::now()->toDateTimeString();
-            $showStudentsToCounsellor = AddStudentDropdownType::whereBetween('course_complete_date',[$lastTwoMonthDate,$currentDate])->where    ('course_complete', 'Complete')->get();
-            // $visaStudents = AddStudentDropdownType::whereBetween('course_complete_date',[$aboveTwoMonthDate,$currentDate])->where    ('status', 'Complete')->get();
-            $studentWhoSubmitAppli = Application::whereIn('status', ['Submitted', 'Acceptance sent', 'Acceptance Information provided', 'Information Provided'])->get();
-            // $visaStudents = Visa::all();
-            // dd($studentWhoSubmitAppli);
+
+            $showStudentsToCounsellor = AddStudentDropdownType::whereBetween('course_start_date',[$currentDate,$aboveTwoMonthDate])->where('course_complete', 'Complete')->latest()->get();
+            
+            $showStudentsToFinanceManager = AddStudentDropdownType::where('course_accepted','Accepted')->where('course_complete', 'Complete')->latest()->get();
             $student_id = [];
+            $finance_student_id = [];
             foreach($showStudentsToCounsellor as $val){
                 $student_id[] = $val->add_student_id;
             }
-            foreach($studentWhoSubmitAppli as $val){
-                $student_id[] = $val->add_students_id;
-            }
-            // foreach($visaStudents as $val){
-            //     $student_id[] = $val->student_id;
-            // }
-            // dd($student_id);
-            $final = array_unique($student_id);
-            // dd($final);
-            $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->get();
-            // dd($allUsers);
-        }
-        if($authUserRole == 'Master User'){
-            $allUsers = AddStudent::studentRelations()->get();
-        }
-        // dd($allUsers);
-        if($authUserRole == 'Finance'){
-            $showStudentsToFinanceManager = AddStudentDropdownType::where('course_accepted','Accepted')->where('course_complete', 'Complete')->get();
-            $visaStudents = Visa::where('service_fee', '>', 0)->where('status', 'Complete')->get();
-            // dd($visaStudents);
-            // dd($showStudentsToFinanceManager);
-            $student_id = [];
             foreach($showStudentsToFinanceManager as $val){
-                $student_id[] = $val->add_student_id;
+                $finance_student_id[] = $val->add_student_id;
             }
-            foreach($visaStudents as $val){
-                $student_id[] = $val->student_id;
-            }
-            // dd($student_id);
             $final = array_unique($student_id);
-            $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->get();
+            $allUsers = AddStudent::studentRelations()->latest()->get();
+            $filter = $request->filter_val;
+            if($filter == 1){
+                $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->orWhere('users_id',auth()->user()->id)->latest()->get();
+                return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+            }
+            if($filter == 2){
+                $final = array_unique($finance_student_id);
+                $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->latest()->get();
+                return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+            }
+            if($filter == 3){
+                $taskstudent = Task::where('status','Complete')->get('add_students_id');
+                $task_student_id = [];
+                foreach($taskstudent as $val){
+                    $task_student_id[] = $val->add_students_id;
+                }
+                $final = array_unique($task_student_id);
+                $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->latest()->get();
+                return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+            }
+            if($filter == 4){
+                $SubmitAppli = Application::where('status', 'Submitted')->latest()->get();
+                $SubmitAppli_id = [];
+                foreach($SubmitAppli as $val){
+                    $SubmitAppli_id[] = $val->add_students_id;
+                }
+                $final = array_unique($SubmitAppli_id);
+                $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->latest()->get();
+                return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+            }
+            if($filter == 5){
+                $SubmitAppli = Application::where('status', 'Information Provided')->latest()->get();
+                $SubmitAppli_id = [];
+                foreach($SubmitAppli as $val){
+                    $SubmitAppli_id[] = $val->add_students_id;
+                }
+                $final = array_unique($SubmitAppli_id);
+                $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->latest()->get();
+                return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+            }
+            if($filter == 6){
+                $SubmitAppli = Application::where('status', 'Acceptance sent')->latest()->get();
+                $SubmitAppli_id = [];
+                foreach($SubmitAppli as $val){
+                    $SubmitAppli_id[] = $val->add_students_id;
+                }
+                $final = array_unique($SubmitAppli_id);
+                $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->latest()->get();
+                return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+            }
+            if($filter == 7){
+                $SubmitAppli = Application::where('status', 'Acceptance Information provided')->latest()->get();
+                $SubmitAppli_id = [];
+                foreach($SubmitAppli as $val){
+                    $SubmitAppli_id[] = $val->add_students_id;
+                }
+                $final = array_unique($SubmitAppli_id);
+                $allUsers = AddStudent::studentTwoRelation()->whereIn('id',$final)->where('visa_stu',0)->latest()->get();
+                return view('admin.pages.student.append_filter_table', compact('allUsers','countries','counsellor','dropdown'))->render();
+            }
         }
+        // $allUsers = AddStudent::studentRelations()->where('visa_stu',0)->latest()->get();
+        $all = AddStudent::studentTwoRelation()->where('visa_stu',0)->latest()->get();
+        $all_u = [];
+        foreach($all as $user){
+            if($user->info && $user->contact){
+                $all_u[]=$user;
+            }
+        }
+        $allUsers= collect($all_u);
+        return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown','admission_officer'))->with('counsellor',$counsellor,'admission_officer',$admission_officer);
 
-
-
-
-        // dd(array_unique($student_id));
-        $dropdown = Dropdown::with('dropdownType')->get();
-        $countries = Country::all();
-        $counsellor = User::role('Counselor')->get();
-        // $allUsers = AddStudent::studentRelations()->whereIn('id',$final)->get();
-        // dd($allUsers);
-        \LogActivity::addToLog('visit student list page');
-        return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown'));
-
-
-
-
-
-        // $lastTwoMonthDate = date("Y-m-d H:i:s",strtotime("-2 month"));
-        // $currentDate = Carbon::now()->toDateTimeString();
-        // $showStudentsToCounsellor = AddStudentDropdownType::whereBetween('course_complete_date',[$lastTwoMonthDate,$currentDate])->where('course_complete', 'Complete')->get();
-        // $showStudentsToFinanceManager = AddStudentDropdownType::where('course_accepted','Accepted')->where('course_complete', 'Complete')->get();
-        // // dd($showStudentsToFinanceManager);
-        // $dropdown = Dropdown::with('dropdownType')->get();
-        // $countries = Country::all();
-        // $counsellor = User::role('Counselor')->get();
-        // $allUsers = AddStudent::studentRelations()->get();
-        // // dd($showStudentsToCounsellor);
-        // \LogActivity::addToLog('visit student list page');
-        // return view('admin.pages.student.studentlist', compact('showStudentsToFinanceManager','showStudentsToCounsellor','allUsers','countries','counsellor','dropdown'));
     }
-    // public function custom_validation_number(Request $request){
-    //     if(!$request->phone){
-    //         return response()->json('Enter a number');
-    //     }
-    // }
+    public function complete(Request $request){
+        $student = AddStudent::find($request->id);
+        $student->mark = $request->flag;
+        $student->save();
+        return response()->json('Mark '.$request->flag);
+    }
 }

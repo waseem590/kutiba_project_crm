@@ -1,4 +1,4 @@
-<?php
+F<?php
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -135,6 +135,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/rejected_reason/{id}', [StudentButtonController::class,'rejected_reason'])->name('rejected_reason');
         Route::post('/declined_reason/{id}', [StudentButtonController::class,'declined_reason'])->name('declined_reason');
 
+
+  Route::post('/acceptance_reason/{id}', [StudentButtonController::class,'acceptance_reason'])->name('acceptance_reason');
+
+
+
+
         Route::get('/users_clock/{id}', [UserManagementController::class,'user_clocks'])->name('user.clock');
         Route::post('/storeـusersـclock/{id}', [UserManagementController::class,'storeـusersـclock'])->name('store.users.clock');
         Route::get('/logs', [UserManagementController::class,'user_logs'])->name('user.logs');
@@ -230,7 +236,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('sms_student',[StudentButtonController::class, 'send_sms_student'])->name('send.sms.student');
     Route::post('search',[StudentButtonController::class, 'search'])->name('generic.search');
 
-    // TimeZone Routes
+
+Route::get('search2', [StudentController::class,'search'])->name('search');
+
     Route::get('/zone_city', [UserManagementController::class,'zone_city'])->name('zone.city');
     Route::delete('/delete_zone_city/{id}',[UserManagementController::class,'delete_zone_city'])->name('delete_zone_city');
     Route::post('/store_zone_city',[UserManagementController::class,'store_zone_city'])->name('store.zone.city');
