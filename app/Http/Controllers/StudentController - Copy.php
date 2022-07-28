@@ -264,7 +264,12 @@ class StudentController extends Controller
     // For edit , add and update Student Information tab
     public function studentinformation(StudentInformationRequest $request)
     {
+<<<<<<< HEAD
         $name = $request->surname." ".$request->l_name;
+=======
+        // return $request->surnameCheckbox;
+        $name = $request->f_name." ".$request->l_name;
+>>>>>>> 67553b9ba167b3584f888e5cad6a0e0ed6ac163e
         // for edit student data
         if($request->forEdit == 'true'){
             dd("edit");

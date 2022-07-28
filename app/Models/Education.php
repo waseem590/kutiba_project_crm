@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Education extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'applications_id',
@@ -28,6 +29,9 @@ class Education extends Model
         'primary_school',
         'high_school'
     ];
+
+    protected $dates = ['deleted_at'];
+
     public function e_application(){
         return $this->belongsTo(Application::class);
     }

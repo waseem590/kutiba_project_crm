@@ -119,7 +119,7 @@ return [
         'English' => 'en',
         'Arabic' => 'ar',
     ],
-  
+
 
     'faker_locale' => 'en_US',
 
@@ -249,6 +249,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'LogActivity' => App\Helpers\LogActivity::class,
+        'ApplicationLogHelper' => App\Helpers\ApplicationLogHelper::class,
     ],
 
 ];
