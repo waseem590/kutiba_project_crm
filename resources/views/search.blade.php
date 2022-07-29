@@ -1,3 +1,4 @@
+
 @extends('admin.master')
 @push('css')
 <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
@@ -65,7 +66,7 @@
             @endcannot
     </div>
 
-<!--<button   class="std-detail_btns white-bg"  data-toggle="modal" data-target="#form"  style="float:right;"><i class="fa fa-search"></i>&nbsp;&nbsp; Advance Search</button>-->
+<button   class="std-detail_btns white-bg"  data-toggle="modal" data-target="#form"  style="float:right;"><i class="fa fa-search"></i>&nbsp;&nbsp; Advance Search</button>
 
 
 
@@ -131,11 +132,7 @@
   </div>
 </div>
 
-<style type="text/css">
-    
 
-
-</style>
 
     <div class="mm-stdlist-main  table-responsive">
 
@@ -149,7 +146,7 @@
                     <th scope="col">Phone</th>
                     <th scope="col">Country</th>
                     <th scope="col"  >Counsellor</th> 
-                    <!-- <th scope="col">Office</th> -->
+                   <th scope="col">Officer</th> 
                     <th scope="col">Date</th>
 
                     <th scope="col" class="custem-text-center">Action</th>
@@ -159,7 +156,7 @@
             </thead>
             <tbody id="student_filter_table">
                 <?php $counter= 0?>
-                @foreach ($allUsers as $key=>$item)
+                @foreach ($add_students as $key=>$item)
                 @php
                 if(!empty($item->info->name)){
                 $name = explode(" ",$item->info->name);
@@ -182,25 +179,24 @@
                         @endforeach
                         @endif
                     </td>
-                   <td  >
+                   <td >
                         @foreach($counsellor as $val)
                             @if($val->id == $item->counsellor)
                                 {{$val->name}}
                             @endif
                         @endforeach
                     </td>
-                    <!-- <td>
-                        @if(!empty($dropdown[0]->dropdownType))
-                            @foreach($dropdown[0]->dropdownType as $val)
-                                @if($val->id == $item->office)
-                                    {{$val->name}}
-                                @endif
-                            @endforeach
-                        @endif
-                    </td> -->
+                  <td>
+                      @foreach($admission_officer as $val)
+                            @if($val->id == $item->admission_officer)
+                                {{$val->name}}
+                            @endif
+                        @endforeach
+                     
+                    </td>
                     <td>{{date('M d, Y', strtotime($item->created_at ?? ''))}}</td>
                     <td class="custem-text-center std-list-icon">
-                        <a href="https://api.whatsapp.com/?phone={{$item->contact->contact_number ?? '' }}"
+                        <a href="https://api.whatsapp.com/send?phone={{$item->contact->contact_number ?? '' }}"
                             class="edit-list-icons" target="_blank" data-bs-toggle="" data-bs-target=""><img
                                 src="{{ asset('admin/images/whatsapp.png') }}" alt="edit-std" class="img-fluid"></a>
                         <a href="{{$item->info->name ?? ''}}" class="edit-list-icons sms" data-bs-toggle="modal"
@@ -313,12 +309,12 @@
                 },
             }],
             // responsive: {
-            // 	details: {
-            // 		display:
-            // 			$.fn.dataTable.Responsive.display.childRowImmediate,
-            // 		type: "none",
-            // 		target: "",
-            // 	},
+            //  details: {
+            //      display:
+            //          $.fn.dataTable.Responsive.display.childRowImmediate,
+            //      type: "none",
+            //      target: "",
+            //  },
             // },
         });
     });

@@ -16,7 +16,8 @@ class Application extends Model
         'duration',
         'start_date',
         'add_students_id',
-        'status'
+        'status',
+        'acceptance_reason'
     ];
 
     protected $dates = ['deletes_at'];
