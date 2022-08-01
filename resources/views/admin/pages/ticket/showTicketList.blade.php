@@ -64,13 +64,25 @@
                             <td>{{ $ticket->title }}</td>
                             <td>{{ $ticket->periority }}</td>
                             <td>{{ $ticket->message }}</td>
-                            <td>{{ $ticket->status }}</td>
-                            <td>{{date('M d, Y', strtotime($ticket->created_at ?? ''))}}</td>
+                            <td class="tr_ticket_status">{{ $ticket->status }}</td>
+                            <td>{{ date('M d, Y', strtotime($ticket->created_at ?? '')) }}</td>
 
                             <td>
-                                <a href="{{ route('ticket.show',$ticket->id)}}" class="edit-list-icons"><img
-                                    src="{{ asset('admin/images/list-icon-std.png')}}" alt="view-ticket"
-                                    class="img-fluid" /></a>
+                                <a href="{{ route('ticket.show', $ticket->id) }}" class="edit-list-icons"><img
+                                        src="{{ asset('admin/images/list-icon-std.png') }}" alt="view-ticket"
+                                        class="img-fluid" /></a>
+
+                                <div class="dropdown" style="display: inline-block;">
+                                    <button class="btn tbl-dropdown dropdown-toggle ticket_status_dropdown" title="Status"
+                                        type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false" value="{{ $ticket->id }}">
+                                    </button>
+                                    <div class="dropdown-menu dropdown ticket_status" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="#">open</a>
+                                        <a class="dropdown-item" href="#">close</a>
+
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
@@ -79,12 +91,41 @@
 
         </div>
     </div>
-
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
-    <!-- dataTable links -->
-    <!-- <script src="{{ asset('admin/js/datatable/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('admin/js/datatable/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('admin/js/datatable/jquery-3.5.1.js') }}"></script> -->
+    <script>
+        $(document).ready(function() {
+            console.log("abc");
+            $('.ticket_status a').on('click', function(e) {
+                e.preventDefault();
+                // var status = $(this).text();
+                var row = $(this).closest('tr');
+                var status = $(this).text();
+                var ticket_id = $(row).find('.ticket_status_dropdown').val();
+                console.log(ticket_id);
+
+                $.ajaxSetup({
+                    headers: {
+                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                    },
+                });
+                $.ajax({
+                    method: "POST",
+                    url: "{{ route('ticket_update') }}",
+                    data: {
+                        id: ticket_id,
+                        status: status
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        toastr.success("Status Updated Successfully");
+                        setInterval(1000);
+                        $(row).find('.tr_ticket_status').text(data.status);
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

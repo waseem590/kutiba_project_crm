@@ -24,9 +24,9 @@ class TicketCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'tickets_id',
-            'users_id',
-            'comment',
+            'tickets_id' => 'required',
+            'users_id' => 'required',
+            'comment'=> 'required',
         ];
     }
 }

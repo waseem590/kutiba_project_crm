@@ -247,7 +247,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('ticket_showList', [TicketController::class,'index'])->name('ticket.showList');
     Route::get('ticket_generate', [TicketController::class,'create'])->name('ticket.create');
     Route::get('ticket_show/{id}', [TicketController::class,'show'])->name('ticket.show');
+    Route::post('ticket_update', [TicketController::class,'update'])->name('ticket_update');
     Route::resource('ticket', TicketController::class);
+
+    Route::get('ticket_comment', [TicketCommentController::class, 'index'])->name('ticket_comment.index');
+    Route::post('ticket_comment', [TicketCommentController::class, 'store'])->name('ticket_comment.store');
+    Route::post('ticket_comment_destroy', [TicketCommentController::class, 'destroy'])->name('ticket_comment_destroy');
     Route::resource('ticket_comment', TicketCommentController::class);
 });
 

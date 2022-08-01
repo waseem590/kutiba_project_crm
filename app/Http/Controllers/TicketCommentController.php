@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\TicketComment;
 use Illuminate\Http\Request;
+use App\Http\Requests\TicketCommentRequest;
+use App\Models\User;
+use App\Models\Ticket;
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\TicketCommentNotification;
 
 class TicketCommentController extends Controller
 {
@@ -33,9 +38,27 @@ class TicketCommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TicketCommentRequest $request)
     {
-        //
+        $auth_user = Auth::id();
+        // dd($auth_user);
+        $data = $request->validated();
+        $user = User::role('Master User')->first();
+        $ticketComment = TicketComment::create([
+            'tickets_id' => $data['tickets_id'],
+            'users_id' => $auth_user,
+            'comment' => $data['comment'],
+        ]);
+        $ticket = Ticket::where('id', $data['tickets_id'])->first();
+        // dd($ticket);
+        $ticketComment['ticket_no'] = $ticket->ticket_no;
+        $ticketComment['notifi_title'] = 'Ticket Comment';
+        // dd($ticketComment);
+        $user->notify(new TicketCommentNotification($ticketComment));
+
+        \LogActivity::addToLog('Comment added to the ticket, ticket_no'.$ticket['ticket_no']);
+        \LogActivity::addToLog('Comment added to the ticket, Notification sent to user'.$ticket['ticket_no'].' Username:'.$user->name);
+        return redirect()->back();
     }
 
     /**
@@ -78,8 +101,11 @@ class TicketCommentController extends Controller
      * @param  \App\Models\TicketComment  $ticketComment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TicketComment $ticketComment)
+    public function destroy(Request $request)
     {
-        //
+        $ticketComment = TicketComment::whereId($request->id)->delete();
+        \LogActivity::addToLog('Comment deleted from the ticket');
+            return response()->json('success');
+
     }
 }

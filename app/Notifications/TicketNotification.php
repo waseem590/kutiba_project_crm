@@ -6,9 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use App\Models\AddStudent;
 
-class AdminNotification extends Notification
+class TicketNotification extends Notification
 {
     use Queueable;
 
@@ -17,9 +16,9 @@ class AdminNotification extends Notification
      *
      * @return void
      */
-    public function __construct($details)
+    public function __construct($ticket)
     {
-        $this->details = $details;
+        $this->ticket = $ticket;
     }
 
     /**
@@ -47,31 +46,30 @@ class AdminNotification extends Notification
     //                 ->line('Thank you for using our application!');
     // }
 
+    public function toDatabase($notifiable){
+        return [
+            'id' => $this->ticket['id'],
+            'name' => $this->ticket['name'],
+            'user_id' => $this->ticket['users_id'],
+            'ticket_no' => $this->ticket['ticket_no'],
+            'title' => $this->ticket['title'],
+            'periority' => $this->ticket['periority'],
+            'message' => $this->ticket['message'],
+            'status' => $this->ticket['status'],
+            'notifi_title' => $this->ticket['notifi_title'],
+        ];
+    }
+
     /**
      * Get the array representation of the notification.
      *
      * @param  mixed  $notifiable
      * @return array
      */
-    // public function toArray($notifiable)
-    // {
-    //     // $student = AddStudent::all();
-    //     // dd($student);
-    //     return [
-    //         'name' => 'bilal',
-    //         'email' => 'bilalkhaira8989@gmail.com',
-    //     ];
-    // }
-
-    public function toDatabase($notifiable)
+    public function toArray($notifiable)
     {
         return [
-           'name' => $this->details['name'],
-           'email' => $this->details['email'],
-           'student_id' => $this->details['student_id'],
-           'comment_creater_name' => $this->details['creater_name'],
-           'comment' => $this->details['comment'],
-           'notifi_title' => $this->detail['notifi_title'],
+            //
         ];
     }
 }

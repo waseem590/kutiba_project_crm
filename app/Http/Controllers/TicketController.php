@@ -6,7 +6,9 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Http\Requests\TicketRequest;
 use App\Models\User;
+use App\Models\TicketComment;
 use Illuminate\Support\Str;
+use App\Notifications\TicketNotification;
 
 class TicketController extends Controller
 {
@@ -28,7 +30,7 @@ class TicketController extends Controller
      */
     public function create()
     {
-        $users = User::where('type','!=','6')->get();
+        $users = User::where('type', '!=', '6')->get();
         return view('admin.pages.ticket.generateTicket', compact('users'));
     }
 
@@ -42,6 +44,7 @@ class TicketController extends Controller
     {
         $data = $request->validated();
         $data['ticket_no'] = strtoupper(Str::random(10));
+        $user = User::where('id', $data['users_id'])->first();
         $ticket = Ticket::create([
             'users_id' => $data['users_id'],
             'ticket_no' => $data['ticket_no'],
@@ -50,8 +53,13 @@ class TicketController extends Controller
             'message' => $data['message'],
             'status' => 'open',
         ]);
+        $ticket['name'] = $user->name;
+        $ticket['notifi_title'] = "Ticket";
         // dd($ticket);
-        \LogActivity::addToLog('Ticket generated, ticket_no'.$data['ticket_no']);
+        $user->notify(new TicketNotification($ticket));
+        // dd($ticket);
+        \LogActivity::addToLog('Ticket generated, ticket_no' . $data['ticket_no']);
+        \LogActivity::addToLog('Ticket generated, Notificstion sent to user' . $data['ticket_no'] . ' Username:' . $user->name);
         return redirect()->route('ticket.showList');
     }
 
@@ -64,8 +72,11 @@ class TicketController extends Controller
     public function show($id)
     {
         $ticket = Ticket::with('users')->where('id', $id)->first();
-        // dd($ticket);
-        return view('admin.pages.ticket.showTicket', compact('ticket'));
+        $ticketComments = TicketComment::whereHas('tickets', function ($query) use ($ticket) {
+            $query->where('tickets_id', $ticket->id);
+        })->with('tickets')->with('users')->get();
+        // dd($ticketComments);
+        return view('admin.pages.ticket.showTicket', compact('ticket', 'ticketComments'));
     }
 
     /**
@@ -86,9 +97,23 @@ class TicketController extends Controller
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Ticket $ticket)
+    public function update(Request $request)
     {
-        //
+        // $data = $request->validated();
+        // return $request->id;
+        $ticket_update = Ticket::whereId($request->id)->update([
+            'status' => $request->status,
+        ]);
+
+        $ticket = Ticket::where('id',$request->id)->with('users')->first();
+        $ticket['notifi_title'] = 'Ticket';
+        $user = $ticket->users;
+        $user->notify(new TicketNotification($ticket));
+        // // dd($ticket);
+        \LogActivity::addToLog('Ticket updated, ticket_no' . $ticket['ticket_no']);
+        \LogActivity::addToLog('Ticket updated, Notificstion sent to user' . $ticket['ticket_no'] . ' Username:' . $user->name);
+
+        return response()->json($request);
     }
 
     /**

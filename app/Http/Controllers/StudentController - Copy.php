@@ -420,6 +420,7 @@ class StudentController extends Controller
                     'name' => $student->info->name,
                     'email' => $student->contact->email,
                     'student_id' => $student->id,
+                    'notifi_title' => "Student",
             ];
             $user->notify(new \App\Notifications\AdminNotification($details));
             return response()->json($query);

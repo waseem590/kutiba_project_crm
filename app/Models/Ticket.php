@@ -18,9 +18,9 @@ class Ticket extends Model
         'status',
     ];
 
-    public function comments()
+    public function ticketcomments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(TicketComment::class);
     }
 
     public function users()
