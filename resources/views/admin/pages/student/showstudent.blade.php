@@ -13,7 +13,18 @@
             margin-bottom: 20px;
 
         }
+#spans{
+    font-family: "robotomedium";
+    font-size: 14px;
+    color: #5a5a5a;
+    margin-left: 14px;
+}
 
+#spans2{
+        display: inline-block;
+    padding-left: 12px;
+    line-height: 17px;
+}
         .btn-primary-outline:hover {
             background-color: #f5981f !important;
             border-color: #ffffff !important;
@@ -203,7 +214,7 @@
                 <div class="row">
                     <div class="col-xl-4 col-lg-6">
                         <h3>Office: </h3>
-                        <p>
+                        <span  id="spans">
                             @if (!empty($dropdown[0]->dropdownType))
                                 @foreach ($dropdown[0]->dropdownType as $val)
                                     @if ($val->id == $user->office)
@@ -211,27 +222,27 @@
                                     @endif
                                 @endforeach
                             @endif
-                        </p>
+                        </span>
                     </div>
                     <div class="col-xl-4 col-lg-6">
                         <h3>Counsellor: </h3>
-                        <p>
+                        <span  id="spans">
                             @foreach ($counsellor as $val)
                                 @if ($val->id == $user->counsellor)
                                     {{ $val->name }}
                                 @endif
                             @endforeach
-                        </p>
+                        </span>
                     </div>
                     <div class="col-xl-4 col-lg-6">
                         <h3>Admission Officer: </h3>
-                        <p>
+                        <span  id="spans">
                             @foreach ($admission_officer as $val)
                                 @if ($val->id == $user->admission_officer)
                                     {{ $val->name }}
                                 @endif
                             @endforeach
-                        </p>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -241,25 +252,25 @@
                 <div class="row">
                     <!-- <div class="col-xl-4 col-lg-6">
                                                         <h3>Surname: </h3>
-                                                        <p>{{ $user->info->surname ?? '' }}</p>
+                                                        <span id="spans">{{ $user->info->surname ?? '' }}</span>
                                                     </div> -->
                     <div class="col-xl-4 col-lg-6">
                         <h3 style="white-space:nowrap">Name: </h3>
-                        <p>{{ $user->info->name ?? '' }}</p>
+                        <span  id="spans">{{ $user->info->name ?? '' }}</span>
                         <input type="hidden" value="{{ $user->id }}">
                     </div>
 
                     <div class="col-xl-4 col-lg-6">
                         <h3>Date of Birth: </h3>
-                        <p>{{ date('M d, Y', strtotime($user->info->dob ?? '')) }}</p>
+                        <span  id="spans">{{ date('M d, Y', strtotime($user->info->dob ?? '')) }}</span>
                     </div>
                     <div class="col-xl-4 col-lg-6">
                         <h3>Gender: </h3>
-                        <p>{{ $user->info->gender ?? '' }}</p>
+                        <span  id="spans">{{ $user->info->gender ?? '' }}</span>
                     </div>
                     <div class="col-xl-4 col-lg-6">
                         <h3>Nationality: </h3>
-                        <p>
+                        <span  id="spans">
                             @if (!empty($user->info->nationality))
                                 @foreach ($countries as $country)
                                     @if ($country->id == $user->info->nationality)
@@ -267,16 +278,17 @@
                                     @endif
                                 @endforeach
                             @endif
-                        </p>
+                        </span>
                     </div>
                     <div class="col-xl-4 col-lg-6 col-12">
                         <h3>Student visa: </h3>
-                        <p>{{ $user->info->visa ?? '' }} </p>
+                        <span  id="spans">{{ $user->info->visa ?? '' }} </span>
                     </div>
                     <div class="col-xl-4 col-lg-12 col-12">
-                        <div class="mm-notes w-100">
+                        <div class="mm-notes w-100  ">
                             <h3>Note: </h3>
-                            <p class="mm-newpad">{{ $user->info->note ?? '' }}</p>
+                           &nbsp; <span id="spans"  data-toggle="modal" data-target="#myModal">{{ $user->info->note ?? '' }}</span>
+                        
                         </div>
 
                     </div>
@@ -311,35 +323,35 @@
 
                 <div class="w-100">
                     <h3 class="cust-h3-mb List_hed">Address Details 1: </h3>
-                    <p> </p>
+                    <span id="spans"> </span>
                 </div>
                 @if (!empty($user->contact))
                     <div class="custom_row">
                         <div class=" custom-column">
                             <h3>Street address: </h3>
-                            <p>{{ $user->contact->street_address ?? '' }}</p>
+                            <span id="spans">{{ $user->contact->street_address ?? '' }}</span>
                         </div>
                         <div class=" custom-column">
                             <h3>Suburb: </h3>
-                            <p>{{ $user->contact->suburb ?? '' }}</p>
+                            <span id="spans">{{ $user->contact->suburb ?? '' }}</span>
                         </div>
                         <div class=" custom-column">
                             <h3>State: </h3>
-                            <p>{{ $user->contact->state ?? '' }} </p>
+                            <span id="spans">{{ $user->contact->state ?? '' }} </span>
                         </div>
                         <div class=" custom-column">
                             <h3>Post code: </h3>
-                            <p>{{ $user->contact->post_code ?? '' }}</p>
+                            <span id="spans">{{ $user->contact->post_code ?? '' }}</span>
                         </div>
                         <div class=" custom-column">
                             <h3>Country: </h3>
-                            <p>
+                            <span id="spans">
                                 @foreach ($countries as $country)
                                     @if ($country->id == $user->contact->country)
                                         {{ $country->name }}
                                     @endif
                                 @endforeach
-                            </p>
+                            </span>
                         </div>
 
                     </div>
@@ -352,7 +364,7 @@
                     @if (!empty($user->otherInfo))
                         <div class="col-xl-4 col-lg-6">
                             <h3>Type of Funding: </h3>
-                            <p>
+                            <span id="spans">
                                 @if (!empty($dropdown[1]->dropdownType))
                                     @foreach ($dropdown[1]->dropdownType as $val)
                                         @if ($val->id == $user->otherInfo->funding_type ?? '')
@@ -360,11 +372,11 @@
                                         @endif
                                     @endforeach
                                 @endif
-                            </p>
+                            </span>
                         </div>
                         <div class="col-xl-4 col-lg-6">
                             <h3>Name of sponsor: </h3>
-                            <p>
+                            <span id="spans">
                                 @if (!empty($dropdown[2]->dropdownType))
                                     @foreach ($dropdown[2]->dropdownType as $val)
                                         @if ($val->id == $user->otherInfo->sponsor_name)
@@ -372,11 +384,11 @@
                                         @endif
                                     @endforeach
                                 @endif
-                            </p>
+                            </span>
                         </div>
                         <div class="col-xl-4 col-lg-6">
                             <h3>Student source: </h3>
-                            <p>
+                            <span id="spans">
                                 @if (!empty($dropdown[3]->dropdownType))
                                     @foreach ($dropdown[3]->dropdownType as $val)
                                         @if ($val->id == $user->otherInfo->student_source)
@@ -384,15 +396,15 @@
                                         @endif
                                     @endforeach
                                 @endif
-                            </p>
+                            </span>
                         </div>
                         <div class="col-xl-4 col-lg-6">
                             <h3>Cohort: </h3>
-                            <p>{{ isset($user->otherInfo->cohort_name) ? 'Yes' : 'No' }}</p>
+                            <span id="spans">{{ isset($user->otherInfo->cohort_name) ? 'Yes' : 'No' }}</span>
                         </div>
                         <div class="col-xl-4 col-lg-6">
                             <h3>Name of Cohort: </h3>
-                            <p>
+                            <span id="spans">
                                 @if (!empty($dropdown[4]->dropdownType))
                                     @foreach ($dropdown[4]->dropdownType as $val)
                                         @if ($val->id == $user->otherInfo->cohort_name)
@@ -400,11 +412,11 @@
                                         @endif
                                     @endforeach
                                 @endif
-                            </p>
+                            </span>
                         </div>
                         <div class="col-xl-4 col-lg-6">
                             <h3>Name of Partner: </h3>
-                            <p>
+                            <span id="spans">
                                 @if (!empty($dropdown[17]->dropdownType))
                                     @foreach ($dropdown[17]->dropdownType as $val)
                                         @if ($val->id == $user->otherInfo->partner)
@@ -412,7 +424,7 @@
                                         @endif
                                     @endforeach
                                 @endif
-                            </p>
+                            </span>
                         </div>
                     @endif
                     <div class="col-xl-4 col-lg-6">
@@ -427,7 +439,7 @@
                         @if (!empty($comments))
                         @foreach ($comments as $val)
                         <div>
-                            <p>
+                            <span id="spans">
                                 <img class="main-logo img-fluid" src="{{ asset('admin/images/'.$val->user->profile_photo )}}" alt="" />
                                 {{$val->user->name ?? ''}}
                                 @if ($val->user_id == auth()->user()->id)
@@ -438,8 +450,8 @@
                                         class="img-fluid"
                                 /></a>
                                 @endif
-                            </p>
-                            <p>{{$val->comment_text ?? ''}}</p>
+                            </span>
+                            <span id="spans">{{$val->comment_text ?? ''}}</span>
                         </div>
                         @endforeach
                         @endif
@@ -646,93 +658,90 @@
             <div class="mm-visible table-responsive">
                 <h4 class="text-capitalize">Application List</h4>
 
-                <table id="example" class="table table-bordered table-responsive-md table-responsive-lg">
+               <table id="example" class="table table-bordered table-responsive-md table-responsive-lg">
 
-                    <thead class="s-list-thead">
-                        <tr>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Study Destination</th>
-                            <th scope="col">Institution Name</th>
-                            <th scope="col">Status</th>
-                            <th scope="col" class="custem-text-center">Action</th>
-                        </tr>
-                        </tr>
-                    </thead>
-                    <tbody>
+            <thead class="s-list-thead">
+                <tr>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Study Destination</th>
+                    <th scope="col">Institution Name</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="custem-text-center">Action</th>
+                </tr>
+                </tr>
+            </thead>
+            <tbody>
 
-                        @foreach ($applications as $item)
-                            <tr>
-                                <th scope="row" class="w-60">
-                                    {{ $loop->iteration }}
-                                </th>
-                                <td>
-                                    @if (!empty($dropdown[5]->dropdownType))
-                                        @foreach ($dropdown[5]->dropdownType as $val)
-                                            @if ($val->id == $item->study_dest)
-                                                {{ $val->name }}
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </td>
-                                <td>
-                                    @if (!empty($dropdown[6]->dropdownType))
-                                        @foreach ($dropdown[6]->dropdownType as $val)
-                                            @if ($val->id == $item->inst_name)
-                                                {{ $val->name }}
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </td>
-                                <td class="status_td">{{ $item->status ?? '' }}</td>
-                                <td class="custem-text-center std-list-icon">
-
-                                    <a href="{{ route('edit_application', $item->id) }}" class="edit-list-icons"><img
-                                            src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std"
-                                            class="img-fluid edit-application" data-id="{{ $item->id }}" /></a>
-                                    <a href="{{ route('view_application', $item->id) }}" class="edit-list-icons"><img
-                                            src="{{ asset('admin/images/list-icon-std.png') }}" alt="edit-std"
-                                            class="img-fluid" /></a>
-                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
-                                        class="edit-list-icons"
-                                        onclick="deleteRecord({{ $item->id }},'/users/delete_application/')"><img
-                                            src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
-                                            class="img-fluid" /></a>
-
-                                    <?php $tuition_fee = filter_var($item->tuition_fee, FILTER_SANITIZE_NUMBER_INT); ?>
-
-                                    <div class="dropdown" style="display: inline-block;">
-                                        <button class="btn tbl-dropdown dropdown-toggle status_dropdown" title="Status"
-                                            type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false" value="{{ $item->id }}">
-
-                                        </button>
-                                        <div class="dropdown-menu dropdown status" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" href="#">Submitted</a>
-                                            <a class="dropdown-item" href="#">Information Requested</a>
-                                            <a class="dropdown-item" href="#">Information Provided</a>
-                                            <a class="dropdown-item" href="#">Offered</a>
-                                            <a class="dropdown-item" href="#">Did Not Enrol</a>
-                                            <a class="dropdown-item" data-bs-toggle="modal"
-                                                data-bs-target="#RejecteddModal" href="#">Rejected</a>
-                                            <a class="dropdown-item" href="#">Acceptance sent</a>
-                                            <a class="dropdown-item" href="#"
-                                                data-id="{{ $item }}">Acceptance
-                                                Information Requested
-                                            </a>
-                                            <a class="dropdown-item" href="">Acceptance Information provided</a>
-                                            <a class="dropdown-item" href="{{ $tuition_fee }}"
-                                                data-id="{{ $item->start_date }}">Accepted</a>
-                                            <a class="dropdown-item" data-bs-toggle="modal"
-                                                data-bs-target="#DeclineddModal" href="#">Declined</a>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" value="{{ $item->id ?? '' }}" class="app_id">
-                                </td>
-                            </tr>
+                @foreach ($applications as $item)
+                <tr>
+                    <th scope="row" class="w-60">
+                        {{$loop->iteration}}
+                    </th>
+                    <td   id="spans">
+                        @if(!empty($dropdown[5]->dropdownType))
+                        @foreach($dropdown[5]->dropdownType as $val)
+                        @if($val->id == $item->study_dest)
+                        {{$val->name}}
+                        @endif
                         @endforeach
-                    </tbody>
-                </table>
+                        @endif
+                    </td>
+                    <td  id="spans">
+                        @if(!empty($dropdown[6]->dropdownType))
+                        @foreach($dropdown[6]->dropdownType as $val)
+                        @if($val->id == $item->inst_name)
+                        {{$val->name}}
+                        @endif
+                        @endforeach
+                        @endif
+                    </td>
+                    <td class="status_td"  id="spans">{{$item->status ?? ''}}</td>
+                    <td class="custem-text-center std-list-icon">
+
+                        <a href="{{ route('edit_application',$item->id)}}" class="edit-list-icons"><img
+                                src="{{ asset('admin/images/edit-std.png')}}" alt="edit-std" class="img-fluid" /></a>
+                        <a href="{{ route('view_application',$item->id)}}" class="edit-list-icons"><img
+                                src="{{ asset('admin/images/list-icon-std.png')}}" alt="edit-std"
+                                class="img-fluid" /></a>
+                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            class="edit-list-icons"
+                            onclick="deleteRecord({{$item->id}},'/users/delete_application/')"><img
+                                src="{{ asset('admin/images/list-delet-std.png')}}" alt="edit-std"
+                                class="img-fluid" /></a>
+
+                        <?php $tuition_fee = filter_var($item->tuition_fee, FILTER_SANITIZE_NUMBER_INT); ?>
+
+                        <div class="dropdown" style="display: inline-block;">
+                            <button class="btn tbl-dropdown dropdown-toggle status_dropdown" title="Status"
+                                type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false" value="{{$item->id}}">
+
+                            </button>
+                            <div class="dropdown-menu dropdown status" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="#">Submitted</a>
+                                <a class="dropdown-item" href="#">Information Requested</a>
+                                <a class="dropdown-item" href="#">Information Provided</a>
+                                <a class="dropdown-item" href="#">Offered</a>
+                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#RejecteddModal"
+                                    href="#">Rejected</a>
+                                <a class="dropdown-item" href="#">Acceptance sent</a>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#AcceptanceModal">Acceptance Information Requested
+                                </a>
+                                <a class="dropdown-item" href="" >Acceptance Information provided</a>
+                                <a class="dropdown-item" href="{{$tuition_fee}}"
+                                    data-id="{{$item->start_date}}">Accepted</a>
+                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#DeclineddModal"
+                                    href="#">Declined</a>
+                            </div>
+                        </div>
+                        <input type="hidden" value="{{$item->id ?? ''}}" class="app_id">
+                    </td>
+                </tr>
+
+                @endforeach
+            </tbody>
+        </table>
                 <hr>
                 @role('Master User')
                     @if (count($trashed) > 0)
@@ -758,7 +767,7 @@
                                         <th scope="row" class="w-60">
                                             {{ $loop->iteration }}
                                         </th>
-                                        <td>
+                                        <td  style="">
                                             @if (!empty($dropdown[5]->dropdownType))
                                                 @foreach ($dropdown[5]->dropdownType as $val)
                                                     @if ($val->id == $item->study_dest)
@@ -1364,6 +1373,34 @@
     </div>
     <!-- End Add offered Model -->
 
+<div class="modal fade" id="AcceptanceModal" class="AcceptanceModal" data-bs-backdrop="static" data-bs-keyboard="false"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h5 class="modal-title " id="staticBackdropLabel">Application Acceptance Reasons</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <img class="pt-2" src="{{ asset('admin/images/modal-close.png') }}" alt="">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form action="" id="acceptance_form" method="POST">
+                        @csrf
+                        <div class="form-group">
+                            <textarea class="form-control" name="acceptance_reason" id="acceptance_reason" cols="30"
+                                rows="5" placeholder="Write Reason here..."></textarea>
+                        </div>
+                        <div class="social-custom-modals-btnn text-center ">
+                            <button class="btn btn-primary" type="submit">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
     <!-- Rejected Status modal -->
     <div class="modal fade" id="RejecteddModal" class="RejecteddModal" data-bs-backdrop="static"
@@ -1883,6 +1920,8 @@
             console.log(id);
             var rejected_url = "/users/rejected_reason/" + id;
             $('#rejected_form').attr('action', rejected_url);
+             var acceptance_url = "/users/acceptance_reason/" + id;
+        $('#acceptance_form').attr('action', acceptance_url);
             var declined_url = "/users/declined_reason/" + id;
             console.log(declined_url);
             $('#declined_form').attr('action', declined_url);
