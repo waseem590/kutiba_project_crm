@@ -1,3 +1,4 @@
+
 @extends('admin.master')
 @push('css')
 <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
@@ -131,26 +132,21 @@
   </div>
 </div>
 
-<style type="text/css">
-    
 
-
-</style>
 
     <div class="mm-stdlist-main  table-responsive">
 
-        <table id="mm-std-List" class="table table-bordered  student_list_table"  data-order='[[ 0, "desc" ]]'>
+        <table id="mm-std-List" class="table table-bordered  student_list_table">
             <thead class="s-list-thead">
                 <tr>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Surname</th>
                     <th scope="col">Name</th>
                     <!-- <th scope="col">Email</th> -->
                     <th scope="col">Phone</th>
                     <th scope="col">Country</th>
                     <th scope="col"  >Counsellor</th> 
-                    <!-- <th scope="col">Office</th> -->
+                   <th scope="col">Officer</th> 
                     <th scope="col">Date</th>
 
                     <th scope="col" class="custem-text-center">Action</th>
@@ -158,41 +154,22 @@
                 </tr>
                 </tr>
             </thead>
-
-
             <tbody id="student_filter_table">
                 <?php $counter= 0?>
-                @foreach ($allUsers as $key=>$item)
+                @foreach ($add_students as $key=>$item)
                 @php
                 if(!empty($item->info->name)){
                 $name = explode(" ",$item->info->name);
                 }
-                 if(!empty($item->info->surname)){
-                $surname = explode(" ",$item->info->surname);
-                }
-                if(empty($item->info->surname)){
-               $surname = "-";
-                }
-
                 @endphp
-                <tr  >
-                   
-                    <th scope="row" class="w-60"  style="direction:trl">
-       
-            <?php echo abs(--$counter);
-            ?>
-
-                     
-                        
+                <tr>
+                    <th scope="row" class="w-60">
+                        {{++$counter}}
                     </th>
-                  <td> {{$surname[0] ?? ''}} </td>
-                    <td class="text-nowrap"><a href="{{ route('student.show',$item->id)}}">
-                            {{$name[0] ?? ''}}  {{$name[1] ?? ''}} </a></td>
-                         
-
+                    <td class="text-nowrap"><a href="{{ route('student.show',$item->id)}}">{{$name[1] ?? ''}}
+                            {{$name[0] ?? ''}}</a></td>
                     <!-- <td>{{ $item->contact->email ?? '' }}</td> -->
                     <td>{{ $item->contact->contact_number ?? '' }}</td>
-
                     <td>
                         @if(!empty($item->contact->country))
                         @foreach($countries as $country)
@@ -202,25 +179,24 @@
                         @endforeach
                         @endif
                     </td>
-                   <td  >
+                   <td >
                         @foreach($counsellor as $val)
                             @if($val->id == $item->counsellor)
                                 {{$val->name}}
                             @endif
                         @endforeach
                     </td>
-                    <!-- <td>
-                        @if(!empty($dropdown[0]->dropdownType))
-                            @foreach($dropdown[0]->dropdownType as $val)
-                                @if($val->id == $item->office)
-                                    {{$val->name}}
-                                @endif
-                            @endforeach
-                        @endif
-                    </td> -->
+                  <td>
+                      @foreach($admission_officer as $val)
+                            @if($val->id == $item->admission_officer)
+                                {{$val->name}}
+                            @endif
+                        @endforeach
+                     
+                    </td>
                     <td>{{date('M d, Y', strtotime($item->created_at ?? ''))}}</td>
                     <td class="custem-text-center std-list-icon">
-                        <a href="https://api.whatsapp.com/?phone={{$item->contact->contact_number ?? '' }}"
+                        <a href="https://api.whatsapp.com/send?phone={{$item->contact->contact_number ?? '' }}"
                             class="edit-list-icons" target="_blank" data-bs-toggle="" data-bs-target=""><img
                                 src="{{ asset('admin/images/whatsapp.png') }}" alt="edit-std" class="img-fluid"></a>
                         <a href="{{$item->info->name ?? ''}}" class="edit-list-icons sms" data-bs-toggle="modal"
@@ -329,16 +305,16 @@
                 text: '<i class="fa fa-download" aria-hidden="true"></i>',
                 filename: 'Students Record',
                 exportOptions: {
-                    columns: [0, 1, 2, 3,4,5,6]
+                    columns: [0, 1, 2, 3]
                 },
             }],
             // responsive: {
-            // 	details: {
-            // 		display:
-            // 			$.fn.dataTable.Responsive.display.childRowImmediate,
-            // 		type: "none",
-            // 		target: "",
-            // 	},
+            //  details: {
+            //      display:
+            //          $.fn.dataTable.Responsive.display.childRowImmediate,
+            //      type: "none",
+            //      target: "",
+            //  },
             // },
         });
     });
