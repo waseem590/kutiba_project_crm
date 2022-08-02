@@ -186,7 +186,7 @@ class StudentController extends Controller
 
 
   public function search(Request $request){
-       
+
         $search = $request->input('search');
         $search2 = $request->input('search2');
         $status=  $request->input('status');
@@ -199,27 +199,27 @@ class StudentController extends Controller
            $admission_officer = User::role('Admissions')->get();
 
         $exampleTable = Application::with('application_student')->get();
-  
+
         $add_students = AddStudent::query()->join('applications', 'add_students.id', '=',
                      'applications.add_students_id')
           ->where('counsellor', 'LIKE', "%{$search}%")
             ->where('admission_officer', 'LIKE', "%{$search2}%")
             ->where('applications.status', 'LIKE',"%{$status}%")
-                  
+
                     ->get();
-        
-        return view('search', compact('add_students','counsellor','countries','offices','exampleTable','admission_officer'));
+
+        return view('admin.pages.student.search', compact('add_students','counsellor','countries','offices','exampleTable','admission_officer'));
     }
 
 
 
 
-  
+
     public function destroy($id)
     {
         if (Application::where('add_students_id', $id)->first()) {
 
-          
+
             parent::errorMessage("First Delete The Applications Of That Student");
             return redirect()->back();
         }
@@ -679,6 +679,7 @@ class StudentController extends Controller
         $authUserRole = $authUser->getRoleNames()[0];
         $dropdown = Dropdown::with('dropdownType')->get();
         $countries = Country::all();
+         $surnames = StudentInformation::all();
         $counsellor = User::role('Counsellor')->get();
          $admission_officer = User::role('Admissions')->get();
         if($authUserRole == 'Management'){
@@ -760,7 +761,7 @@ class StudentController extends Controller
             }
         }
         // $allUsers = AddStudent::studentRelations()->where('visa_stu',0)->latest()->get();
-        $all = AddStudent::studentTwoRelation()->where('visa_stu', 0)->latest()->get();
+        $all = AddStudent::studentTwoRelation()->where('visa_stu', 0)->get();
         $all_u = [];
         foreach ($all as $user) {
             if ($user->info && $user->contact) {
@@ -768,7 +769,7 @@ class StudentController extends Controller
             }
         }
         $allUsers= collect($all_u);
-        return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown','admission_officer'))->with('counsellor',$counsellor,'admission_officer',$admission_officer);
+        return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown','admission_officer','surnames'))->with('counsellor',$counsellor,'admission_officer',$admission_officer);
 
     }
     public function complete(Request $request)
