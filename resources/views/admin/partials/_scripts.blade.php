@@ -23,7 +23,7 @@
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
     </script>
     <script src="{{ asset('admin-panel/plugins/select2/js/select2.full.min.js') }}"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/b-2.1.1/b-colvis-2.1.1/b-html5-2.1.1/datatables.min.js"></script>
+    {{-- <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.11.3/b-2.1.1/b-colvis-2.1.1/b-html5-2.1.1/datatables.min.js"></script> --}}
     <script src="{{asset('js/jquery.datetimepicker.full.js')}}"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/zf/r-2.2.9/datatables.min.js"></script>
     <script>

@@ -51,7 +51,7 @@
                                             <span class="notifi_cross" aria-hidden="true">×</span>
                                             <!-- <p>Counselor Name: {{ $notification->data['comment_creater_name'] ?? '' }}</p> -->
                                             <p class="unread_notifi">Name: {{ $notification->data['notifi_title'] }}</p>
-                                            <p class="unread_notifi">Date: {{ $notification->created_at() }}</p>
+                                            <p class="unread_notifi">Date: {{ $notification->created_at }}</p>
                                             <input type="hidden" class="notifi_read_id" value="{{$notification->id}}">
 
                                         </li>
@@ -61,7 +61,7 @@
                                             <span class="notifi_cross" aria-hidden="true">×</span>
                                             <input type="hidden" class="notifi_read_id" value="{{$notification->id}}">
                                             <a href="#">Name: {{ $notification->data['notifi_title'] }}</a>
-                                            <p>{{ $notification->created_at() ?? '' }}</p>
+                                            <p>{{ $notification->created_at ?? '' }}</p>
                                         </li>
                                         @endforeach
                                         </div>
@@ -139,7 +139,7 @@
                                             <span class="notifi_cross" aria-hidden="true">×</span>
                                             <p class="unread_notifi"> Name: {{ $notification->data['notifi_title'] }}</p>
                                             <input type="hidden" class="notifi_read_id" value="{{$notification->id}}">
-                                            <p>{{ $notification->created_at() ?? ''}}</p>
+                                            <p>{{ $notification->created_at ?? ''}}</p>
                                         </li>
                                         @endforeach
                                         @foreach(auth()->user()->readNotifications as $notification)
@@ -147,7 +147,7 @@
                                             <span class="notifi_cross" aria-hidden="true">×</span>
                                             <input type="hidden" class="notifi_read_id" value="{{$notification->id}}">
                                             <a href="#">Name: {{ $notification->data['notifi_title'] }}</a>
-                                            <p>{{ $notification->created_at() ?? '' }}</p>
+                                            <p>{{ $notification->created_at ?? '' }}</p>
                                         </li>
                                         @endforeach
                                         </div>

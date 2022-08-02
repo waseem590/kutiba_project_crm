@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TicketRequest;
 use App\Models\User;
 use App\Models\TicketComment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Notifications\TicketNotification;
 
@@ -19,7 +20,14 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::with('users')->latest()->get();
+        $auth_id = Auth::id();
+        $auth_role = Auth::user()->roles->first();
+        // dd($auth_role);
+        if($auth_role->id == 6){
+            $tickets = Ticket::with('users')->latest()->get();
+        } else {
+            $tickets = Ticket::where('users_id', $auth_id)->with('users')->latest()->get();
+        }
         return view('admin.pages.ticket.showTicketList', compact('tickets'));
     }
 
@@ -71,12 +79,20 @@ class TicketController extends Controller
      */
     public function show($id)
     {
+        $auth_id = Auth::id();
+        $auth_role = Auth::user()->roles->first();
         $ticket = Ticket::with('users')->where('id', $id)->first();
         $ticketComments = TicketComment::whereHas('tickets', function ($query) use ($ticket) {
             $query->where('tickets_id', $ticket->id);
         })->with('tickets')->with('users')->get();
+        // dd($ticket);
+        if($auth_id == 1 || $auth_id == $ticket->users->id){
         // dd($ticketComments);
-        return view('admin.pages.ticket.showTicket', compact('ticket', 'ticketComments'));
+            return view('admin.pages.ticket.showTicket', compact('ticket', 'ticketComments'));
+        } else {
+            $tickets = Ticket::where('users_id', $auth_id)->with('users')->latest()->get();
+            return redirect()->route('ticket.showList');
+        }
     }
 
     /**

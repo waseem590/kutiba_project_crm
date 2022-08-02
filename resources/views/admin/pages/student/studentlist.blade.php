@@ -30,7 +30,7 @@
         padding-right: 20px !important;
         color: white;
     }
-    
+
 
 </style>
 @endpush
@@ -38,7 +38,7 @@
 <div class="students-List-section">
     <div class="d-flex justify-content-between flex-wrap">
         <h1 class="page-heading">Students List</h1>
-        
+
             @cannot('Master_user')
                 @can('filter_management_table')
                 <div class="d-flex justify-content-center">
@@ -65,15 +65,7 @@
             @endcannot
     </div>
 
-<!--<button   class="std-detail_btns white-bg"  data-toggle="modal" data-target="#form"  style="float:right;"><i class="fa fa-search"></i>&nbsp;&nbsp; Advance Search</button>-->
-
-
-
-
-
-
-
-
+<button   class="std-detail_btns white-bg"  data-toggle="modal" data-target="#form"  style="float:right;"><i class="fa fa-search"></i>&nbsp;&nbsp; Advance Search</button>
 
 <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -95,15 +87,15 @@
                  <option  value="{{$data->id}}">{{$data->name}}</option>
         @endforeach
             </select>
-          
+
           </div>
           <div class="form-group">
             <label for="password1"  style="color:black;">Admission Officer</label>
           <select  class="form-control" name="search2">
             <option></option>
-                 @foreach($admission_officer as $key=>$data)
+                 {{-- @foreach($admission_officer as $key=>$data)
                  <option  value="{{$data->id}}">{{$data->name}}</option>
-        @endforeach
+        @endforeach --}}
             </select>
           </div>
 
@@ -112,16 +104,16 @@
             <label for="password1"  style="color:black;">Status</label>
           <select  class="form-control" name="status">
             <option></option>
-               
+
                  <option  value="Acceptance Information Requested">Acceptance Information Requested</option>
-    
+
             </select>
           </div>
 
 
 
-         
-        
+
+
         </div>
         <div class="modal-footer border-top-0 d-flex justify-content-center">
           <button type="submit" class="btn btn-success">Submit</button>
@@ -132,7 +124,7 @@
 </div>
 
 <style type="text/css">
-    
+
 
 
 </style>
@@ -148,7 +140,7 @@
                     <!-- <th scope="col">Email</th> -->
                     <th scope="col">Phone</th>
                     <th scope="col">Country</th>
-                    <th scope="col"  >Counsellor</th> 
+                    <th scope="col"  >Counsellor</th>
                     <!-- <th scope="col">Office</th> -->
                     <th scope="col">Date</th>
 
@@ -263,13 +255,13 @@
         var contact_first = $('.first_name_btn').text(first_contact_num.val());
         var contact_second = $('.second_name_btn').text(second_contact_num.val());
         if($('.second_name_btn').text()==''){
-            $('.second_name_btn').css('display','none'); 
+            $('.second_name_btn').css('display','none');
         }
         else{
             $('.first_name_btn').css('display','inline-block');
         }
         if($('.first_name_btn').text()==''){
-            $('.first_name_btn').css('display','none'); 
+            $('.first_name_btn').css('display','none');
         }
         else{
             $('.first_name_btn').css('display','inline-block');
@@ -340,7 +332,7 @@
             },
             success: function (res) {
                 // console.log(res);
-                $('#student_filter_table').html(res);    
+                $('#student_filter_table').html(res);
             },
         });
     });
@@ -373,7 +365,7 @@
         if($(this).prop('checked') == true){
             flag = 'Complete';
             status_complete(flag,id);
-            
+
         }
         else{
             flag = 'Incomplete';

@@ -265,6 +265,7 @@ Route::get('search2', [StudentController::class,'search'])->name('search');
 
     Route::get('ticket_comment', [TicketCommentController::class, 'index'])->name('ticket_comment.index');
     Route::post('ticket_comment', [TicketCommentController::class, 'store'])->name('ticket_comment.store');
+    Route::post('ticket_comment_update', [TicketCommentController::class, 'update'])->name('ticket_comment_update');
     Route::post('ticket_comment_destroy', [TicketCommentController::class, 'destroy'])->name('ticket_comment_destroy');
     Route::resource('ticket_comment', TicketCommentController::class);
 });

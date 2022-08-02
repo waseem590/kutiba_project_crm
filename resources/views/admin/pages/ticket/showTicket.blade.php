@@ -5,9 +5,27 @@
             position: relative;
         }
 
-        .comment_cust {
+        .comment {
+            position: relative;
+        }
+
+        .comment textarea {
+            width: 90%;
+        }
+
+        .comment .comment_update_toggle {
             position: absolute;
             right: 0;
+            top: 0
+        }
+
+        .comment .comment_update_toggle a {
+            font-size: 15px;
+        }
+
+        .comment_cust {
+            position: absolute;
+            right: 20px;
             top: 50%;
         }
     </style>
@@ -33,6 +51,7 @@
                 </div>
                 <div class="col-xl-3 col-sm-6">
                     <p>{{ $ticket->ticket_no }}</p>
+                    <p class="d-none" id="ticket_id">{{ $ticket->id }}</p>
 
                 </div>
                 <div class="col-xl-3 col-sm-6">
@@ -97,16 +116,39 @@
                                 {{-- <p class="d-none">{{ $ticketComment->tickets->id }}</p> --}}
                                 <p class="d-none comment_id">{{ $ticketComment->id }}</p>
                                 <h4>{{ $ticketComment->users->name }}</h4>
-                                <p class="comment"><input type="text" class="form-control" readonly
-                                        value="{{ $ticketComment->comment }}"> </p>
-                                <div class="comment_cust">
-                                    <a href="#" class="edit-list-icons edit_comment"><img
-                                            src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std"
-                                            class="img-fluid edit-application" data-id="{{ $ticketComment->id }}" /></a>
-                                    <a href="#" class="edit-list-icons dlt_comment"><img
-                                            src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
-                                            class="img-fluid" /></a>
-                                </div>
+                                <p class="comment w-50">
+                                    <textarea name="comment" class="form-control" readonly>{{ $ticketComment->comment }}</textarea>
+                                    <span class="comment_update_toggle d-none">
+                                        <a href="#" class="text-success update_comment"><i class="fa fa-check"
+                                                aria-hidden="true"></i></a>
+                                        <a href="#" class="text-danger cancel_update_comment"><i class="fa fa-times"
+                                                aria-hidden="true"></i></a>
+                                    </span>
+                                </p>
+                                @if ($ticket->status == 'open')
+                                    @if (Auth::id() == $ticketComment->users->id)
+                                        <div class="comment_cust">
+                                            <a href="#" class="edit-list-icons edit_comment"><img
+                                                    src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std"
+                                                    class="img-fluid edit-application"
+                                                    data-id="{{ $ticketComment->id }}" /></a>
+                                            <a href="#" class="edit-list-icons dlt_comment"><img
+                                                    src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
+                                                    class="img-fluid" /></a>
+                                        </div>
+                                    @elseif (Auth::id() == 1)
+                                        <div class="comment_cust">
+                                            <a href="#" class="edit-list-icons edit_comment"><img
+                                                    src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std"
+                                                    class="img-fluid edit-application"
+                                                    data-id="{{ $ticketComment->id }}" /></a>
+                                            <a href="#" class="edit-list-icons dlt_comment"><img
+                                                    src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
+                                                    class="img-fluid" /></a>
+                                        </div>
+                                    @endif
+                                @endif
+
                             </div>
                         @endforeach
                     @else
@@ -141,42 +183,89 @@
         </div>
 
     </div>
-    {{-- @include('admin.modals.deleteModal') --}}
+    {{-- @include('admin.modals.dltTicketCommentModal') --}}
 @endsection
 @section('scripts')
     <script>
         $(document).ready(function() {
             $('.dlt_comment').on('click', function(e) {
                 e.preventDefault();
-                console.log("abc");
+                var ticket_id = $('#ticket_id').text();
                 var comment_div = $(this).closest('.comment_div');
                 var comment_id = $(comment_div).find('.comment_id').html();
-                console.log(comment_div);
-                console.log(comment_id);
-                $.ajaxSetup({
-                    headers: {
-                        "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                    },
+
+                if (window.confirm('Do you want to delete this comment?')) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                        },
+                    });
+
+                    $.ajax({
+                        method: "post",
+                        url: "{{ route('ticket_comment_destroy') }}",
+                        data: {
+                            id: comment_id,
+                            ticket_id: ticket_id
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            console.log(data);
+                            toastr.error("Comment deleted Successfully");
+                            setInterval(1000);
+                            $(comment_div).remove();
+                        }
+                    });
+                }
+            });
+
+            $('.edit_comment').on('click', function(e) {
+                e.preventDefault();
+                var ticket_id = $('#ticket_id').text();
+                var comment_div = $(this).closest('.comment_div');
+                var comment_id = $(comment_div).find('.comment_id').html();
+                var comment_inner = $(comment_div).find('.comment');
+                var comment_textarea = $(comment_div).find('.comment textarea');
+
+                $(comment_textarea).attr('readonly', false);
+                $(comment_inner).find('.comment_update_toggle').removeClass('d-none');
+
+                $('.cancel_update_comment').on('click', function(e) {
+                    e.preventDefault();
+                    $(comment_textarea).attr('readonly', true);
+                    $(comment_inner).find('.comment_update_toggle').addClass('d-none');
                 });
 
-                $.ajax({
-                    method: "post",
-                    url: "{{ route('ticket_comment_destroy') }}",
-                    data: {
-                        id: comment_id
-                    },
-                    dataType: "json",
-                    success: function(data) {
-                        console.log(data);
-                        toastr.error("Comment deleted Successfully");
-                        setInterval(function() {
-                            $(comment_div).remove();
-                        }, 1000);
+                $('.update_comment').on('click', function(e) {
+                    e.preventDefault();
+                    var comment = $(comment_div).find('.comment textarea').val();
 
-                    }
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                        },
+                    });
+
+                    $.ajax({
+                        method: "post",
+                        url: "{{ route('ticket_comment_update') }}",
+                        data: {
+                            id: comment_id,
+                            tickets_id: ticket_id,
+                            comment: comment
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            toastr.success("Comment Updated Successfully");
+                            setInterval(1000);
+                            $(comment_textarea).text(data['comment']);
+                            $(comment_textarea).attr('readonly', true);
+                            $(comment_inner).find('.comment_update_toggle')
+                                .addClass('d-none');
+                        }
+                    });
                 })
-
-            })
+            });
         })
     </script>
 @endsection

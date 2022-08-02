@@ -90,9 +90,16 @@ class TicketCommentController extends Controller
      * @param  \App\Models\TicketComment  $ticketComment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TicketComment $ticketComment)
+    public function update(Request $request)
     {
-        //
+        $auth_user = Auth::id();
+        // $data = $request->validated();
+        TicketComment::where('id', $request->id)->update([
+            'comment' => $request->comment
+        ]);
+        $ticketComment = TicketComment::whereId($request->id)->with('tickets')->first();
+        \LogActivity::addToLog('Comment Updated in the ticket: '.$ticketComment->tickets['ticket_no']);
+            return response()->json($ticketComment);
     }
 
     /**
@@ -104,7 +111,9 @@ class TicketCommentController extends Controller
     public function destroy(Request $request)
     {
         $ticketComment = TicketComment::whereId($request->id)->delete();
-        \LogActivity::addToLog('Comment deleted from the ticket');
+        $ticket = Ticket::whereId($request->ticket_id)->first();
+
+        \LogActivity::addToLog('Comment deleted from the ticket: '.$ticket['ticket_no']);
             return response()->json('success');
 
     }

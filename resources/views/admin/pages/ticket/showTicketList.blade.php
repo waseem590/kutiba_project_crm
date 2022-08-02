@@ -71,7 +71,7 @@
                                 <a href="{{ route('ticket.show', $ticket->id) }}" class="edit-list-icons"><img
                                         src="{{ asset('admin/images/list-icon-std.png') }}" alt="view-ticket"
                                         class="img-fluid" /></a>
-
+                                @role('Master User')
                                 <div class="dropdown" style="display: inline-block;">
                                     <button class="btn tbl-dropdown dropdown-toggle ticket_status_dropdown" title="Status"
                                         type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -83,6 +83,7 @@
 
                                     </div>
                                 </div>
+                                @endrole
                             </td>
                         </tr>
                     @endforeach
