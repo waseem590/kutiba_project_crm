@@ -213,7 +213,7 @@ class StudentController extends Controller
 
             ->get();
 
-        return view('search', compact('add_students', 'counsellor', 'countries', 'offices', 'exampleTable', 'admission_officer'));
+        return view('admin.pages.student.search', compact('add_students', 'counsellor', 'countries', 'offices', 'exampleTable', 'admission_officer'));
     }
 
 
@@ -680,10 +680,11 @@ class StudentController extends Controller
         $authUserRole = $authUser->getRoleNames()[0];
         $dropdown = Dropdown::with('dropdownType')->get();
         $countries = Country::all();
+         $surnames = StudentInformation::all();
         $counsellor = User::role('Counsellor')->get();
-        $admission_officer = User::role('Admissions')->get();
-        if ($authUserRole == 'Management') {
-            $aboveTwoMonthDate = date("Y-m-d H:i:s", strtotime("+2 month"));
+         $admission_officer = User::role('Admissions')->get();
+        if($authUserRole == 'Management'){
+            $aboveTwoMonthDate = date("Y-m-d H:i:s",strtotime("+2 month"));
             $currentDate = Carbon::now()->toDateTimeString();
 
             $showStudentsToCounsellor = AddStudentDropdownType::whereBetween('course_start_date', [$currentDate, $aboveTwoMonthDate])->where('course_complete', 'Complete')->latest()->get();
@@ -761,15 +762,16 @@ class StudentController extends Controller
             }
         }
         // $allUsers = AddStudent::studentRelations()->where('visa_stu',0)->latest()->get();
-        $all = AddStudent::studentTwoRelation()->where('visa_stu', 0)->latest()->get();
+        $all = AddStudent::studentTwoRelation()->where('visa_stu', 0)->get();
         $all_u = [];
         foreach ($all as $user) {
             if ($user->info && $user->contact) {
                 $all_u[] = $user;
             }
         }
-        $allUsers = collect($all_u);
-        return view('admin.pages.student.studentlist', compact('allUsers', 'countries', 'counsellor', 'dropdown', 'admission_officer'))->with('counsellor', $counsellor, 'admission_officer', $admission_officer);
+        $allUsers= collect($all_u);
+        return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown','admission_officer','surnames'))->with('counsellor',$counsellor,'admission_officer',$admission_officer);
+
     }
     public function complete(Request $request)
     {
