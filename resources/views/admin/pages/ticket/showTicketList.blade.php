@@ -56,37 +56,49 @@
                     </tr>
                 </thead>
                 <tbody id="ticket_filter_table">
+                    @if (count($tickets) > 0)
                     @foreach ($tickets as $ticket)
-                        <tr>
-                            <th>{{ $loop->iteration }}</th>
-                            <th>{{ $ticket->ticket_no }}</th>
-                            <td>{{ $ticket->users->name }}</td>
-                            <td>{{ $ticket->title }}</td>
-                            <td>{{ $ticket->periority }}</td>
-                            <td>{{ $ticket->message }}</td>
-                            <td class="tr_ticket_status">{{ $ticket->status }}</td>
-                            <td>{{ date('M d, Y', strtotime($ticket->created_at ?? '')) }}</td>
+                    <tr>
+                        <th>{{ $loop->iteration }}</th>
+                        <th>
+                            {{ $ticket->ticket_no }}
+                        </th>
+                        <td>{{ $ticket->users->name }}</td>
+                        <td>{{ $ticket->title }}</td>
+                        <td>{{ $ticket->periority }}</td>
+                        <td>{{ $ticket->message }}</td>
+                        <td class="tr_ticket_status">{{ $ticket->status }}</td>
+                        <td>{{ date('M d, Y', strtotime($ticket->created_at ?? '')) }}</td>
 
-                            <td>
-                                <a href="{{ route('ticket.show', $ticket->id) }}" class="edit-list-icons"><img
-                                        src="{{ asset('admin/images/list-icon-std.png') }}" alt="view-ticket"
-                                        class="img-fluid" /></a>
-                                @role('Master User')
-                                <div class="dropdown" style="display: inline-block;">
-                                    <button class="btn tbl-dropdown dropdown-toggle ticket_status_dropdown" title="Status"
-                                        type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                        aria-expanded="false" value="{{ $ticket->id }}">
-                                    </button>
-                                    <div class="dropdown-menu dropdown ticket_status" aria-labelledby="dropdownMenuButton">
-                                        <a class="dropdown-item" href="#">open</a>
-                                        <a class="dropdown-item" href="#">close</a>
+                        <td>
+                            <a href="{{ route('ticket.show', $ticket->id) }}" class="edit-list-icons"><img
+                                    src="{{ asset('admin/images/list-icon-std.png') }}" alt="view-ticket"
+                                    class="img-fluid" /></a>
+                            @role('Master User')
+                            <div class="dropdown" style="display: inline-block;">
+                                <a href="#" class="edit-list-icons dlt_ticket"><img
+                                    src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
+                                    class="img-fluid" /></a>
+                                <button class="btn tbl-dropdown dropdown-toggle ticket_status_dropdown" title="Status"
+                                    type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false" value="{{ $ticket->id }}">
+                                </button>
+                                <div class="dropdown-menu dropdown ticket_status" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">open</a>
+                                    <a class="dropdown-item" href="#">close</a>
 
-                                    </div>
                                 </div>
-                                @endrole
-                            </td>
+                            </div>
+                            @endrole
+                        </td>
+                    </tr>
+                @endforeach
+                    @else
+                        <tr>
+                            <td colspan="9" class="text-center"> List is empty yet </td>
                         </tr>
-                    @endforeach
+                    @endif
+
                 </tbody>
             </table>
 
@@ -97,7 +109,6 @@
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <script>
         $(document).ready(function() {
-            console.log("abc");
             $('.ticket_status a').on('click', function(e) {
                 e.preventDefault();
                 // var status = $(this).text();
@@ -127,6 +138,36 @@
                     }
                 });
             });
+
+            $('.dlt_ticket').on('click', function(e){
+                e.preventDefault();
+                // var status = $(this).text();
+                var row = $(this).closest('tr');
+                var ticket_id = $(row).find('.ticket_status_dropdown').val();
+                console.log(ticket_id);
+                if (window.confirm('Do you want to delete this ticket?')) {
+                    $.ajaxSetup({
+                        headers: {
+                            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+                        },
+                    });
+
+                    $.ajax({
+                        method: "post",
+                        url: "{{ route('ticket_destroy') }}",
+                        data: {
+                            id: ticket_id
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            console.log(data);
+                            toastr.error("Ticket deleted Successfully");
+                            setInterval(1000);
+                            $(row).remove();
+                        }
+                    });
+                }
+            })
         });
     </script>
 @endsection

@@ -47,7 +47,7 @@
 @endpush
 @section('content')
 
-<!-- <div class="add-students-section">
+{{-- <div class="add-students-section">
     <h1 class="page-heading">Search Items</h1>
     <table>
         <thead>
@@ -64,16 +64,16 @@
                     @if(class_basename($result) == "User")
                     <td>
                         <a href="">{{$result->email}}</a>
-                    </td> 
+                    </td>
                     @endif
                 </tr>
             @endforeach
         </tbody>
     </table>
-</div> -->
+</div>  --}}
 
 <div class="add-students-section1">
-    
+
     <div class="container">
         <div class="row">
             <div class="col-md-12 ">
