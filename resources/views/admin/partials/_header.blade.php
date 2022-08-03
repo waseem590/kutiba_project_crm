@@ -50,18 +50,18 @@
                                         <li class="dropdown-item">
                                             <span class="notifi_cross" aria-hidden="true">×</span>
                                             <!-- <p>Counselor Name: {{ $notification->data['comment_creater_name'] ?? '' }}</p> -->
-                                            <p class="unread_notifi">Name: {{ $notification->data['name'] }}</p>
+                                            <p class="unread_notifi">Name: {{ $notification->data['notifi_title'] }}</p>
+                                            <p class="unread_notifi">Date: {{ $notification->created_at }}</p>
                                             <input type="hidden" class="notifi_read_id" value="{{$notification->id}}">
-                                            <input type="hidden" class="student_id" value="{{$notification->data['student_id']}}">
-                                            <p>{{ $notification->data['comment'] ?? '' }}</p>
+
                                         </li>
                                         @endforeach
                                         @foreach(auth()->user()->readNotifications as $notification)
                                         <li class="dropdown-item" style="background-color: #f5f7fa;">
                                             <span class="notifi_cross" aria-hidden="true">×</span>
                                             <input type="hidden" class="notifi_read_id" value="{{$notification->id}}">
-                                            <a href="{{ route('student.show',$notification->data['student_id'] ?? '')}}">Name: {{ $notification->data['name'] }}</a>
-                                            <p>{{ $notification->data['comment'] ?? '' }}</p>
+                                            <a href="#">Name: {{ $notification->data['notifi_title'] }}</a>
+                                            <p>{{ $notification->created_at ?? '' }}</p>
                                         </li>
                                         @endforeach
                                         </div>
@@ -137,18 +137,17 @@
                                         @foreach(auth()->user()->unreadNotifications as $notification)
                                         <li class="dropdown-item">
                                             <span class="notifi_cross" aria-hidden="true">×</span>
-                                            <p class="unread_notifi"> Name: {{ $notification->data['name'] }}</p>
+                                            <p class="unread_notifi"> Name: {{ $notification->data['notifi_title'] }}</p>
                                             <input type="hidden" class="notifi_read_id" value="{{$notification->id}}">
-                                            <input type="hidden" class="student_id" value="{{$notification->data['student_id']}}">
-                                            <p>{{ $notification->data['comment'] ?? ''}}</p>
+                                            <p>{{ $notification->created_at ?? ''}}</p>
                                         </li>
                                         @endforeach
                                         @foreach(auth()->user()->readNotifications as $notification)
                                         <li class="dropdown-item" style="background-color: #f5f7fa;">
                                             <span class="notifi_cross" aria-hidden="true">×</span>
                                             <input type="hidden" class="notifi_read_id" value="{{$notification->id}}">
-                                            <a href="{{ route('student.show',$notification->data['student_id'] ?? '')}}">Name: {{ $notification->data['name'] }}</a>
-                                            <p>{{ $notification->data['email'] ?? '' }}</p>
+                                            <a href="#">Name: {{ $notification->data['notifi_title'] }}</a>
+                                            <p>{{ $notification->created_at ?? '' }}</p>
                                         </li>
                                         @endforeach
                                         </div>

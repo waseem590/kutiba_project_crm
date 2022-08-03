@@ -161,7 +161,7 @@
             backface-visibility: hidden;
             background-color: #9612eb;
             /* background-image: url($cover-image);
-                         */
+                             */
             background-size: contain;
             transform-style: preserve-3d;
             transform-origin: 0% 50%;
@@ -298,10 +298,10 @@
         @media (max-width:1300px) and (min-width:991px) {
 
             /* .birthday_modal .modal-body {
-                            background-color: rebeccapurple;
-                            max-width: 1200px;
-                            margin: auto;
-                        } */
+                                background-color: rebeccapurple;
+                                max-width: 1200px;
+                                margin: auto;
+                            } */
 
             .birthday_modal .modal-content {
                 position: relative;
@@ -505,7 +505,7 @@
                                         $set_time = $covert_to_time->setTimezone($time);
                                         $h = $set_time->format('h');
                                         $m = $set_time->format('i');
-                                      
+
                                         $date = $set_time->format('d m Y');
 
                                         if ($h == 0) {
@@ -520,9 +520,8 @@
 
                                         $h = $h < 10 ? $h : $h;
                                         $m = $m < 10 ? $m : $m;
-                                      
 
-                                        $time = $h . ':' . $m .  $session;
+                                        $time = $h . ':' . $m . $session;
                                         ?>
                                         <div id="MyClockDisplay" class="clock" onload="showTime()">{{ $time }}
                                         </div>
@@ -534,20 +533,20 @@
                     </div>
                 @endforeach
                 <!-- <div class="col-md-6 col-lg-4 col-xl-4">
-                                        <div class="card custom-cards custom-card-3 text-white clock_card text-center">
-                                            <div class="card-body text-center">
-                                                <div class="container_clock">
-                                                    <div class="box-clock">
-                                                        <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
+                                            <div class="card custom-cards custom-card-3 text-white clock_card text-center">
+                                                <div class="card-body text-center">
+                                                    <div class="container_clock">
+                                                        <div class="box-clock">
+                                                            <div id="MyClockDisplay" class="clock" onload="showTime()"></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div> -->
+                                        </div> -->
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 col-lg-3">
+            <div class="@if (auth()->user()->role_id == 6) col-md-6 col-lg-3 @else col-md-6 col-lg-4 @endif">
                 <div class="card card_margin custom-cards custom-card-1 text-white">
                     <div class="card-body d-flex justify-content-between">
                         <div class="card-image mt-3">
@@ -562,7 +561,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
+            <div class="@if (auth()->user()->role_id == 6)col-md-6 col-lg-3 @else col-md-6 col-lg-4 @endif ">
                 <div class="card card_margin custom-cards custom-card-2 text-white">
                     <div class="card-body d-flex justify-content-between">
                         <div class="card-image mt-2">
@@ -576,7 +575,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
+            <div class="@if (auth()->user()->role_id == 6) col-md-6 col-lg-3 @else col-md-6 col-lg-4 @endif">
                 <div class="card card_margin custom-cards custom-card-4 text-white">
                     <div class="card-body d-flex justify-content-between">
                         <div class="card-image mt-3">
@@ -590,20 +589,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card card_margin custom-cards custom-card-3 text-white">
-                    <div class="card-body d-flex justify-content-between">
-                        <div class="card-image mt-2">
-                            <img src="{{ asset('admin/images/card-2.png') }}" alt="" />
-                        </div>
-                        <span class="vertical-line"></span>
-                        <div class="card-content mt-3" style="margin-right: 47px;">
-                            <span>Users</span>
-                            <p class="mb-0">{{ $total_users }}</p>
+            @role('Master User')
+                <div class="col-md-6 col-lg-3">
+                    <div class="card card_margin custom-cards custom-card-3 text-white">
+                        <div class="card-body d-flex justify-content-between">
+                            <div class="card-image mt-2">
+                                <img src="{{ asset('admin/images/card-2.png') }}" alt="" />
+                            </div>
+                            <span class="vertical-line"></span>
+                            <div class="card-content mt-3" style="margin-right: 47px;">
+                                <span>Users</span>
+                                <p class="mb-0">{{ $total_users }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endrole
         </div>
     </section>
     <section class="content-area mt-2">
@@ -682,29 +683,29 @@
                         </div>
 
                         <!-- <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                                <div class=" tab-heading">Full Name</div>
-                                                <div class=" tab-heading">Email</div>
-                                                <div class="col-sm-4 tab-heading">Nationality</div>
-                                            </div>
-                                            <div style="height: 160px;overflow-y: scroll;overflow-x: hidden;">
-                                                @foreach ($latest_students as $student)
+                                                    <div class=" tab-heading">Full Name</div>
+                                                    <div class=" tab-heading">Email</div>
+                                                    <div class="col-sm-4 tab-heading">Nationality</div>
+                                                </div>
+                                                <div style="height: 160px;overflow-y: scroll;overflow-x: hidden;">
+                                                    @foreach ($latest_students as $student)
     @if ($student->contact)
     <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                                    <div class="">
-                                                        <a href="{{ route('student.show', $student->id) }}">{{ $student->info['name'] ?? '' }}</a>
+                                                        <div class="">
+                                                            <a href="{{ route('student.show', $student->id) }}">{{ $student->info['name'] ?? '' }}</a>
+                                                        </div>
+                                                        <div class="">
+                                                            {{ $student->contact['email'] ?? '' }}
+                                                        </div>
+                                                        <div class="" style="padding-left: 17px;">
+                                                            <?php $country = \App\Models\Country::find($student->info['nationality'] ?? ''); ?>
+                                                            {{ $country['name'] ?? '' }}
+                                                        </div>
                                                     </div>
-                                                    <div class="">
-                                                        {{ $student->contact['email'] ?? '' }}
-                                                    </div>
-                                                    <div class="" style="padding-left: 17px;">
-                                                        <?php $country = \App\Models\Country::find($student->info['nationality'] ?? ''); ?>
-                                                        {{ $country['name'] ?? '' }}
-                                                    </div>
-                                                </div>
     @endif
     @endforeach
 
-                                            </div> -->
+                                                </div> -->
                         <div class="row" style="padding-top: 8px;">
                             <div class="col-sm-12 text-right">
                                 <a class="btn edit_save float-right px-3 py-1" style="padding-top: 7px !important;"
@@ -742,26 +743,26 @@
                         <!-- end table  -->
 
                         <!-- <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                                <div class="col-sm-4 tab-heading">Full Name</div>
-                                                <div class="col-sm-4 tab-heading">Email</div>
-                                            </div>
-                                            <div style="height: 200px;overflow-y: scroll;overflow-x: hidden;">
-                                                @foreach ($users as $user)
+                                                    <div class="col-sm-4 tab-heading">Full Name</div>
+                                                    <div class="col-sm-4 tab-heading">Email</div>
+                                                </div>
+                                                <div style="height: 200px;overflow-y: scroll;overflow-x: hidden;">
+                                                    @foreach ($users as $user)
     <div class="mm-std-list-scroll student-list mb-3 student_card_list">
-                                                    <div class="col-sm-4">
-                                                        {{ $user->name }}
+                                                        <div class="col-sm-4">
+                                                            {{ $user->name }}
+                                                        </div>
+                                                        <div class="col-sm-8">
+                                                            {{ $user->email }}
+                                                        </div>
                                                     </div>
-                                                    <div class="col-sm-8">
-                                                        {{ $user->email }}
-                                                    </div>
-                                                </div>
     @endforeach
-                                            </div> -->
+                                                </div> -->
                         <!-- <div class="row" style="padding-top: 8px;">
-                                                <div class="col-sm-12 text-right">
-                                                    <a class="btn edit_save float-right px-3 py-1" href="{{ route('studentlists') }}">View All Students</a>
-                                                </div>
-                                            </div> -->
+                                                    <div class="col-sm-12 text-right">
+                                                        <a class="btn edit_save float-right px-3 py-1" href="{{ route('studentlists') }}">View All Students</a>
+                                                    </div>
+                                                </div> -->
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -776,10 +777,10 @@
                         </div>
                     </div>
                     <!-- <div class="student-performance pb-0">
-                                            {!! $visa_chart->container() !!}
-                                                <script src="{{ $visa_chart->cdn() }}"></script>
-                                            {{ $visa_chart->script() }}
-                                        </div> -->
+                                                {!! $visa_chart->container() !!}
+                                                    <script src="{{ $visa_chart->cdn() }}"></script>
+                                                {{ $visa_chart->script() }}
+                                            </div> -->
                     <div class="row-no-gutters top-results">
                         <div class="col-md-12 col-lg-12 p-0 col-xl-10">
                             <div>
@@ -791,10 +792,10 @@
                         </div>
                     </div>
                     <!-- <div class="top-results">
-                                            {!! $chart->container() !!}
-                                                <script src="{{ $chart->cdn() }}"></script>
-                                            {{ $chart->script() }}
-                                        </div> -->
+                                                {!! $chart->container() !!}
+                                                    <script src="{{ $chart->cdn() }}"></script>
+                                                {{ $chart->script() }}
+                                            </div> -->
                 </div>
             </div>
         </div>

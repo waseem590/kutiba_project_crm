@@ -539,6 +539,7 @@ class StudentButtonController extends Controller
                 'student_id' => $student->id,
                 'comment' => $request->val,
                 'creater_name' => auth()->user()->name,
+                'notifi_title' => "Student",
             ];
             $user->notify(new \App\Notifications\AdminNotification($details));
         }

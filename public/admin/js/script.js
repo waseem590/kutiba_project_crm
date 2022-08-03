@@ -7,7 +7,7 @@ $(".menu-toggle").on('click', function (e) {
 const deleteRecord = (id, uri) => {
     document.getElementById("identity").value;
     let route = window.location.origin + uri + id;
-    // alert(route); Enter only Arabic Words 
+    // alert(route); Enter only Arabic Words
     document.getElementById("deleteForm").setAttribute("action", route);
     $("#deleteModal").modal("show");
 };

@@ -5,7 +5,7 @@
     <h1 class="page-heading" style="display: inline-block;">School Contacts List</h1>
     <a href="{{route('school.contacts')}}" class="btn edit_save float-right">Add New School Contacts</a>
     <div class="table-responsive">
-        <table id="example" class="table table-bordered mm-school" width="100%" cellspacing="0">
+        <table id="SchoolContactListTable" class="table table-bordered mm-school" width="100%" cellspacing="0">
 
             <thead class="s-list-thead">
                 <tr>
@@ -67,4 +67,9 @@
     </div>
 </div>
 @include('admin.modals.deleteModal')
+@endsection
+@section('scripts')
+<script>
+    $('#SchoolContactListTable').dataTable();
+</script>
 @endsection
