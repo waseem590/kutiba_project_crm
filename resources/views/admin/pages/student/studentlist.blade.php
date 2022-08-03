@@ -30,6 +30,25 @@
             padding-right: 20px !important;
             color: white;
         }
+
+        #advanceSearchBtn {
+            position: absolute;
+            right: 0;
+        }
+
+        @media (max-width:990px) and (min-width:768px) {
+            #advanceSearchBtn {
+                right: 30px;
+                top: 188px;
+            }
+        }
+
+        @media (min-width: 993px){
+            #advanceSearchBtn {
+                right: 30px;
+                top: 156px;
+            }
+        }
     </style>
 @endpush
 @section('content')
@@ -63,8 +82,8 @@
             @endcannot
         </div>
 
-        <button class="std-detail_btns white-bg" data-toggle="modal" data-target="#form" style="float:right;"><i
-                class="fa fa-search"></i>&nbsp;&nbsp; Advance Search</button>
+        <button class="std-detail_btns white-bg" id="advanceSearchBtn" data-toggle="modal" data-target="#form"
+            ><i class="fa fa-search"></i>&nbsp;&nbsp; Advance Search</button>
 
         <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
@@ -77,6 +96,7 @@
                         </button>
                     </div>
                     <form action="search2" method="GET">
+                        @csrf
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="email1" style="color:black;">Counsellor</label>
@@ -93,13 +113,11 @@
                                 <label for="password1" style="color:black;">Admission Officer</label>
                                 <select class="form-control" name="search2">
                                     <option></option>
-                                    {{-- @foreach ($admission_officer as $key => $data)
-                 <option  value="{{$data->id}}">{{$data->name}}</option>
-        @endforeach --}}
+                                    @foreach ($admission_officer as $key => $data)
+                                        <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
-
-
                             <div class="form-group">
                                 <label for="password1" style="color:black;">Status</label>
                                 <select class="form-control" name="status">
@@ -110,11 +128,6 @@
 
                                 </select>
                             </div>
-
-
-
-
-
                         </div>
                         <div class="modal-footer border-top-0 d-flex justify-content-center">
                             <button type="submit" class="btn btn-success">Submit</button>
@@ -193,23 +206,24 @@
                                 @endforeach
                             </td>
                             <!-- <td>
-                                @if (!empty($dropdown[0]->dropdownType))
+                                        @if (!empty($dropdown[0]->dropdownType))
     @foreach ($dropdown[0]->dropdownType as $val)
     @if ($val->id == $item->office)
     {{ $val->name }}
     @endif
     @endforeach
     @endif
-                            </td> -->
+                                    </td> -->
                             <td>{{ date('M d, Y', strtotime($item->created_at ?? '')) }}</td>
                             <td class="custem-text-center std-list-icon">
                                 <a href="https://api.whatsapp.com/?phone={{ $item->contact->contact_number ?? '' }}"
                                     class="edit-list-icons" target="_blank" data-bs-toggle="" data-bs-target=""><img
                                         src="{{ asset('admin/images/whatsapp.png') }}" alt="edit-std"
                                         class="img-fluid"></a>
-                                <a href="{{ $item->info->name ?? '' }}" class="edit-list-icons sms" data-bs-toggle="modal"
-                                    data-bs-target="#sms-modal" data-id="{{ $item->id }}"><img
-                                        src="{{ asset('admin/images/sms.png') }}" alt="edit-std" class="img-fluid">
+                                <a href="{{ $item->info->name ?? '' }}" class="edit-list-icons sms"
+                                    data-bs-toggle="modal" data-bs-target="#sms-modal"
+                                    data-id="{{ $item->id }}"><img src="{{ asset('admin/images/sms.png') }}"
+                                        alt="edit-std" class="img-fluid">
                                     <input type="hidden" class="first_contact_num"
                                         value="{{ $item->contact->contact_number ?? '' }}">
                                     <input type="hidden" class="second_contact_num"
@@ -260,8 +274,8 @@
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
     <!-- dataTable links -->
     <!-- <script src="{{ asset('admin/js/datatable/dataTables.bootstrap4.min.js') }}"></script>
-        <script src="{{ asset('admin/js/datatable/jquery.dataTables.min.js') }}"></script>
-        <script src="{{ asset('admin/js/datatable/jquery-3.5.1.js') }}"></script> -->
+                <script src="{{ asset('admin/js/datatable/jquery.dataTables.min.js') }}"></script>
+                <script src="{{ asset('admin/js/datatable/jquery-3.5.1.js') }}"></script> -->
     <script>
         $(document).on('click', '.sms', function(e) {
             var current = $(this);

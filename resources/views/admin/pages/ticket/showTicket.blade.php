@@ -70,12 +70,7 @@
                     <h3>User Role:</h3>
                 </div>
                 <div class="col-xl-3 col-sm-6">
-                    @php
-                        $user = \Spatie\Permission\Models\Role::where('id', $ticket->users->type)->first();
-                        $role = $user->name;
-                        // dd($role);
-                    @endphp
-                    <p>{{ $role }}</p>
+                    <p>{{ $ticket->users->roles->first()->name }}</p>
                 </div>
                 <div class="col-xl-3 col-sm-6">
                     <h3>Title:</h3>

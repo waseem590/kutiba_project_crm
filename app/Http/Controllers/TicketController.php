@@ -138,8 +138,16 @@ class TicketController extends Controller
      * @param  \App\Models\Ticket  $ticket
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Ticket $ticket)
+    public function destroy(Request $request)
     {
-        //
+        $ticket = Ticket::whereId($request->id)->first();
+        Ticket::whereId($request->id)->delete();
+        $ticketComments =  TicketComment::where('tickets_id', $ticket->id)->delete();
+        // return $ticketComments;
+        // foreach($ticketComments as $ticketComment){
+
+        // }
+        \LogActivity::addToLog('Tickets and its comments are deleted: '.$ticket['ticket_no']);
+            return response()->json('success');
     }
 }
