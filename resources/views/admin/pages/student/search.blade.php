@@ -1,4 +1,3 @@
-
 @extends('admin.master')
 @push('css')
 <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
@@ -68,14 +67,6 @@
 
 <button   class="std-detail_btns white-bg"  data-toggle="modal" data-target="#form"  style="float:right;"><i class="fa fa-search"></i>&nbsp;&nbsp; Advance Search</button>
 
-
-
-
-
-
-
-
-
 <div class="modal fade" id="form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -118,11 +109,6 @@
     
             </select>
           </div>
-
-
-
-         
-        
         </div>
         <div class="modal-footer border-top-0 d-flex justify-content-center">
           <button type="submit" class="btn btn-success">Submit</button>
@@ -131,9 +117,6 @@
     </div>
   </div>
 </div>
-
-
-
     <div class="mm-stdlist-main  table-responsive">
 
         <table id="mm-std-List" class="table table-bordered  student_list_table">

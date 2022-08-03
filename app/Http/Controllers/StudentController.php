@@ -185,21 +185,23 @@ class StudentController extends Controller
 
 
 
+
   public function search(Request $request){
+
 
         $search = $request->input('search');
         $search2 = $request->input('search2');
-        $status=  $request->input('status');
-         $authUser = User::find(auth()->user()->id);
+        $status =  $request->input('status');
+        $authUser = User::find(auth()->user()->id);
         $authUserRole = $authUser->getRoleNames()[0];
         $dropdown = Dropdown::with('dropdownType')->get();
         $countries = Country::all();
         $offices = Country::all();
         $counsellor = User::role('Counsellor')->get();
-           $admission_officer = User::role('Admissions')->get();
+        $admission_officer = User::role('Admissions')->get();
 
         $exampleTable = Application::with('application_student')->get();
-
+        
         $add_students = AddStudent::query()->join('applications', 'add_students.id', '=',
                      'applications.add_students_id')
           ->where('counsellor', 'LIKE', "%{$search}%")
@@ -209,11 +211,8 @@ class StudentController extends Controller
                     ->get();
 
         return view('admin.pages.student.search', compact('add_students','counsellor','countries','offices','exampleTable','admission_officer'));
+
     }
-
-
-
-
 
     public function destroy($id)
     {
@@ -271,11 +270,9 @@ class StudentController extends Controller
     // For edit , add and update Student Information tab
     public function studentinformation(StudentInformationRequest $request)
     {
-        if ($request->surname != NULL) {
-            $name = $request->surname . " " . $request->l_name;
-        } else {
-            $name = $request->l_name;
-        }
+
+        $name = $request->l_name;
+
         // for edit student data
         if ($request->forEdit == 'true') {
             dd("edit");
@@ -323,11 +320,9 @@ class StudentController extends Controller
                     if ($stu->name == $request->l_name && $stu->dob == $request->dob) {
                         // $id = Session::forget('lastInsertedId');
                         $student[] = $stu;
-
                     }
                     // return $student;
                 }
-
             } else {
                 foreach ($all_students as $stu) {
                     if ($stu->surname == $request->surname && $stu->dob == $request->dob) {

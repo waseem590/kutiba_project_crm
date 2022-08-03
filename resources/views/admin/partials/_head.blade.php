@@ -50,7 +50,7 @@
     />
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link rel="stylesheet" href="/admin/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.3/b-2.1.1/b-colvis-2.1.1/b-html5-2.1.1/datatables.min.css"/>
+    {{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.3/b-2.1.1/b-colvis-2.1.1/b-html5-2.1.1/datatables.min.css"/> --}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/zf/r-2.2.9/datatables.min.css"/>
     <!-- <link rel="stylesheet" href="{{asset('admin/css/dropdown.css')}}"> -->
     <link href="{{ asset('admin/css/style.css') }}" rel="stylesheet" />
