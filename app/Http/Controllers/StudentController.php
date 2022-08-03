@@ -185,8 +185,9 @@ class StudentController extends Controller
 
 
 
-    public function search(Request $request)
-    {
+
+  public function search(Request $request){
+
 
         $search = $request->input('search');
         $search2 = $request->input('search2');
@@ -200,25 +201,18 @@ class StudentController extends Controller
         $admission_officer = User::role('Admissions')->get();
 
         $exampleTable = Application::with('application_student')->get();
-
-        $add_students = AddStudent::query()->join(
-            'applications',
-            'add_students.id',
-            '=',
-            'applications.add_students_id'
-        )
-            ->where('counsellor', 'LIKE', "%{$search}%")
+        
+        $add_students = AddStudent::query()->join('applications', 'add_students.id', '=',
+                     'applications.add_students_id')
+          ->where('counsellor', 'LIKE', "%{$search}%")
             ->where('admission_officer', 'LIKE', "%{$search2}%")
-            ->where('applications.status', 'LIKE', "%{$status}%")
+            ->where('applications.status', 'LIKE',"%{$status}%")
 
-            ->get();
+                    ->get();
 
-        return view('admin.pages.student.search', compact('add_students', 'counsellor', 'countries', 'offices', 'exampleTable', 'admission_officer'));
+        return view('admin.pages.student.search', compact('add_students','counsellor','countries','offices','exampleTable','admission_officer'));
+
     }
-
-
-
-
 
     public function destroy($id)
     {
