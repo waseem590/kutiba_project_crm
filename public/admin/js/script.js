@@ -34,7 +34,9 @@ $("#sidebar-wrapper a.nav-link").each(function() {
 
 $(document).ready(function () {
     $("#example").DataTable();
-
+    $("#TaskListTable").DataTable();
+        $("#ApplicationListTable").DataTable();
+        $("#DeletedApplicationTable").DataTable();
 });
 
 var dData = function () {

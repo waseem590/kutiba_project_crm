@@ -176,6 +176,40 @@
             </li>
         @endcan
 
+
+        <li class="nav-item stu-dropdown mm-knowlidge">
+            <a class="nav-link collapsed text-truncate" href="#ticket_submenue" data-toggle="collapse"
+                data-target="#ticket_submenue">
+                <img src="{{ asset('admin/images/04.png') }}" alt="image" />
+                <span class="d-none d-sm-inline pl-2 mm-gudeline">Ticket</span> <i
+                    class="fas fa-angle-down arrow_style"></i></a>
+            <div class="collapse" id="ticket_submenue" aria-expanded="false">
+
+                <ul class="flex-column nav ">
+                    @can('generate_ticket')
+                        <li>
+                            <a class="nav-link" href="{{ route('ticket.create') }}">
+                                <i class="fas fa-arrow-alt-right color-white"></i>
+                                <div class="add-std-new"> <i class="fas fa-graduation-cap"></i>
+                                    <p>Generate Ticket
+                                    <p>
+                                </div>
+                            </a>
+                        </li>
+                    @endcan
+                    <li>
+                        <a class="nav-link" href="{{ route('ticket.showList') }}">
+                            <i class="fas fa-arrow-alt-right color-white"></i>
+                            <div class="add-std-new"> <i class="fas fa-graduation-cap"></i>
+                                <p>View Ticket
+                                <p>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
         <li class="nav-item stu-dropdown mm-knowlidge">
             <a class="nav-link collapsed text-truncate" href="#guidlines_submenue" data-toggle="collapse"
                 data-target="#guidlines_submenue">

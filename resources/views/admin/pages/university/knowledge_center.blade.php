@@ -220,7 +220,7 @@
 
 
                     <div class="modal-body">
-                        <form action="/guidelines/update_university/1" method="POST" id="update_university"
+                        <form action="/guidelines/update_university/" class="update_university_id" method="GET" id="update_university"
                             enctype='multipart/form-data'>
                             @csrf
                             <div class="form-row">
@@ -456,6 +456,7 @@
                     id: uni_id
                 },
                 success: function (res) {
+                    $('.update_university_id').attr('action',res.id);
                     $('.en_title').val(res.en_title);
                     $('.ar_title').val(res.ar_title);
                     $('.web_link').val(res.web_link);

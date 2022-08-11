@@ -169,7 +169,7 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'guidelines'], function () {
         // Route::get('universities',[UniversityController::class, 'index'])->name('show.universities');
         Route::post('universities', [UniversityController::class, 'store_universities'])->name('add.university');
-        Route::get('/update_university/{id}', [UniversityController::class, 'update_university']);
+        Route::post('/update_university/{id}', [UniversityController::class, 'update_university']);
         Route::post('edit_find_university', [UniversityController::class, 'edit_find_university'])->name('edit_find_university');
         Route::delete('/university/{id}', [UniversityController::class, 'delete_university'])->name('delete.university');
         Route::get('school_contacts', [UniversityController::class, 'school_contacts'])->name('school_contacts');
@@ -256,4 +256,17 @@ Route::middleware(['auth'])->group(function () {
     // student attachment Routes
     Route::post('save_attachment', [StudentButtonController::class, 'save_attachment'])->name('save_attachment');
 
+    // Ticket related Routes
+    Route::get('ticket_showList', [TicketController::class, 'index'])->name('ticket.showList');
+    Route::get('ticket_generate', [TicketController::class, 'create'])->name('ticket.create');
+    Route::get('ticket_show/{id}', [TicketController::class, 'show'])->name('ticket.show');
+    Route::post('ticket_update', [TicketController::class, 'update'])->name('ticket_update');
+    Route::post('ticket_destroy', [TicketController::class, 'destroy'])->name('ticket_destroy');
+    Route::resource('ticket', TicketController::class);
+
+    Route::get('ticket_comment', [TicketCommentController::class, 'index'])->name('ticket_comment.index');
+    Route::post('ticket_comment', [TicketCommentController::class, 'store'])->name('ticket_comment.store');
+    Route::post('ticket_comment_update', [TicketCommentController::class, 'update'])->name('ticket_comment_update');
+    Route::post('ticket_comment_destroy', [TicketCommentController::class, 'destroy'])->name('ticket_comment_destroy');
+    Route::resource('ticket_comment', TicketCommentController::class);
 });

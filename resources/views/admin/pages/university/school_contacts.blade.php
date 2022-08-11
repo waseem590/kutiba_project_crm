@@ -5,7 +5,7 @@
 
 @section('content')
     <div class="add-students-section mm-school-main">
-        
+
         <div class="list-std-btns d-flex justify-content-between mr-3">
             <h1 class="page-heading">School Contacts</h1>
             <a href="{{ url()->previous() }}"><i class="fas fa-step-backward"></i> &nbsp; Back</a>
@@ -23,13 +23,6 @@
                     <div class="form-group">
                         <label class="tab-inner-label" for="">Job Title</label>
                         <input type="text" name="job_title" class="form-control select-inner-text" placeholder="" />
-                    </div>
-
-                </div>
-                <div class="col-md-6 col-lg-6 col-xl-4 custom_padding">
-                    <div class="form-group">
-                        <label class="tab-inner-label" for="">Institution Name</label>
-                        <input type="text" name="institution" class="form-control select-inner-text" placeholder="e.g. Oxford" />
                     </div>
 
                 </div>

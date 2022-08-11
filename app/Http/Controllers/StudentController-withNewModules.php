@@ -186,8 +186,8 @@ class StudentController extends Controller
 
 
 
-    public function search(Request $request)
-    {
+  public function search(Request $request)
+  {
         $search = $request->input('search');
         $search2 = $request->input('search2');
         $status =  $request->input('status');
@@ -207,17 +207,13 @@ class StudentController extends Controller
         //     $query -> where('status', 'LIKE',$status);
         // })->get();
 
-        $add_students = AddStudent::query()->join(
-            'applications',
-            'add_students.id',
-            '=',
-            'applications.add_students_id'
-        )
+        $add_students = AddStudent::query()->join('applications', 'add_students.id', '=',
+                     'applications.add_students_id')
             ->where('counsellor', 'LIKE', "%{$search}%")
             ->where('admission_officer', 'LIKE', "%{$search2}%")
             ->where('visa_stu', 0)->get();
         // dd($add_students);
-        return view('admin.pages.student.search', compact('add_students', 'counsellor', 'countries', 'offices', 'exampleTable', 'admission_officer'));
+        return view('admin.pages.student.search', compact('add_students','counsellor','countries','offices','exampleTable','admission_officer'));
     }
 
     public function destroy($id)
@@ -281,7 +277,7 @@ class StudentController extends Controller
 
         // for edit student data
         if ($request->forEdit == 'true') {
-            // dd("edit");
+            dd("edit");
             $query = StudentInformation::find($request->StudentInfo_id);
             $query->update([
                 // 'surname' => $request->surname,
@@ -321,10 +317,20 @@ class StudentController extends Controller
             $all_students = StudentInformation::all();
             $student = [];
             // return $request;
-            foreach ($all_students as $stu) {
-                if ($stu->surname == $request->surname && $stu->dob == $request->dob) {
-                    // $id = Session::forget('lastInsertedId');
-                    $student[] = $stu;
+            if ($request->surnameCheckbox == 'on') {
+                foreach ($all_students as $stu) {
+                    if ($stu->name == $request->l_name && $stu->dob == $request->dob) {
+                        // $id = Session::forget('lastInsertedId');
+                        $student[] = $stu;
+                    }
+                    // return $student;
+                }
+            } else {
+                foreach ($all_students as $stu) {
+                    if ($stu->surname == $request->surname && $stu->dob == $request->dob) {
+                        // $id = Session::forget('lastInsertedId');
+                        $student[] = $stu;
+                    }
                 }
             }
 
@@ -438,6 +444,7 @@ class StudentController extends Controller
                 'sponsor_name' => $request->sponsor_name,
                 'student_source' => $request->student_source,
                 'cohort_name' => $request->cohort_name,
+                'partner' => $request->partner,
             ]);
             $student = AddStudent::find($query->add_students_id);
 
@@ -456,6 +463,7 @@ class StudentController extends Controller
                 'sponsor_name' => $request->sponsor_name,
                 'student_source' => $request->student_source,
                 'cohort_name' => $request->cohort_name,
+                'partner' => $request->partner,
             ]);
             $student = AddStudent::find($query->add_students_id);
             \LogActivity::addToLog('update student other information, name:' . $student->info->name ?? '');
@@ -467,6 +475,7 @@ class StudentController extends Controller
                 'sponsor_name' => $request->sponsor_name,
                 'student_source' => $request->student_source,
                 'cohort_name' => $request->cohort_name,
+                'partner' => $request->partner,
             ]);
             Session::forget('lastInsertedId');
             Session::forget('stuInfoTab');
@@ -667,11 +676,11 @@ class StudentController extends Controller
         $authUserRole = $authUser->getRoleNames()[0];
         $dropdown = Dropdown::with('dropdownType')->get();
         $countries = Country::all();
-        $surnames = StudentInformation::all();
+         $surnames = StudentInformation::all();
         $counsellor = User::role('Counsellor')->get();
-        $admission_officer = User::role('Admissions')->get();
-        if ($authUserRole == 'Management') {
-            $aboveTwoMonthDate = date("Y-m-d H:i:s", strtotime("+2 month"));
+         $admission_officer = User::role('Admissions')->get();
+        if($authUserRole == 'Management'){
+            $aboveTwoMonthDate = date("Y-m-d H:i:s",strtotime("+2 month"));
             $currentDate = Carbon::now()->toDateTimeString();
 
             $showStudentsToCounsellor = AddStudentDropdownType::whereBetween('course_start_date', [$currentDate, $aboveTwoMonthDate])->where('course_complete', 'Complete')->latest()->get();
@@ -756,8 +765,9 @@ class StudentController extends Controller
                 $all_u[] = $user;
             }
         }
-        $allUsers = collect($all_u);
-        return view('admin.pages.student.studentlist', compact('allUsers', 'countries', 'counsellor', 'dropdown', 'admission_officer', 'surnames'))->with('counsellor', $counsellor, 'admission_officer', $admission_officer);
+        $allUsers= collect($all_u);
+        return view('admin.pages.student.studentlist', compact('allUsers','countries','counsellor','dropdown','admission_officer','surnames'))->with('counsellor',$counsellor,'admission_officer',$admission_officer);
+
     }
     public function complete(Request $request)
     {

@@ -151,7 +151,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Surname</th>
-                        <th scope="col">Name</th>
+                        <th scope="col">First & Second Name</th>
                         <!-- <th scope="col">Email</th> -->
                         <th scope="col">Phone</th>
                         <th scope="col">Country</th>

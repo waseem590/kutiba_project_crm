@@ -385,11 +385,13 @@ class UserManagementController extends Controller
 
     public function edit_application(Request $request)
     {
+        $student_id = $request->id;
         $dropdown = Dropdown::with('dropdownType')->get();
         $applications = Application::applicationRelations()->where('id', $request->id)->first();
         return response()->json([
             'dropdown' => $dropdown,
             'applications' => $applications,
+            'student_id' => $student_id
         ]);
         // return view('admin.pages.student_buttons.edit_application', compact('applications', 'dropdown'));
     }
@@ -592,6 +594,7 @@ class UserManagementController extends Controller
 
     public function update_application(Request $request)
     {
+        $student_id = $request->id;
         try {
             $query = Application::find($request->applications_id);
             $query->update([
@@ -636,7 +639,8 @@ class UserManagementController extends Controller
             return redirect()->back();
             // return redirect()->route('view_application', $request->applications_id);
         } catch (Exception $e) {
-            parent::errorMessage("Record Not Update !Something else");
+            // parent::errorMessage("Record Not Update !Something else");
+            return redirect()->back();
         }
     }
     public function zone_city(){

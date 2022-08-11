@@ -50,7 +50,7 @@ class UniversityController extends Controller
         return redirect()->route('school_contacts');
     }
     public function add_school_contacts(){
-        return view('admin.pages.university.school_contacts');
+        return view('admin.pages.university.school_contacts');        
     }
 
 
@@ -63,6 +63,7 @@ class UniversityController extends Controller
             'contact_no2' => $request->phone_number2['full'],
             'dob' => $request->dob,
             'notes' => $request->notes,
+            'institution' => $request->institution,
         ]);
         parent::successMessage("Record Add Successfully");
         \LogActivity::addToLog('add school contact which is name:'.$request->job_title);
@@ -225,9 +226,7 @@ class UniversityController extends Controller
     }
     public function update_university(Request $request,$id){
         $input = $request->all();
-        // dd($input);
         $university = University::find($id);
-        dd($university);
         $university->en_title = $input['en_title'];
         $university->ar_title = $input['ar_title'];
         $university->web_link = $input['web_link'];

@@ -14,6 +14,7 @@
                         <th scope="col">Staff Name</th>
                         <th scope="col">Job Title</th>
                         <th scope="col">Email Address</th>
+                        <th scope="col">Institution</th>
                         <!-- <th scope="col">Contact Number</th> -->
                         <!-- <th scope="col">Alternative Contact Number</th>
                         <th scope="col">DOB</th>
@@ -31,6 +32,7 @@
                     <td>{{$item->staff_name ?? ''}}</td>
                     <td>{{$item->job_title ?? ''}}</td>
                     <td> {{$item->email ?? ''}}</td>
+                    <td> {{$item->institution ?? ''}}</td>
                     <!-- <td>{{$item->contact_no ?? ''}}</td>
                     <td>{{$item->contact_no2 ?? ''}}</td>
                     <td>{{date('M d, Y', strtotime($item->dob ?? ''))}}</td>

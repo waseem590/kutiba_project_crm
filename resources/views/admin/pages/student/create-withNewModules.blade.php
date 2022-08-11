@@ -134,7 +134,12 @@
                             <label class="tab-inner-label" for="">Surname <span style="color:red">*</span></label>
                             <input type="text" class="form-control select-inner-text" placeholder="" name="surname"
                                 value="{{ $name[0] ?? '' }}" />
-
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="surnameCheckbox" id="surnameCheckbox">
+                                <label class="form-check-label" for="surnameCheckbox">
+                                    The student don't have Surname
+                                </label>
+                            </div>
                             <input type="hidden" name="StudentInfo_id" value="{{ $user->info->id ?? '' }}" />
                             <span class="invalid-feedback">
                                 <p></p>
@@ -448,6 +453,26 @@
                                 @endif
                             </select>
                         </div>
+
+                        <div class="form-group col-md-12 mt-3" style="margin-bottom:-21px">
+                            <label for="exampleFormControlSelect3" class="tab-inner-label">Partner</label>
+
+                            <div class="form-group-custom">
+                                <input type="checkbox" class="partner_checkbox" id="partner" />
+                                <label for="partner">Yes</label>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-4 mt-3 partner_input no_display">
+                            <select class="form-control select-inner-text" id="exampleFormControlSelect1" name="partner">
+                                <option disabled selected value>Select Partner</option>
+                                @if (!empty($dropdown[17]->dropdownType))
+                                    @foreach ($dropdown[17]->dropdownType as $val)
+                                        <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-between student-form-action">
@@ -474,7 +499,7 @@
                         <table id="mm-std-List" class="table table-bordered  student_list_table">
                             <thead class="s-list-thead">
                                 <tr>
-                                    <th scope="col">Surname</th>
+                                    <th scope="col">Surname/Name</th>
                                     <th scope="col">DOB</th>
                                 </tr>
                             </thead>
@@ -493,11 +518,26 @@
         }
 
         //     div-surname
+        // surnameCheckbox
+        $('#surnameCheckbox').on('change', function() {
+            if (this.checked) {
+                $('#div-surname').find('label span').remove();
+            } else {
+                $('#div-surname').find('label span').add();
+            }
+        });
         $('.cohort_checkbox').change(function() {
             if (this.checked) {
                 $('body').find('.cohort_input').removeClass('no_display');
             } else {
                 $('body').find('.cohort_input').addClass('no_display');
+            }
+        });
+        $('.partner_checkbox').change(function() {
+            if (this.checked) {
+                $('body').find('.partner_input').removeClass('no_display');
+            } else {
+                $('body').find('.partner_input').addClass('no_display');
             }
         });
         $('#test4').change(function() {
@@ -533,6 +573,7 @@
             utilsScript: "//cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.3/js/utils.js"
         });
 
+        console.log(phone_number2);
 
         // $("form").submit(function() {
         // var full_number = phone_number.getNumber(intlTelInputUtils.numberFormat.E164);
@@ -699,21 +740,15 @@
                     $('.loader-wrapper').css("display", "flex");
                 },
                 success: function(response, status) {
-                    console.log(jqXHR);
-                    console.log(jqXHR.getResponseHeader('content-type').indexOf);
-                    console.log(jqXHR.getResponseHeader('content-type').indexOf('text/html'));
-                    console.log(response);
                     if (jqXHR.getResponseHeader('content-type').indexOf('text/html') >= 0) {
                         $('#matched_student').html(response);
                         $('#match').modal('show');
-                        console.log("if of matched information");
                     } else {
                         $('body').find('.studentInfoTab').val('true');
                         $("body").find("[href='#tabs-2']").removeClass("active");
                         $("body").find("#tabs-2").removeClass("active");
                         $("body").find("[href='#tabs-3']").addClass("active");
                         $("body").find("#tabs-3").addClass("active");
-                        console.log("else of matched information");
                     }
                     // console.log(response);
                 },
