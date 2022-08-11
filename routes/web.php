@@ -169,7 +169,7 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['prefix' => 'guidelines'], function () {
         // Route::get('universities',[UniversityController::class, 'index'])->name('show.universities');
         Route::post('universities', [UniversityController::class, 'store_universities'])->name('add.university');
-        Route::get('/update_university/{id}', [UniversityController::class, 'update_university']);
+        Route::post('update_university/{id}',[UniversityController::class, 'update_university'])->name('university.update');
         Route::post('edit_find_university', [UniversityController::class, 'edit_find_university'])->name('edit_find_university');
         Route::delete('/university/{id}', [UniversityController::class, 'delete_university'])->name('delete.university');
         Route::get('school_contacts', [UniversityController::class, 'school_contacts'])->name('school_contacts');

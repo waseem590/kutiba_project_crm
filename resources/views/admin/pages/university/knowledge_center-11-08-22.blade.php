@@ -161,7 +161,7 @@
                                         for="">{{ __('translation.powerpoint_file') }}</label>
                                     <div class="custom-file">
                                         <input type="file" class="custom-file-input form-control knowledge-textbox"
-                                            id="" name="ppt_file" value=""   >
+                                            id="" name="ppt_file" value="">
                                         <label class="custom-file-label custom-file-uploader"
                                             for="customFile">{{ __('translation.choose_file') }}</label>
                                     </div>
@@ -176,20 +176,19 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 col-lg-12">
-
-
-                                     <div class="form-group">
-                                        <label class="knowledge-label" for="">{{ __('translation.des_en') }} </label>
-                                        <input type="text" class="form-control knowledge-textbox"name="english_summernote"
-                                                id="english_summernote"   required  style="height:100px;">
+                                    <div class="form-group">
+                                        <label class="knowledge-label" for="">{{ __('translation.des_en') }}</label>
+                                        <div class="word-file-area">
+                                            <textarea class="form-control summernote" name="english_summernote"
+                                                id="english_summernote"></textarea>
+                                        </div>
                                     </div>
-
                                 </div>
                                 <div class="col-md-12 col-lg-12">
                                     <div class="form-group">
                                         <label class="knowledge-label" for="">{{ __('translation.des_ar') }}</label>
                                         <textarea class="form-control arabic_input" name="arabic_summernote"
-                                            id="arabic_summernote"  style="height:100px;"  required></textarea>
+                                            id="arabic_summernote"></textarea>
                                         <span class="text-danger arabic_danger"></span>
                                     </div>
                                 </div>
@@ -221,14 +220,12 @@
 
 
                     <div class="modal-body">
-                        <form action=""     method="POST"
-                            id="update_university"
+                        <form action="/guidelines/update_university/" class="update_university_id" method="GET" id="update_university"
                             enctype='multipart/form-data'>
                             @csrf
                             <div class="form-row">
                                 <div class="col-md-6 col-lg-6">
                                     <div class="form-group">
-                                        <input type="hidden" class="en_id" name="id">
                                         <label class="knowledge-label"
                                             for="">{{__('translation.Title')}}</small></label>
                                         <input type="text" class="form-control knowledge-textbox en_title" name="en_title"
@@ -299,7 +296,7 @@
                                         <label class="knowledge-label" for="">{{ __('translation.des_en') }}</label>
                                         <div class="word-file-area">
                                             <textarea class="form-control summernote english_summernote" name="english_summernote"
-                                                id="english_summernote"  style="height:100px;"></textarea>
+                                                id="english_summernote"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -307,7 +304,7 @@
                                     <div class="form-group">
                                         <label class="knowledge-label" for="">{{ __('translation.des_ar') }}</label>
                                         <textarea class="form-control arabic_input arabic_summernote" name="arabic_summernote"
-                                            id="arabic_summernote"  style="height:100px;"></textarea>
+                                            id="arabic_summernote"></textarea>
                                         <span class="text-danger arabic_danger"></span>
                                     </div>
                                 </div>
@@ -350,7 +347,32 @@
         }
 
     </script>
-  <script type="text/javascript">
+    <script type="text/javascript">
+        $('#english_summernote').summernote({
+            height: 150,
+            placeholder: 'Start typing your text...',
+            toolbar: [
+                ["style", ["style"]],
+                ["font", ["bold", "italic", "underline", "clear"]],
+                ["fontname", ["fontname"]],
+                ["color", ["color"]],
+                ["para", ["ul", "ol", "paragraph"]],
+                ["height", ["height"]],
+                ["table", ["table"]],
+                ["insert", ["link", "hr"]],
+                ["view", ["fullscreen", "codeview"]],
+                ["help", ["help"]]
+            ],
+            callbacks: {
+                onKeyup: function (e) {
+                    var textareavalue = $('#english_summernote').summernote('code');
+                    $('#english_summernote').val(textareavalue);
+                },
+            },
+        });
+
+    </script>
+    <script type="text/javascript">
         $('#arabic_summernote').summernote({
             height: 150,
             placeholder: 'Enter Only Arabic...',
@@ -375,12 +397,11 @@
         });
 
     </script>
-
     <!-- arabic direction start -->
     <script>
         $(".arabic_input").keyup(function () {
-            var textareavalue = $(this).val();
-            var arabic = /[\u0600-\u06FF]/g;
+            var textareavalue = $(this).val(); //Getting input value
+            var arabic = /[\u0600-\u06FF]/g; //setting arabic unicode
             var match = textareavalue.match(arabic);
             var spacesMatch = textareavalue.match(new RegExp(" ", 'g'));
             if (match) {
@@ -422,7 +443,7 @@
     <script>
         $('.edit_university').on('click', function () {
             let uni_id = $(this).attr('id');
-            $('#update_university').attr('action','../../update_university/'+uni_id)
+            // $('#update_university').attr('href','/guidelines/update_university/'+uni_id)
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -435,7 +456,7 @@
                     id: uni_id
                 },
                 success: function (res) {
-                    $('.en_id').val(uni_id);
+                    $('.update_university_id').attr('action',res.id);
                     $('.en_title').val(res.en_title);
                     $('.ar_title').val(res.ar_title);
                     $('.web_link').val(res.web_link);

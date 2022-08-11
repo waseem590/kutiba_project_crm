@@ -699,21 +699,15 @@
                     $('.loader-wrapper').css("display", "flex");
                 },
                 success: function(response, status) {
-                    console.log(jqXHR);
-                    console.log(jqXHR.getResponseHeader('content-type').indexOf);
-                    console.log(jqXHR.getResponseHeader('content-type').indexOf('text/html'));
-                    console.log(response);
                     if (jqXHR.getResponseHeader('content-type').indexOf('text/html') >= 0) {
                         $('#matched_student').html(response);
                         $('#match').modal('show');
-                        console.log("if of matched information");
                     } else {
                         $('body').find('.studentInfoTab').val('true');
                         $("body").find("[href='#tabs-2']").removeClass("active");
                         $("body").find("#tabs-2").removeClass("active");
                         $("body").find("[href='#tabs-3']").addClass("active");
                         $("body").find("#tabs-3").addClass("active");
-                        console.log("else of matched information");
                     }
                     // console.log(response);
                 },
