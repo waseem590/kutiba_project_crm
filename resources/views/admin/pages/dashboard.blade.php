@@ -546,7 +546,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="@if (auth()->user()->role_id == 6) col-md-6 col-lg-3 @else col-md-6 col-lg-4 @endif">
+            <div class="@if (auth()->user()->type == 6) col-md-6 col-lg-3 @else col-md-6 col-lg-4 @endif">
                 <div class="card card_margin custom-cards custom-card-1 text-white">
                     <div class="card-body d-flex justify-content-between">
                         <div class="card-image mt-3">
@@ -561,7 +561,7 @@
                     </div>
                 </div>
             </div>
-            <div class="@if (auth()->user()->role_id == 6)col-md-6 col-lg-3 @else col-md-6 col-lg-4 @endif ">
+            <div class="@if (auth()->user()->type == 6)col-md-6 col-lg-3 @else col-md-6 col-lg-4 @endif ">
                 <div class="card card_margin custom-cards custom-card-2 text-white">
                     <div class="card-body d-flex justify-content-between">
                         <div class="card-image mt-2">
@@ -575,7 +575,7 @@
                     </div>
                 </div>
             </div>
-            <div class="@if (auth()->user()->role_id == 6) col-md-6 col-lg-3 @else col-md-6 col-lg-4 @endif">
+            <div class="@if (auth()->user()->type == 6) col-md-6 col-lg-3 @else col-md-6 col-lg-4 @endif">
                 <div class="card card_margin custom-cards custom-card-4 text-white">
                     <div class="card-body d-flex justify-content-between">
                         <div class="card-image mt-3">

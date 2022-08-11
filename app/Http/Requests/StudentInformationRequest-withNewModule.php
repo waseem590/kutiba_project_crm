@@ -32,6 +32,26 @@ class StudentInformationRequest extends FormRequest
             'gender'        => 'required',
             'nationality'        => 'required',
         ];
+        // if ($request->has('surnameCheckbox')) {
+        //     return [
+        //         // 'surname'        => 'required',
+        //         // 'f_name'     => 'required',
+        //         'l_name'     => 'required',
+        //         'dob'        => 'before:yesterday',
+        //         'gender'        => 'required',
+        //         'nationality'        => 'required',
+        //         'surnameCheckbox' => 'nullable',
+        //     ];
+        // } else {
+        //     return [
+        //         'surname'        => 'required',
+        //         // 'f_name'     => 'required',
+        //         'l_name'     => 'required',
+        //         'dob'        => 'before:yesterday',
+        //         'gender'        => 'required',
+        //         'nationality'        => 'required',
+        //     ];
+        // }
     }
     public function messages()
     {

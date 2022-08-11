@@ -661,7 +661,7 @@
             <div class="mm-visible table-responsive">
                 <h4 class="text-capitalize">Application List</h4>
 
-                <table id="ApplicationListTable" class="table table-bordered table-responsive table-responsive-lg text-center">
+                <table id="ApplicationListTable" class="table table-bordered table-responsive-md table-responsive-lg">
 
                     <thead class="s-list-thead">
                         <tr>
@@ -669,12 +669,6 @@
                             <th scope="col">#</th>
                             <th scope="col">Study Destination</th>
                             <th scope="col">Institution Name</th>
-                            <th scope="col">English</th>
-                            <th scope="col">Education</th>
-                            <th scope="col">Special Education</th>
-                            <th scope="col">tuition fee</th>
-                            <th scope="col">rejected reason</th>
-                            <th scope="col">declined reason</th>
                             <th scope="col">Status</th>
                             <th scope="col" class="custem-text-center">Action</th>
                         </tr>
@@ -705,33 +699,10 @@
                                         @endforeach
                                     @endif
                                 </td>
-                                <td class="status_td" id="spans">{{ $item->duration ? 'Yes' : 'No' }}</td>
-                                <td class="status_td text-capitalize" id="spans">
-                                    {{ $item->special_education->certificate_1 ? 'Certificate 1 |' : '' }}
-                                    {{ $item->special_education->certificate_2 ? 'Certificate 2 |' : '' }}
-                                    {{ $item->special_education->certificate_3 ? 'Certificate 3 |' : '' }}
-                                    {{ $item->special_education->certificate_4 ? 'Certificate 4 |' : '' }}
-                                    {{ $item->special_education->foundation ? 'foundation |' : '' }}
-                                    {{ $item->special_education->associate_degree ? 'associate degree |' : '' }}
-                                </td>
-                                <td class="status_td" id="spans">
-                                    {{ $item->education->diploma ? 'diploma |' : '' }}
-                                    {{ $item->education->advance_diploma ? 'advance_diploma |' : '' }}
-                                    {{ $item->education->bachelor ? 'bachelor |' : '' }}
-                                    {{ $item->education->bachelor_hons ? 'bachelor_hons |' : '' }}
-                                    {{ $item->education->graduate_diploma ? 'graduate_diploma |' : '' }}
-                                    {{ $item->education->masters_degree ? 'masters_degree |' : '' }}
-                                    {{ $item->education->doctoral_degree ? 'doctoral_degree |' : '' }}
-                                    {{ $item->education->primary_school ? 'primary_school |' : '' }}
-                                    {{ $item->education->high_school ? 'high_school |' : '' }}
-                                </td>
-                                <td class="status_td" id="spans">{{ $item->tuition_fee ?? '-' }}</td>
-                                <td class="status_td" id="spans">{{ $item->rejected_reason ?? '-' }}</td>
-                                <td class="status_td" id="spans">{{ $item->declined_reason ?? '-' }}</td>
                                 <td class="status_td" id="spans">{{ $item->status ?? '' }}</td>
                                 <td class="custem-text-center std-list-icon">
 
-                                    <a href="#" class="edit-list-icons edit-application" data-id="{{ $item->id }}"><img
+                                    <a href="{{ route('edit_application', $item->id) }}" class="edit-list-icons"><img
                                             src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std"
                                             class="img-fluid" /></a>
                                     <a href="{{ route('view_application', $item->id) }}" class="edit-list-icons"><img
@@ -759,7 +730,8 @@
                                             <a class="dropdown-item" data-bs-toggle="modal"
                                                 data-bs-target="#RejecteddModal" href="#">Rejected</a>
                                             <a class="dropdown-item" href="#">Acceptance sent</a>
-                                            <a class="dropdown-item" href="#" >Acceptance Information Requested
+                                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#AcceptanceModal">Acceptance Information Requested
                                             </a>
                                             <a class="dropdown-item" href="">Acceptance Information provided</a>
                                             <a class="dropdown-item" href="{{ $tuition_fee }}"
@@ -779,16 +751,18 @@
                     @if (count($trashed) > 0)
                         <h4 class="text-capitalize">Deleted Applications</h4>
 
-                        <table id="DeletedApplicationTable" class="table table-bordered table-responsive-md table-responsive-lg">
+                        <table id="DeletedApplciationTable"
+                            class="table table-bordered table-responsive-md table-responsive-lg">
 
                             <thead class="s-list-thead">
+                                <tr>
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Study Destination</th>
                                     <th scope="col">Institution Name</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Deleted At</th>
                                     {{-- <th scope="col" class="custem-text-center">Action</th> --}}
+                                </tr>
                                 </tr>
                             </thead>
                             <tbody>
@@ -817,25 +791,24 @@
                                             @endif
                                         </td>
                                         <td class="status_td">{{ $item->status ?? '' }}</td>
-                                        <td class="status_td">{{ $item->deleted_at ?? '' }}</td>
-                                        {{-- <td class="custem-text-center std-list-icon">
+                                        <td class="custem-text-center std-list-icon">
 
-                                            <a href="{{ route('edit_application', $item->id) }}" class="edit-list-icons"><img
+                                            {{-- <a href="{{ route('edit_application', $item->id) }}" class="edit-list-icons"><img
                                                     src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std"
-                                                    class="img-fluid edit-application" data-id="{{ $item->id }}" /></a>
-                                            <a href="{{ route('view_application', $item->id) }}" class="edit-list-icons"><img
+                                                    class="img-fluid edit-application" data-id="{{ $item->id }}" /></a> --}}
+                                            {{-- <a href="{{ route('view_application', $item->id) }}" class="edit-list-icons"><img
                                                     src="{{ asset('admin/images/list-icon-std.png') }}" alt="view-std"
-                                                    class="img-fluid" /></a>
-                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                    class="img-fluid" /></a> --}}
+                                            {{-- <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
                                                 class="edit-list-icons"
                                                 onclick="deleteRecord({{ $item->id }},'/users/delete_application/')"><img
                                                     src="{{ asset('admin/images/list-delet-std.png') }}" alt="edit-std"
-                                                    class="img-fluid" /></a>
+                                                    class="img-fluid" /></a> --}}
 
-                                            <?php //$tuition_fee = filter_var($item->tuition_fee, FILTER_SANITIZE_NUMBER_INT);
-                                            ?>
+                                            {{-- <?php //$tuition_fee = filter_var($item->tuition_fee, FILTER_SANITIZE_NUMBER_INT);
+                                            ?> --}}
 
-                                            <div class="dropdown" style="display: inline-block;">
+                                            {{-- <div class="dropdown" style="display: inline-block;">
                                                 <button class="btn tbl-dropdown dropdown-toggle status_dropdown"
                                                     title="Status" type="button" id="dropdownMenuButton"
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
@@ -862,35 +835,9 @@
                                                     <a class="dropdown-item" data-bs-toggle="modal"
                                                         data-bs-target="#DeclineddModal" href="#">Declined</a>
                                                 </div>
-                                            </div>
+                                            </div> --}}
                                             <input type="hidden" value="{{ $item->id ?? '' }}" class="app_id">
-                                        </td> --}}
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @else
-                        <h4 class="text-capitalize">Deleted Applications</h4>
-                        <table id="DeletedApplicationTable" class="table table-bordered table-responsive-md table-responsive-lg">
-
-                            <thead class="s-list-thead">
-                                <tr>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Study Destination</th>
-                                    <th scope="col">Institution Name</th>
-                                    <th scope="col">Status</th>
-                                    {{-- <th scope="col" class="custem-text-center">Action</th> --}}
-                                </tr>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                @foreach ($trashed as $item)
-                                    <tr>
-                                        <th scope="row" colspan="4">
-                                            No deleted Applications
-                                        </th>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -1431,6 +1378,34 @@
     </div>
     <!-- End Add offered Model -->
 
+    <div class="modal fade" id="AcceptanceModal" class="AcceptanceModal" data-bs-backdrop="static"
+        data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-content">
+                <div class="modal-header ">
+                    <h5 class="modal-title " id="staticBackdropLabel">Application Acceptance Reasons</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <img class="pt-2" src="{{ asset('admin/images/modal-close.png') }}" alt="">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form action="" id="acceptance_form" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <textarea class="form-control" name="acceptance_reason" id="acceptance_reason" cols="30" rows="5"
+                                    placeholder="Write Reason here..."></textarea>
+                            </div>
+                            <div class="social-custom-modals-btnn text-center ">
+                                <button class="btn btn-primary" type="submit">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <!-- Rejected Status modal -->
     <div class="modal fade" id="RejecteddModal" class="RejecteddModal" data-bs-backdrop="static"
@@ -1540,9 +1515,9 @@
     <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
     <script>
         "use strict";
-        // $("#TaskListTable").DataTable();
-        // $("#ApplicationListTable").DataTable();
-        // $("#DeletedApplciationTable").DataTable();
+        $("#TaskListTable").DataTable();
+        $("#ApplicationListTable").DataTable();
+        $("#DeletedApplciationTable").DataTable();
 
         function dragNdrop(event) {
             var files = event.target.files;
