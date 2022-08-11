@@ -3,9 +3,9 @@
     <link href="{{ asset('admin/css/clock.css') }}" rel="stylesheet" />
     <!-- <link href="{{ asset('admin/css/calendar.css') }}" rel="stylesheet" /> -->
     <link rel="stylesheet" href="https://zulns.github.io/w3css/w3.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+        crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
     <style>
         .custom-cards.mm-caleder-outer {
 
@@ -479,10 +479,10 @@
             <div class=" main-cal">
                 <div class="custom-cards mm-caleder-outer">
                     <div class="custom-card-body">
-                        <div class="eng-cal"><i class="fa-solid fa-calendar-days"></i>
+                        <div class="eng-cal"><i class="fas fa-solid fa-calendar-alt"></i>
                             <div id="calendar" class="w3-container w3-margin-top mm-caleder"></div>
                         </div>
-                        <div class="eng-cal"> <i class="fa-solid fa-kaaba"></i>
+                        <div class="eng-cal"> <i class="fas fa-solid fa-kaaba"></i>
                             <div id="calendarr" class="w3-container w3-margin-top mm-caleder"></div>
                         </div>
                     </div>

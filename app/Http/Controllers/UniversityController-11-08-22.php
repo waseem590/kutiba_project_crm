@@ -17,9 +17,7 @@ use Session;
 class UniversityController extends Controller
 {
     public function index(){
-        $university= University::all();
-
-        return view('admin.pages.university.knowledge_center', compact('university'));
+        return view('admin.pages.university.knowledge_center');
     }
     public function school_contacts(){
         $data = SchoolContact::all();
@@ -65,37 +63,15 @@ class UniversityController extends Controller
             'contact_no2' => $request->phone_number2['full'],
             'dob' => $request->dob,
             'notes' => $request->notes,
-            'institution' => $request->institution,
         ]);
         parent::successMessage("Record Add Successfully");
         \LogActivity::addToLog('add school contact which is name:'.$request->job_title);
         return redirect()->route('school_contacts');
     }
-
-public function editUni($id)
-    {
-
-        $university = University::findOrFail($id);
-        if ($university == null) {
-            return redirect()->back()->with('error', 'No Record Found To Edit.');
-        }
-
-        return view('admin.university.edituni', compact('university'));
-    }
-
-
     public function store_universities(Request $request){
         $input = $request->all();
         // dd($input);
         $university = new University;
-
-
-
- $this->validate($request, [
-               'en_title' => 'required',
-               'ar_title' => 'required',
-               'web_link' => 'required',
-        ]);
         $university->en_title =$input['en_title'];
         $university->ar_title =$input['ar_title'];
         $university->web_link =$input['web_link'];
@@ -105,14 +81,15 @@ public function editUni($id)
         if($image_uni){
             $file_fullname = $image_uni->getClientOriginalName();
             $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
-
             $file_extension = $image_uni->getClientOriginalExtension();
-            $file_namefor_db =$file_name . '.' . $file_extension;
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
             $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
-            $image_uni->storeAs('public/university/images/',$file_namefor_db);
-            $pic = url('university/images/'.$file_namefor_db);
+            $image_uni->storeAs('/university/images/',$file_namefor_db,'public');
+            $pic = url('/storage/university/images/'.$file_namefor_db);
             $university->uni_file = $pic;
-             $image_uni->move(public_path() . '/university/images/', $file_namefor_db);
         }
         $doc_file = $request->file('doc_file');
         // return $image;
@@ -120,13 +97,14 @@ public function editUni($id)
             $file_fullname = $doc_file->getClientOriginalName();
             $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
             $file_extension = $doc_file->getClientOriginalExtension();
-
-            $file_namefor_db =$file_name . '.' . $file_extension;
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
             $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
-            $doc_file->storeAs('public/university/word' ,$file_namefor_db);
-            $pic = url('university/word/' . $file_namefor_db);
+            $doc_file->storeAs('university/word' ,$file_namefor_db,'public');
+            $pic = url('storage/university/word/' . $file_namefor_db);
             $university->doc_file = $pic;
-             $doc_file->move(public_path() . '/university/word/', $file_namefor_db);
         }
         $exl_file = $request->file('exl_file');
         // return $image;
@@ -134,12 +112,14 @@ public function editUni($id)
             $file_fullname = $exl_file->getClientOriginalName();
             $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
             $file_extension = $exl_file->getClientOriginalExtension();
-            $file_namefor_db =$file_name .'.' . $file_extension;
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
             $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
-            $exl_file->storeAs('public/university/excel' ,$file_namefor_db);
-            $pic = url('university/excel/' . $file_namefor_db);
+            $exl_file->storeAs('university/excel' ,$file_namefor_db,'public');
+            $pic = url('storage/university/excel/' . $file_namefor_db);
             $university->exl_file = $pic;
-            $exl_file->move(public_path() . '/university/excel/', $file_namefor_db);
         }
         $ppt_file = $request->file('ppt_file');
         // return $image;
@@ -147,13 +127,14 @@ public function editUni($id)
             $file_fullname = $ppt_file->getClientOriginalName();
             $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
             $file_extension = $ppt_file->getClientOriginalExtension();
-
-            $file_namefor_db =$file_name .  '.' . $file_extension;
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
             $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
-            $ppt_file->storeAs('public/university/powerpoint' ,$file_namefor_db);
-            $pic = url('university/powerpoint' . $file_namefor_db);
-            $university->ppt_file = $pic;
-             $ppt_file->move(public_path() . '/university/powerpoint/', $file_namefor_db);
+            $ppt_file->storeAs('university/powerpoint' ,$file_namefor_db,'public');
+            $pic = url('storage/university/powerpoint/' . $file_namefor_db);
+            $university->exl_file = $pic;
         }
         $university->english_summernote =$input['english_summernote'];
         $university->arabic_summernote =$input['arabic_summernote'];
@@ -243,25 +224,39 @@ public function editUni($id)
         return response()->json($university);
     }
     public function update_university(Request $request,$id){
- $input = $request->all();
+        $input = $request->all();
+        // dd($input);
         $university = University::find($id);
+        dd($university);
         $university->en_title = $input['en_title'];
         $university->ar_title = $input['ar_title'];
         $university->web_link = $input['web_link'];
-
+        if(File::exists($university->uni_file)) {
+            File::delete($university->uni_file);
+        }
+        if(File::exists($university->doc_file)) {
+            File::delete($university->doc_file);
+        }
+        if(File::exists($university->ppt_file)) {
+            File::delete($university->ppt_file);
+        }
+        if(File::exists($university->exl_file)) {
+            File::delete($university->exl_file);
+        }
         $image_uni = $request->file('uni_file');
         // return $image_uni;
-      if($image_uni){
+        if($image_uni){
             $file_fullname = $image_uni->getClientOriginalName();
             $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
-
             $file_extension = $image_uni->getClientOriginalExtension();
-            $file_namefor_db =$file_name . '.' . $file_extension;
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
             $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
-            $image_uni->storeAs('public/university/images/',$file_namefor_db);
-            $pic = url('university/images/'.$file_namefor_db);
+            $image_uni->storeAs('/university/images/',$file_namefor_db,'public');
+            $pic = url('/storage/university/images/'.$file_namefor_db);
             $university->uni_file = $pic;
-             $image_uni->move(public_path() . '/university/images/', $file_namefor_db);
         }
         $doc_file = $request->file('doc_file');
         // return $image;
@@ -269,14 +264,14 @@ public function editUni($id)
             $file_fullname = $doc_file->getClientOriginalName();
             $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
             $file_extension = $doc_file->getClientOriginalExtension();
-
-            $file_namefor_db =$file_name . '.' . $file_extension;
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
             $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
-            $doc_file->storeAs('public/university/word' ,$file_namefor_db);
-            $pic = url('university/word/' . $file_namefor_db);
+            $doc_file->storeAs('university/word' ,$file_namefor_db,'public');
+            $pic = url('storage/university/word/' . $file_namefor_db);
             $university->doc_file = $pic;
-
-            $doc_file->move(public_path() . '/university/word/', $file_namefor_db);
         }
         $exl_file = $request->file('exl_file');
         // return $image;
@@ -284,13 +279,14 @@ public function editUni($id)
             $file_fullname = $exl_file->getClientOriginalName();
             $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
             $file_extension = $exl_file->getClientOriginalExtension();
-
-            $file_namefor_db =$file_name .  '.' . $file_extension;
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
             $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
-            $exl_file->storeAs('public/university/excel' ,$file_namefor_db);
-            $pic = url('university/excel/' . $file_namefor_db);
+            $exl_file->storeAs('university/excel' ,$file_namefor_db,'public');
+            $pic = url('storage/university/excel/' . $file_namefor_db);
             $university->exl_file = $pic;
-             $exl_file->move(public_path() . '/university/excel/', $file_namefor_db);
         }
         $ppt_file = $request->file('ppt_file');
         // return $image;
@@ -298,13 +294,14 @@ public function editUni($id)
             $file_fullname = $ppt_file->getClientOriginalName();
             $file_name = pathinfo($file_fullname, PATHINFO_FILENAME);
             $file_extension = $ppt_file->getClientOriginalExtension();
-
-            $file_namefor_db =$file_name .  '.' . $file_extension;
+            $rand_namer = now();
+            $rand_namer = preg_replace('/\s+/', '_', trim($rand_namer));
+            $rand_namer = preg_replace('/:+/', '_', trim($rand_namer));
+            $file_namefor_db =$file_name . '_' . $rand_namer . '.' . $file_extension;
             $file_namefor_db = preg_replace('/\s+/', '_', trim($file_namefor_db));
-            $ppt_file->storeAs('public/university/powerpoint' ,$file_namefor_db);
-            $pic = url('university/powerpoint/' . $file_namefor_db);
+            $ppt_file->storeAs('university/powerpoint' ,$file_namefor_db,'public');
+            $pic = url('storage/university/powerpoint/' . $file_namefor_db);
             $university->exl_file = $pic;
-            $ppt_file->move(public_path() . '/university/powerpoint/', $file_namefor_db);
         }
         $university->english_summernote =$input['english_summernote'];
         $university->arabic_summernote =$input['arabic_summernote'];
