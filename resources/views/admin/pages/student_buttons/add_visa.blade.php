@@ -51,15 +51,16 @@
             </div>
             <div class="col-md-4 existing_student mt-3">
                 <label for="exampleFormControlSelect1" class="tab-inner-label">Student Name</label>
-                <input list="student_name_list" name="student_name" class="form-control select-inner-text">
+                <input list="student_name_list" id="student_name_input" class="form-control select-inner-text">
                 <datalist id="student_name_list">
-                    <option disabled selected value="Select Student">Select Student</option>
+                    <option disabled value="Select Student">
                     @foreach($students as $student)
                         @if($student->info)
-                            <option value="{{$student->id}}" class="existing_student_option">{{$student->info['name']}}-{{$student->id ?? ''}}</option>
+                            <option data-id="{{$student->id}}" value="{{$student->info['name']}}" class="existing_student_option">
                         @endif
                     @endforeach
                 </datalist>
+                <input type="hidden" name="student_name">
 
             </div>
             <div class="col-md-4 col-lg-4 new_student_input">
@@ -245,13 +246,14 @@
     });
 
 
-    // $('input[name=student_name]').on('change', function(){
-    //     var id = $(this).val();
-    //     console.log(id);
-    //     var name = $('#student_name_list value['+id+'] ').text();
-    //     console.log(name);
-    //     // $(id).val(name);
-    // });
+    $('#student_name_input').on('focusout', function(){
+        var name = $(this).val();
+        console.log(name);
+        var id = $('#student_name_list [value="'+name+'"]').data('id');
+        $('input[name=student_name]').val(id);
+        console.log(id);
+        // $(id).val(name);
+    });
 </script>
 
 @endpush

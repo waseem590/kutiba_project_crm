@@ -23,7 +23,7 @@
                         </option>
                         @if(!empty($dropdown[5]->dropdownType))
                         @foreach($dropdown[5]->dropdownType as $val)
-                        <option value="{{ $val->id }}">{{ $val->name }}</option>
+                        <option value="{{ $val->id }}" >{{ $val->name }}</option>
                         @endforeach
                         @endif
 
@@ -487,7 +487,7 @@
     }
     $(function(){
       setInterval(updateTime, 1000);
-    }); -->
+    });
 
-</script>
+</script>-->
 @endpush

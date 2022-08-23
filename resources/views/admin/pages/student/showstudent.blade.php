@@ -922,12 +922,12 @@
                                 Destination</label>
                             <select name="destination" class="form-control1 form-control select-inner-text"
                                 id="study-destination">
-                                <option disabled selected value>
+                                <option disabled value>
                                     Select Study Destination
                                 </option>
                                 @if (!empty($dropdown[5]->dropdownType))
                                     @foreach ($dropdown[5]->dropdownType as $val)
-                                        <option value="{{ $val->id }}">{{ $val->name }}</option>
+                                        <option value="{{ $val->id }}" @if ($val->name == 'Australia') selected @endif>{{ $val->name }}</option>
                                     @endforeach
                                 @endif
 
