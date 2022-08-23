@@ -466,12 +466,11 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Student Already Exdsist</h5>
+                        <h5 class="modal-title" id="staticBackdropLabel">Student Already Exist</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                     </div>
                     <div class="modal-body">
-                          <form id="student_information_form">
                         <table id="mm-std-List" class="table table-bordered  student_list_table">
                             <thead class="s-list-thead">
                                 <tr>
@@ -481,19 +480,6 @@
                             </thead>
                             <tbody id="matched_student"></tbody>
                         </table>
-                        
-
-                         <div
-                            class="
-                            form-group
-                            col-md-12
-                            d-flex
-                            flex-row-reverse
-                            student-form-action
-                        ">
-                            <button id="student_information_btn2" class="btn">Proceed</button>
-                        </div>
-                    </form>
                     </div>
                 </div>
             </div>
@@ -742,62 +728,6 @@
                 }
             });
         });
-
-
-
-        $(document).on("click", "#student_information_btn2", function(e) {
-            e.preventDefault();
-            $.ajaxSetup({
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-                },
-            });
-            var jqXHR = $.ajax({
-                url: "{{ route('studentinformation2') }}",
-                type: "POST",
-                data: $("#student_information_form").serialize() +
-                    "&forEdit=" +
-                    $(".forEdit").val(),
-                beforeSend: function() {
-                    $('.loader-wrapper').css("display", "flex");
-                },
-                 success: function(response, status) {
-                    if (jqXHR.getResponseHeader('content-type').indexOf('text/html') >= 0) {
-                        $('#matched_student').html(response);
-                        $('#match').modal('show');
-                    } else {
-                        $('body').find('.studentInfoTab').val('true');
-                        $("body").find("[href='#tabs-2']").removeClass("active");
-                        $("body").find("#tabs-2").removeClass("active");
-                        $("body").find("[href='#tabs-3']").addClass("active");
-                        $("body").find("#tabs-3").addClass("active");
-                           $('#match').modal('hide');
-                    }
-                    // console.log(response);
-                },
-
-                // },
-                error: function(responce) {
-                    $.each(responce.responseJSON.errors, function(index, el) {
-                        var field = $("body").find("[name='" + index + "']");
-                        field.addClass("error");
-                        var box = field.closest("div");
-                        box.find(".invalid-feedback").css("display", "block");
-                        box.find("p").text(el[0]);
-                    });
-                    console.log(responce.responseJSON.errors);
-                },
-                complete: function() {
-                    $('.loader-wrapper').css("display", "none");
-                }
-            });
-        });
-
-
-
-
-
-
 
         // student contact detail tab js
         $(document).on("click", "#contact_detail_btn", function(e) {

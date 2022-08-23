@@ -107,6 +107,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('custom_jsvalidation', [ResourceController::class, 'custom_jsvalidation'])->name('customJsValidation');
     Route::get('/studentDetail/{id?}', [StudentController::class, 'studentDetail'])->name('studentDetail');
     Route::post('/studentinformation', [StudentController::class, 'studentinformation'])->name('studentinformation');
+    Route::post('/studentinformation2', [StudentController::class, 'studentinformation2'])->name('studentinformation2');
     Route::post('/studentcontactdetail', [StudentController::class, 'studentcontactdetail'])->name('studentcontactdetail');
     // Route::post('/custom_validation_number', [StudentController::class, 'custom_validation_number'])->name('custom_validation_number');
     Route::post('/studentotherinformation', [StudentController::class, 'studentotherinformation'])->name('studentotherinformation');
