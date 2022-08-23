@@ -116,7 +116,7 @@
         </div>
         <div class="panels">
             <div class="table-responsive panel" id="one-panel">
-                <table id="example" class="table table-bordered">
+                <table id="VisaListTable" class="table table-bordered">
                     <thead class="s-list-thead">
                         <tr>
                         <tr>
@@ -314,7 +314,7 @@
             </div>
             @can('submitted_more_information_information_provided')
             <div class="table-responsive panel" id="four-panel">
-                <table id="example" class="table table-bordered">
+                <table id="VisaListTable" class="table table-bordered">
                     <thead class="s-list-thead">
                         <tr>
                         <tr>
@@ -609,6 +609,7 @@
 <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
 <script>
+    $('#VisaListTable').DataTable();
     $('input[type="checkbox"]').click(function (e) {
         var current = $(this);
         if (current.is(":checked")) {
