@@ -1496,7 +1496,7 @@ body,
 /* about agency start */
 .last-footer {
     background-color: #e0ddeb !important;
-    z-index: 10000 !important;
+    z-index: 9999 !important;
     position: relative;
     width: 100%;
     float: left;
