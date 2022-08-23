@@ -127,10 +127,10 @@
                     @enderror
                 </div>
                 <div class="col-md-4 col-md-4  calender-relative margin_top">
-                    <label class="tab-inner-label" for="visa_expire_date">Visa Expiry Date</label>
-                    <input type="text" autocomplete="off" id="visa_expire_date"
+                    <label class="tab-inner-label" for="visa_expire_date">Visa Expiry Dates</label>
+                    <input type="" autocomplete="off" id="visa_expire_date"
                         class="form-control select-inner-text datetimepicker @error('visa_expire_date') is-invalid @enderror"
-                        name="visa_expire_date" value="{{ \Carbon\Carbon::parse($visa->visa_expire_date)->format('d/m/Y')  }}" />
+                        name="visa_expire_date" value="{{ $visa->visa_expire_date }}" />
                     @error('visa_expire_date')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
@@ -164,7 +164,7 @@
                         Date of Payment</label>
                     <input type="text" id="datetimepicker" autocomplete="off"
                         class="form-control select-inner-text datetimepicker @error('immigration_dop') is-invalid @enderror"
-                        name="immigration_dop" placeholder="11/18/2021" value="{{ $visa->immigration_dop}}" />
+                        name="immigration_dop" placeholder="11/18/2021" value="{{ $visa->immigration_dop }}" />
                     @error('immigration_dop')
                         <div class="alert alert-danger">{{ $message }}</div>
                     @enderror
@@ -235,12 +235,6 @@
     </script>
     <script>
         console.log($('.datetimepicker').attr('id'));
-        $(document).ready(function(){
-            $('.datetimepicker').datetimepicker({
-                timepicker: false,
-                format: 'd/m/Y',
-            });
-        });
 
         $('.datetimepicker').on('click', function() {
             $(this).datetimepicker({

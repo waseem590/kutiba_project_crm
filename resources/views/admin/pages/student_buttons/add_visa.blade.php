@@ -55,9 +55,9 @@
                 <datalist id="student_name_list">
                     <option disabled selected value="Select Student">Select Student</option>
                     @foreach($students as $student)
-                    @if($student->info)
-                    <option value="{{$student->id}}">{{$student->info['name']}}-{{$student->id ?? ''}}</option>
-                    @endif
+                        @if($student->info)
+                            <option value="{{$student->id}}" class="existing_student_option">{{$student->info['name']}}-{{$student->id ?? ''}}</option>
+                        @endif
                     @endforeach
                 </datalist>
 
@@ -244,6 +244,14 @@
         }
     });
 
+
+    // $('input[name=student_name]').on('change', function(){
+    //     var id = $(this).val();
+    //     console.log(id);
+    //     var name = $('#student_name_list value['+id+'] ').text();
+    //     console.log(name);
+    //     // $(id).val(name);
+    // });
 </script>
 
 @endpush

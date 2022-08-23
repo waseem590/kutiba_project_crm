@@ -129,12 +129,12 @@
                 <a class="edit-bg" href="{{ route('student.edit', $user->id) }}"><i class="fas fa-pen"></i> &nbsp; Edit</a>
                 <a class="del-bg" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#deleteModal"
                     onclick="deleteRecord({{ $user->id }},'/student/')"><i class="fas fa-trash"></i> &nbsp; Delete</a>
-                <a href="{{ route('studentlists') }}"><i class="fas fa-step-backward"></i> &nbsp; Back</a>
+                <a href="{{ route('studentlists') }}" class="back-btn"><i class="fas fa-step-backward"></i> &nbsp; Back</a>
             </div>
             <div class="std-detail_list float-right">
 
                 <!-- <a class="std-detail_btns white-bg" href="https://api.whatsapp.com/send?phone={{ $user->contact->contact_number ?? '' }}" target="_blank" title="Whatsapp"> <i class="fab fa-whatsapp"></i>
-                                                        &nbsp;<span>Whatsapp</span> </a> -->
+                                                                &nbsp;<span>Whatsapp</span> </a> -->
 
                 <a class="std-detail_btns white-bg sms" href="{{ $user->info->name ?? '' }}" title="SMS"
                     data-bs-toggle="modal" data-bs-target="#sms-modal" data-id="{{ $user->id }}"><i
@@ -170,8 +170,8 @@
                 <a class="std-detail_btns white-bg" href="#" data-bs-toggle="modal" data-bs-target="#add_task">
                     &nbsp;New Task</a>
                 <!-- <a class="std-detail_btns yellow-bg" href="{{ route('student.edit', $user->id) }}">
-                                                    <img src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std" class="img-fluid">
-                                                    </a> -->
+                                                            <img src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std" class="img-fluid">
+                                                            </a> -->
                 <!-- <a class="std-detail_btns white-bg" href="{{ route('course', $user->id) }}" title="Add Courses"> <i class="fas fa-plus-circle"></i> &nbsp;<span>Courses</span> </a> -->
                 <!-- <a class="std-detail_btns darkblue-bg" href="#"> &nbsp;Attachment</a> -->
                 <a class="std-detail_btns white-bg" data-bs-toggle="modal" data-bs-target="#add_attachment">
@@ -252,10 +252,10 @@
             <div class="list-of-student-inner list-std2">
 
                 <div class="row">
-                    <!-- <div class="col-xl-4 col-lg-6">
-                                                            <h3>Surname: </h3>
-                                                            <span id="spans">{{ $user->info->surname ?? '' }}</span>
-                                                        </div> -->
+                    <div class="col-xl-4 col-lg-6">
+                        <h3>Surname: </h3>
+                        <span id="spans">{{ $user->info->surname ?? '' }}</span>
+                    </div>
                     <div class="col-xl-4 col-lg-6">
                         <h3 style="white-space:nowrap">Name: </h3>
                         <span id="spans">{{ $user->info->name ?? '' }}</span>
@@ -661,17 +661,18 @@
             <div class="mm-visible table-responsive">
                 <h4 class="text-capitalize">Application List</h4>
 
-                <table id="ApplicationListTable" class="table table-bordered table-responsive table-responsive-lg text-center">
+                <table id="ApplicationListTable" class="table table-bordered table-responsive-lg text-center"
+                    style="table-layout: fixed; width:100%">
 
                     <thead class="s-list-thead">
                         <tr>
-                        <tr>
+                        <tr class="text-wrap">
                             <th scope="col">#</th>
                             <th scope="col">Study Destination</th>
                             <th scope="col">Institution Name</th>
                             <th scope="col">English</th>
                             <th scope="col">Education</th>
-                            <th scope="col">Special Education</th>
+                            {{-- <th scope="col">Special Education</th> --}}
                             <th scope="col">tuition fee</th>
                             <th scope="col">rejected reason</th>
                             <th scope="col">declined reason</th>
@@ -683,7 +684,7 @@
                     <tbody>
 
                         @foreach ($applications as $item)
-                            <tr>
+                            <tr class="text-wrap">
                                 <th scope="row" class="w-60">
                                     {{ $loop->iteration }}
                                 </th>
@@ -705,8 +706,8 @@
                                         @endforeach
                                     @endif
                                 </td>
-                                <td class="status_td" id="spans">{{ $item->duration ? 'Yes' : 'No' }}</td>
-                                <td class="status_td text-capitalize" id="spans">
+                                <td class="" id="spans">{{ $item->duration ? 'Yes' : 'No' }}</td>
+                                <td class=" text-capitalize" id="spans">
                                     {{ $item->special_education->certificate_1 ? 'Certificate 1 |' : '' }}
                                     {{ $item->special_education->certificate_2 ? 'Certificate 2 |' : '' }}
                                     {{ $item->special_education->certificate_3 ? 'Certificate 3 |' : '' }}
@@ -714,24 +715,25 @@
                                     {{ $item->special_education->foundation ? 'foundation |' : '' }}
                                     {{ $item->special_education->associate_degree ? 'associate degree |' : '' }}
                                 </td>
-                                <td class="status_td" id="spans">
+                                {{-- <td class="" id="spans">
                                     {{ $item->education->diploma ? 'diploma |' : '' }}
-                                    {{ $item->education->advance_diploma ? 'advance_diploma |' : '' }}
+                                    {{ $item->education->advance_diploma ? 'advance diploma |' : '' }}
                                     {{ $item->education->bachelor ? 'bachelor |' : '' }}
-                                    {{ $item->education->bachelor_hons ? 'bachelor_hons |' : '' }}
-                                    {{ $item->education->graduate_diploma ? 'graduate_diploma |' : '' }}
-                                    {{ $item->education->masters_degree ? 'masters_degree |' : '' }}
-                                    {{ $item->education->doctoral_degree ? 'doctoral_degree |' : '' }}
-                                    {{ $item->education->primary_school ? 'primary_school |' : '' }}
-                                    {{ $item->education->high_school ? 'high_school |' : '' }}
-                                </td>
-                                <td class="status_td" id="spans">{{ $item->tuition_fee ?? '-' }}</td>
-                                <td class="status_td" id="spans">{{ $item->rejected_reason ?? '-' }}</td>
-                                <td class="status_td" id="spans">{{ $item->declined_reason ?? '-' }}</td>
+                                    {{ $item->education->bachelor_hons ? 'bachelor hons |' : '' }}
+                                    {{ $item->education->graduate_diploma ? 'graduate diploma |' : '' }}
+                                    {{ $item->education->masters_degree ? 'masters degree |' : '' }}
+                                    {{ $item->education->doctoral_degree ? 'doctoral degree |' : '' }}
+                                    {{ $item->education->primary_school ? 'primary school |' : '' }}
+                                    {{ $item->education->high_school ? 'high school |' : '' }}
+                                </td> --}}
+                                <td class="" id="spans">{{ $item->tuition_fee ?? '-' }}</td>
+                                <td class="" id="spans">{{ $item->rejected_reason ?? '-' }}</td>
+                                <td class="" id="spans">{{ $item->declined_reason ?? '-' }}</td>
                                 <td class="status_td" id="spans">{{ $item->status ?? '' }}</td>
                                 <td class="custem-text-center std-list-icon">
 
-                                    <a href="#" class="edit-list-icons edit-application" data-id="{{ $item->id }}"><img
+                                    <a href="#" class="edit-list-icons edit-application"
+                                        data-id="{{ $item->id }}"><img
                                             src="{{ asset('admin/images/edit-std.png') }}" alt="edit-std"
                                             class="img-fluid" /></a>
                                     <a href="{{ route('view_application', $item->id) }}" class="edit-list-icons"><img
@@ -759,7 +761,7 @@
                                             <a class="dropdown-item" data-bs-toggle="modal"
                                                 data-bs-target="#RejecteddModal" href="#">Rejected</a>
                                             <a class="dropdown-item" href="#">Acceptance sent</a>
-                                            <a class="dropdown-item" href="#" >Acceptance Information Requested
+                                            <a class="dropdown-item" href="#">Acceptance Information Requested
                                             </a>
                                             <a class="dropdown-item" href="">Acceptance Information provided</a>
                                             <a class="dropdown-item" href="{{ $tuition_fee }}"
@@ -779,7 +781,8 @@
                     @if (count($trashed) > 0)
                         <h4 class="text-capitalize">Deleted Applications</h4>
 
-                        <table id="DeletedApplicationTable" class="table table-bordered table-responsive-md table-responsive-lg">
+                        <table id="DeletedApplicationTable"
+                            class="table table-bordered table-responsive-md table-responsive-lg">
 
                             <thead class="s-list-thead">
                                 <tr>
@@ -871,7 +874,8 @@
                         </table>
                     @else
                         <h4 class="text-capitalize">Deleted Applications</h4>
-                        <table id="DeletedApplicationTable" class="table table-bordered table-responsive-md table-responsive-lg">
+                        <table id="DeletedApplicationTable"
+                            class="table table-bordered table-responsive-md table-responsive-lg">
 
                             <thead class="s-list-thead">
                                 <tr>
@@ -961,15 +965,15 @@
                         </div>
 
                         <!-- <div class="form-group-custom custom-checkbox-1 ml-3">
-                                                                    <input class="checkbox2" name="eng" type="checkbox" id="eng" />
-                                                                    <label for="eng">English</label>
-                                                                </div> -->
+                                                                            <input class="checkbox2" name="eng" type="checkbox" id="eng" />
+                                                                            <label for="eng">English</label>
+                                                                        </div> -->
 
                     </div>
                     <div class="form-group col-md-12 d-flex" style="position: relative; top: 20px;">
                         <!-- <div class="custom-checkbox-1">
-                                                                    <label class="application_type" for="app">Application Type</label>
-                                                                </div> -->
+                                                                            <label class="application_type" for="app">Application Type</label>
+                                                                        </div> -->
 
                         <div class="form-group-custom custom-checkbox-1">
                             <input class="checkbox2" name="eng" type="checkbox" id="eng" />
@@ -1581,6 +1585,11 @@
             $('#div-display-data').addClass('d-none');
             $('#div-app').removeClass('d-none');
             $('#add_application_form').attr('action', "{{ route('update_application') }}");
+            $('.back-btn').attr('href', '#');
+            $('.back-btn').on('click', function(e) {
+                e.preventDefault();
+                location.reload();
+            })
             console.log(id);
 
             $.ajaxSetup({
@@ -2472,10 +2481,16 @@
                     $('#heading-div h2').text('Application Form');
                     $('#div-app').removeClass('d-none');
                     console.log("checked");
+                    $('.back-btn').attr('href', '#');
+                    $('.back-btn').on('click', function(e) {
+                        e.preventDefault();
+                        location.reload();
+                    })
                 } else {
                     $('#div-app').addClass('d-none');
                     $('#heading-div h2').text('Student Detail');
                     $('#div-display-data').removeClass('d-none');
+                    $('.back-btn').attr('href', '{{ route('studentlists') }}');
                     console.log("unchecked");
                 }
             });
@@ -2488,16 +2503,16 @@
         });
     </script>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-                                            <script type="text/javascript">
-                                                var timestamp = '<?= time() ?>';
+                                                    <script type="text/javascript">
+                                                        var timestamp = '<?= time() ?>';
 
-                                                function updateTime() {
-                                                    $('#time').html(Date(timestamp));
-                                                    timestamp++;
-                                                }
-                                                $(function() {
-                                                    setInterval(updateTime, 1000);
-                                                });
-                                                -- >
-                                            </script>
+                                                        function updateTime() {
+                                                            $('#time').html(Date(timestamp));
+                                                            timestamp++;
+                                                        }
+                                                        $(function() {
+                                                            setInterval(updateTime, 1000);
+                                                        });
+                                                        -- >
+                                                    </script>
 @endpush

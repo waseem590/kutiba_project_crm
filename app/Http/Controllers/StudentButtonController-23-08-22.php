@@ -86,10 +86,6 @@ class StudentButtonController extends Controller
         return view('admin.pages.student_buttons.edit_accomodation', compact('accomodation_types', 'accomodation_status', 'accommodation'));
     }
 
-
-
-
-
     public function update_accomodation(AccommodationRequest $request)
     {
         $accomodation = Accommodation::find($request->updated_id);
@@ -170,7 +166,7 @@ class StudentButtonController extends Controller
 
             $visa = new Visa;
             $visa->case_officer = $request->case_officer;
-            // $visa->student_id = $request->student_name;
+            $visa->student_id = $request->student_name;
             $visa->date_visa = Carbon::now()->format('d/m/Y');
             $visa->visa_type = $request->visa_type;
             $visa->num_applicants = $request->num_applicants;
@@ -181,7 +177,6 @@ class StudentButtonController extends Controller
             $visa->service_fee = $request->service_fee;
             $visa->service_pay_method = $request->service_pay_method;
             $visa->service_dop = $request->service_dop;
-            $visa->visa_expire_date = $request->visa_expire_date;
             $visa->student_id = $student->id;
             $visa->save();
             \LogActivity::addToLog('Add Visa Form of student' . $request->name);
@@ -200,7 +195,6 @@ class StudentButtonController extends Controller
                 $current = Carbon::now();
                 $date = Carbon::parse($expire_date);
                 $diff_date = $date->diffInDays($current, true);
-                // dd($diff_date);
                 if ($diff_date <= 60 || $diff_date <= 61) {
                     $visa_arr[] = $visa;
                 }
@@ -265,10 +259,10 @@ class StudentButtonController extends Controller
         $status = DropdownType::where('dropdowns_id', 10)->get();
         $immigeration_pay_method = DropdownType::where('dropdowns_id', 11)->get();
         $service_pay_method = DropdownType::where('dropdowns_id', 12)->get();
+    
         $students = AddStudent::get();
         $visa = Visa::find($id);
         \LogActivity::addToLog('Edit Visa' . $id);
-        // dd($visa);
         return view('admin.pages.student_buttons.edit_visa', compact('case_officers', 'students', 'visa_type', 'status', 'immigeration_pay_method', 'service_pay_method', 'visa'));
     }
     public function visa_status(Request $request)
@@ -300,7 +294,7 @@ class StudentButtonController extends Controller
     public function update_visa(Request $request, $id)
     {
         $input = $request->all();
-        // dd(Carbon::parse($input['visa_expire_date']))->format('Y-m-d');
+        // dd($input);
         $student_info =  StudentInformation::where('add_students_id', $request->student_id)->first();
         $student_info->name = $request->name;
         $student_info->add_students_id = $request->student_id;
@@ -326,7 +320,6 @@ class StudentButtonController extends Controller
         $visa->service_fee = $request->service_fee;
         $visa->service_pay_method = $request->service_pay_method;
         $visa->service_dop = $request->service_dop;
-        $visa->visa_expire_date = $request->visa_expire_date;
         $visa->student_id = $request->student_id;
         $visa->save();
         \LogActivity::addToLog('Update Visa Successfully:' . $request->student_name);
@@ -543,7 +536,6 @@ class StudentButtonController extends Controller
                 'student_id' => $student->id,
                 'comment' => $request->val,
                 'creater_name' => auth()->user()->name,
-                'notifi_title' => "Student",
             ];
             $user->notify(new \App\Notifications\AdminNotification($details));
         }
@@ -588,7 +580,7 @@ class StudentButtonController extends Controller
             ->add(StudentContactDetail::class, 'email')
             ->add(University::class, 'en_title')
             ->add(SchoolContact::class, 'job_title')
-
+         
             ->addWhen(Auth::user()->hasRole('Master User'), User::class, 'name')
             ->add(Task::class, 'task_name')
             ->add(Application::class, 'inst_name')

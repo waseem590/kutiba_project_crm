@@ -133,7 +133,7 @@
                         <div class="col-md-4 col-md-4" id="div-surname">
                             <label class="tab-inner-label" for="">Surname <span style="color:red">*</span></label>
                             <input type="text" class="form-control select-inner-text" placeholder="" name="surname"
-                                value="{{ $name[0] ?? '' }}" />
+                                value="{{ $user->info->surname ?? '' }}" />
 
                             <input type="hidden" name="StudentInfo_id" value="{{ $user->info->id ?? '' }}" />
                             <span class="invalid-feedback">
@@ -158,7 +158,7 @@
                             <label class="tab-inner-label" for="">First & Second Name<span
                                     style="color:red">*</span></label>
                             <input type="text" class="form-control select-inner-text" placeholder="" name="l_name"
-                                value="{{ $name[1] ?? '' }}" />
+                                value="{{ $name[0] ?? '' }} {{ $name[1] ?? '' }}" />
                             <span class="invalid-feedback">
                                 <p></p>
                             </span>
