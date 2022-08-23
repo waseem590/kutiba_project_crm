@@ -300,7 +300,8 @@ class StudentButtonController extends Controller
     public function update_visa(Request $request, $id)
     {
         $input = $request->all();
-        // dd(Carbon::parse($input['visa_expire_date']))->format('Y-m-d');
+        $input['visa_expire_date'] = Carbon::createFromFormat('d/m/Y',$input['visa_expire_date'])->format('Y-m-d');
+        // dd(Carbon::parse($input['visa_expire_date'])->format('Y-m-d'));
         $student_info =  StudentInformation::where('add_students_id', $request->student_id)->first();
         $student_info->name = $request->name;
         $student_info->add_students_id = $request->student_id;
@@ -319,14 +320,13 @@ class StudentButtonController extends Controller
         $visa->visa_type = $request->visa_type;
         $visa->num_applicants = $request->num_applicants;
         $visa->visa_status = $request->visa_status;
-        $visa->visa_expire_date = $request->visa_expire_date;
+        $visa->visa_expire_date = $input['visa_expire_date'];
         $visa->immigration_fees = $request->immigration_fees;
         $visa->immigration_pay_method = $request->immigration_pay_method;
         $visa->immigration_dop = $request->immigration_dop;
         $visa->service_fee = $request->service_fee;
         $visa->service_pay_method = $request->service_pay_method;
         $visa->service_dop = $request->service_dop;
-        $visa->visa_expire_date = $request->visa_expire_date;
         $visa->student_id = $request->student_id;
         $visa->save();
         \LogActivity::addToLog('Update Visa Successfully:' . $request->student_name);
