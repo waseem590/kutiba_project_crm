@@ -62,7 +62,8 @@
     }
     #four:checked~.panels #four-panel,
     #five:checked~.panels #five-panel,
-    #six:checked~.panels #six-panel {
+    #six:checked~.panels #six-panel,
+      #seven:checked~.panels #seven-panel {
         display: block
     }
     #one:checked~.tabs #one-tab,
@@ -74,7 +75,8 @@
     }
     #four:checked~.tabs #four-tab,
     #five:checked~.tabs #five-tab,
-    #six:checked~.tabs #six-tab {
+    #six:checked~.tabs #six-tab,
+    #seven:checked~.tabs #seven-tab  {
         background: #fffffff6;
         color: #000;
         border-top: 3px solid #f5981f;
@@ -98,6 +100,7 @@
         <input class="radio" id="four" name="group" type="radio">
         <input class="radio" id="five" name="group" type="radio">
         <input class="radio" id="six" name="group" type="radio">
+         <input class="radio" id="seven" name="group" type="radio">
         <div class="tabs">
             @can('submitted_more_information_information_provided')
             <label class="tab" id="one-tab" for="one">All</label>
@@ -112,6 +115,7 @@
             <label class="tab" id="four-tab" for="four">Submitted</label>
             <label class="tab" id="five-tab" for="five">More Information</label>
             <label class="tab" id="six-tab" for="six">Information Provided</label>
+             <label class="tab" id="seven-tab" for="seven">View Log</label>
             @endcan
         </div>
         <div class="panels">
@@ -539,6 +543,45 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+
+
+
+
+              <div class="table-responsive panel" id="seven-panel">
+                <table id="expire_datatable" class="table table-bordered">
+                    <thead class="s-list-thead">
+                        <tr>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">User </th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Link </th>
+                            <th scope="col" class="custem-text-center">created_at</th>
+                        </tr>
+                        </tr>
+                    </thead>
+                   <tbody>
+                    @if ($logs)
+                        <?php $counter = 0; ?>
+                        @foreach ($logs as $log)
+                            <tr>
+                                <th>{{ ++$counter }}</th>
+                                <?php $users = \App\Models\User::find($log->user_id); ?>
+                                <th>{{ $users->name ?? '' }}</th>
+                                <th>{{ $users->roles->first()->name ?? '' }}</th>
+                                <th>{{ $log->subject }}</th>
+                                <th>{{ $log->url }}</th>
+                                <!-- <th>{{ $log->method }}</th> -->
+                                <!-- <th>{{ $log->agent }}</th> -->
+                                <th>{{ date('d-m-Y h:i a', strtotime($log->created_at)) }}</th>
+                            </tr>
+                        @endforeach
+                    @endif
+                </tbody>
+                </table>
+
             </div>
             @endcan
         </div>

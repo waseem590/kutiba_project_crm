@@ -250,6 +250,7 @@ return [
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'LogActivity' => App\Helpers\LogActivity::class,
         'ApplicationLogHelper' => App\Helpers\ApplicationLogHelper::class,
+        'VisaLogHelper' => App\Helpers\VisaLogHelper::class,
 
     ],
 

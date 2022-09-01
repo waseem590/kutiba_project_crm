@@ -138,7 +138,7 @@
                 <div class="col-md-4 col-md-4">
                     <label class="tab-inner-label" for="">Immigration Fees</label>
                     <input type="text"
-                        class="form-control select-inner-text datetimepicker @error('immigration_fees') is-invalid @enderror"
+                        class="form-control select-inner-text @error('immigration_fees') is-invalid @enderror"
                         name="immigration_fees" value="{{ $visa->immigration_fees }}" />
                     @error('immigration_fees')
                         <div class="alert alert-danger">{{ $message }}</div>

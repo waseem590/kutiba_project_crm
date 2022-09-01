@@ -26,6 +26,8 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Mail;
 use App\Models\LogActivity as LogActivityModel;
 use App\Models\ApplicationLog as ApplicationLogModel;
+use App\Models\VisaLog as VisaLogModel;
+
 
 class UserManagementController extends Controller
 {
@@ -531,12 +533,21 @@ class UserManagementController extends Controller
     {
         $student_id = $id;
         $logs = ApplicationLogModel::where('student_id', $student_id)->latest()->get();
-        // \LogActivity::addToLog('open log screen, name:' . Auth::user()->name);
         return view('admin.pages.student_buttons.view_log', compact('logs'));
-        // return redirect()->json([
-        //     'logs' => $logs,
-        // ]);
     }
+
+
+
+
+   public function visa_logs()
+    {
+      
+        $logs = VisaLogModel::latest()->get();
+        return view('admin.pages.student_buttons.visa_log', compact('logs'));
+      
+    }
+
+
     public function user_logs()
     {
         $logs = LogActivityModel::latest()->get();

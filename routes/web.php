@@ -148,6 +148,11 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/storeـusersـclock/{id}', [UserManagementController::class, 'storeـusersـclock'])->name('store.users.clock');
         Route::get('/logs', [UserManagementController::class, 'user_logs'])->name('user.logs');
         Route::get('/application_logs/{id}', [UserManagementController::class, 'application_logs'])->name('user.application_logs');
+
+
+          Route::get('/visa_logs', [UserManagementController::class, 'visa_logs'])->name('user.visa_logs');
+
+
         Route::delete('/delete_clock/{id}/{user_id}', [UserManagementController::class, 'delete_clock'])->name('delete_clock');
     });
     Route::get('/complete', [StudentController::class, 'complete'])->name('complete');

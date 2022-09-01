@@ -707,14 +707,14 @@
                                     @endif
                                 </td>
                                 <td class="" id="spans">{{ $item->duration ? 'Yes' : 'No' }}</td>
-                                <td class=" text-capitalize" id="spans">
+                                   {{-- <td class=" text-capitalize" id="spans">
                                     {{ $item->special_education->certificate_1 ? 'Certificate 1 |' : '' }}
                                     {{ $item->special_education->certificate_2 ? 'Certificate 2 |' : '' }}
                                     {{ $item->special_education->certificate_3 ? 'Certificate 3 |' : '' }}
                                     {{ $item->special_education->certificate_4 ? 'Certificate 4 |' : '' }}
                                     {{ $item->special_education->foundation ? 'foundation |' : '' }}
                                     {{ $item->special_education->associate_degree ? 'associate degree |' : '' }}
-                                </td>
+                                </td> --}}
                                 {{-- <td class="" id="spans">
                                     {{ $item->education->diploma ? 'diploma |' : '' }}
                                     {{ $item->education->advance_diploma ? 'advance diploma |' : '' }}

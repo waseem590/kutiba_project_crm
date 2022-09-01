@@ -9,7 +9,7 @@ use App\Http\Requests\VisaRequest;
 use App\Http\Requests\SmsStudentRequest;
 use App\Http\Requests\TaskRequest;
 use App\Http\Requests\AttachmentRequest;
-
+use App\Helpers\VisaLogHelper;
 use App\Models\DropdownType;
 use App\Models\Task;
 use App\Models\Accommodation;
@@ -30,7 +30,7 @@ use App\Models\Visa_Comment;
 use ProtoneMedia\LaravelCrossEloquentSearch\Search;
 use Carbon\CarbonInterval;
 use Msegat;
-
+use App\Models\VisaLog as VisaLogModel;
 use Validator;
 use Illuminate\Support\Carbon;
 use Plivo\RestClient;
@@ -149,6 +149,7 @@ class StudentButtonController extends Controller
             $visa->visa_expire_date = $request->visa_expire_date;
             $visa->save();
             \LogActivity::addToLog('Add Visa Form of student' . $request->student_name);
+            \VisaLogHelper::addToLog('Add Visa Form of student' . $request->student_name);
             parent::successMessage("Add Visa Successfully");
             return redirect()->route('visa.list');
         } else {
@@ -185,12 +186,15 @@ class StudentButtonController extends Controller
             $visa->student_id = $student->id;
             $visa->save();
             \LogActivity::addToLog('Add Visa Form of student' . $request->name);
+            \VisaLogHelper::addToLog('Add Visa Form of student' . $request->name);
             parent::successMessage("Add Visa Successfully");
             return redirect()->route('visa.list');
         }
     }
     public function visa_list()
     {
+
+         $logs = VisaLogModel::latest()->get();
         $student_visa =  Visa::latest()->get();
         $unpaid_visa =  Visa::where('immigration_fees', '=', 0)->orWhere('service_fee', '=', 0)->latest()->get();
         $visa_arr = [];
@@ -221,7 +225,7 @@ class StudentButtonController extends Controller
                 // }
             }
         }
-        return view('admin.pages.student_buttons.visa', compact('student_visa', 'visa_arr', 'unpaid_visa'));
+        return view('admin.pages.student_buttons.visa', compact('student_visa', 'visa_arr', 'unpaid_visa','logs'));
     }
     public function view_visa($id)
     {
@@ -229,7 +233,9 @@ class StudentButtonController extends Controller
         if ($visa->student) {
             $student_id = $visa->student->id;
             $student = StudentInformation::where('add_students_id', $student_id)->first();
-            // \LogActivity::addToLog('Watch Detail of Visa of student:'.$student['name']);
+             \LogActivity::addToLog('Watch Detail of Visa of student:'.$student['name']);
+
+             \VisaLogHelper::addToLog('Watch Detail of Visa of student'  .$student['name']);
             return view('admin.pages.student_buttons.view_visa', compact('visa', 'student_id'));
         }
     }
@@ -241,6 +247,7 @@ class StudentButtonController extends Controller
         } else {
             $value = 'Complete';
             \LogActivity::addToLog('Change Status of Visa is complete');
+            \VisaLogHelper::addToLog('Add Visa Form of student' . $request->name);
         }
         $updated_row = Visa::find($request->updated_row_id);
         $updated_row->update([
@@ -254,6 +261,7 @@ class StudentButtonController extends Controller
         $visa = Visa::find($id);
         $student_id = $visa->student->id;
         \LogActivity::addToLog('Delete Visa:' . $visa->student['name']);
+        \VisaLogHelper::addToLog('Delete Visa Form of student' . $visa->student['name']);
         $visa->delete();
         parent::successMessage("Delete Visa Successfully");
         return redirect()->route('visa.list', $student_id);
@@ -268,6 +276,7 @@ class StudentButtonController extends Controller
         $students = AddStudent::get();
         $visa = Visa::find($id);
         \LogActivity::addToLog('Edit Visa' . $id);
+         \VisaLogHelper::addToLog('Edit Visa' . $id);
         // dd($visa);
         return view('admin.pages.student_buttons.edit_visa', compact('case_officers', 'students', 'visa_type', 'status', 'immigeration_pay_method', 'service_pay_method', 'visa'));
     }
@@ -287,6 +296,7 @@ class StudentButtonController extends Controller
         $visa_comment->comment_text = $request->visa_comment;
         $visa_comment->save();
         \LogActivity::addToLog('Comment On Visa :' . $id);
+          \VisaLogHelper::addToLog('Comment On Visa :' . $id);
         parent::successMessage("Add Comment Successfully");
         return redirect()->back();
     }
@@ -330,6 +340,7 @@ class StudentButtonController extends Controller
         $visa->student_id = $request->student_id;
         $visa->save();
         \LogActivity::addToLog('Update Visa Successfully:' . $request->student_name);
+         \VisaLogHelper::addToLog('Update Visa Successfully:' . $request->student_name);
         parent::successMessage("Update Visa Successfully");
         return redirect()->route('visa.list');
     }
@@ -348,6 +359,7 @@ class StudentButtonController extends Controller
                     // "dst" => $num,
                     // "text" => $request->message,
                     \LogActivity::addToLog('Send Sms on this number:' . $num);
+
                     parent::successMessage("Send Message Successfully");
                 }
             }
