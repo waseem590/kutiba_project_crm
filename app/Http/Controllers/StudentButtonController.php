@@ -244,10 +244,11 @@ class StudentButtonController extends Controller
         if ($request->val == 'Complete') {
             $value = 'In-Complete';
             \LogActivity::addToLog('Change Status of Visa is in-complete');
+             \VisaLogHelper::addToLog('Change Status of Visa is complete');
         } else {
             $value = 'Complete';
             \LogActivity::addToLog('Change Status of Visa is complete');
-            \VisaLogHelper::addToLog('Add Visa Form of student' . $request->name);
+            \VisaLogHelper::addToLog('Change Status of Visa is complete');
         }
         $updated_row = Visa::find($request->updated_row_id);
         $updated_row->update([
